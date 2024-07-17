@@ -100,12 +100,12 @@ const SideNav = () => {
           )}
         </div>
         <div className={cn("mt-4", { "hidden": !isOpen })}>
-          {sidebarLinks.map(({ label, icon, route }, index) => (
+          {sidebarLinks.map(({ label, imgURL, route }, index) => (
             <Tab
               key={index}
               label={label}
               route={route}
-              icon={icon}
+              imgURL={imgURL}
               onClick={toggleSideNav}
             />
           ))}
