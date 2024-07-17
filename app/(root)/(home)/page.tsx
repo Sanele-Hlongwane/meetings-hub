@@ -4,13 +4,13 @@ const Home = () => {
   const now = new Date();
   
   const options: Intl.DateTimeFormatOptions = {
-  timeZone: 'UTC+2',
+  timeZone: 'Africa/Johannesburg', // Use the correct time zone identifier for SAST
   hour: '2-digit',
   minute: '2-digit',
 };
 
 const time = now.toLocaleTimeString('en-US', options);
-const date = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeZone: 'UTC+2' }).format(now);
+const date = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeZone: 'Africa/Johannesburg' }).format(now);
 
   
   console.log(time); // Outputs the current time adjusted for UTC+2 timezone
