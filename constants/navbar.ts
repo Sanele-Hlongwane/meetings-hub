@@ -6,25 +6,21 @@ export const navbarLinks = [
   },
 
   {
-    imgURL: '/icons/upcoming.svg',
+    imgURL: '/icons/about.svg',
     route: '/about',
     label: 'About',
   },
   {
-    imgURL: '/icons/previous.svg',
+    imgURL: '/icons/contact.svg',
     route: '/contact',
     label: 'Contact',
   },
   {
-    imgURL: '/icons/Video.svg',
+    imgURL: '/icons/Services.svg',
     route: '/services',
     label: 'Sevices',
   },
-  {
-    imgURL: '/icons/add-personal.svg',
-    route: '/messages',
-    label: 'Messages',
-  },
+  
 ];
 
 export const avatarImages = [
