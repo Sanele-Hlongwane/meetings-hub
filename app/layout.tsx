@@ -11,10 +11,10 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "YOOM",
-  description: "Video calling App",
+  title: "Eagles Ring",
+  description: "Connecting investors with entrepreneurs",
   icons: {
-    icon: "/icons/logo.svg",
+    icon: "/Eagle",
   },
 };
 
