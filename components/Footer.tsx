@@ -1,11 +1,9 @@
 import React from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faTwitter, faLinkedin, faInstagram } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope, faPhone, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-gray-300 py-10 px-5 lg:px-20">
+    <footer className="bg-blue-900 text-gray-300 py-10 px-5 lg:px-20">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="flex flex-col">
           <h2 className="text-2xl font-bold text-white mb-4">Eagles Ring</h2>
@@ -18,30 +16,43 @@ const Footer = () => {
         </div>
         <div className="flex flex-col">
           <h3 className="text-xl font-semibold text-white mb-4">Contact Us</h3>
-          <p>
-            <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" /> 30 Kadjipiering street, Johannesburg, South Africa
-          </p>
-          <p>
-            <FontAwesomeIcon icon={faPhone} className="mr-2" /> +2760 317 9552
-          </p>
-          <p>
-            <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> info@eaglesring.com
-          </p>
+          <div className="flex items-center mb-2">
+            <FaMapMarkerAlt className="text-gray-400 mr-2" />
+            <p className="text-sm lg:text-base">123 Investment Street, Business City, Country</p>
+          </div>
+          <div className="flex items-center mb-2">
+            <FaPhone className="text-gray-400 mr-2" />
+            <p className="text-sm lg:text-base">+123 456 7890</p>
+          </div>
+          <div className="flex items-center mb-2">
+            <FaEnvelope className="text-gray-400 mr-2" />
+            <p className="text-sm lg:text-base">info@eaglesring.com</p>
+          </div>
         </div>
         <div className="flex flex-col">
           <h3 className="text-xl font-semibold text-white mb-4">Follow Us</h3>
-          <div className="flex space-x-4">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faFacebook} className="text-gray-300 hover:text-white transition duration-300" size="2x" />
+          <div className="flex items-center mb-2">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
+              <FaFacebook className="text-xl mr-2" />
+              <span>Facebook</span>
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faTwitter} className="text-gray-300 hover:text-white transition duration-300" size="2x" />
+          </div>
+          <div className="flex items-center mb-2">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
+              <FaTwitter className="text-xl mr-2" />
+              <span>Twitter</span>
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faLinkedin} className="text-gray-300 hover:text-white transition duration-300" size="2x" />
+          </div>
+          <div className="flex items-center mb-2">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
+              <FaLinkedin className="text-xl mr-2" />
+              <span>LinkedIn</span>
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faInstagram} className="text-gray-300 hover:text-white transition duration-300" size="2x" />
+          </div>
+          <div className="flex items-center mb-2">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
+              <FaInstagram className="text-xl mr-2" />
+              <span>Instagram</span>
             </a>
           </div>
         </div>
