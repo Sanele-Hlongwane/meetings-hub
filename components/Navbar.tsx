@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { SignedIn, UserButton } from '@clerk/nextjs';
 
 import MobileNav from './MobileNav';
-import { navbarLinks } from '@/constants/NavBar';
+import { navbarLinks } from '@/constants/navbar';
 import { usePathname } from 'next/navigation';
 const Navbar = () => {
   const pathname =  usePathname(); // Assuming you import useRouter from next/router
