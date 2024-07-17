@@ -7,13 +7,16 @@ import React, { useState } from "react";
 import { sidebarLinks } from '@/constants';
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+interface TabProps {
+  label: string;
+  route: string;
+  imgURL: string;
+  onClick: () => void;
+}
 
-export const Tab = ({ label, route, icon, onClick }) => {
+const Tab: React.FC<TabProps> = ({ label, route, imgURL, onClick }) => {
   const pathname = usePathname();
-
-  let isActive = pathname === route;
-  const isMeetingPage = pathname.startsWith("/meeating");
- 
+  const isActive = pathname === route;
 
   return (
     <div
@@ -26,21 +29,25 @@ export const Tab = ({ label, route, icon, onClick }) => {
       )}
       onClick={onClick}
     >
-      <Link href={route} className="flex gap-3 lg:gap-4 items-center w-full">
-        <Image
-          src={item.imgURL}
-          width={30}
-          height={30}
-          alt={label}
-          className="w-5 md:w-6 lg:w-8 h-auto"
-        />
-        <p className="text-sm md:text-base lg:text-lg font-medium lg:font-semibold">
-          {label}
-        </p>
+      <Link href={route} passHref>
+        <a className="flex gap-3 lg:gap-4 items-center w-full">
+          <Image
+            src={imgURL}
+            width={30}
+            height={30}
+            alt={label}
+            className="w-5 md:w-6 lg:w-8 h-auto"
+          />
+          <p className="text-sm md:text-base lg:text-lg font-medium lg:font-semibold">
+            {label}
+          </p>
+        </a>
       </Link>
     </div>
   );
 };
+
+export const Tab;
 
 const SideNav = () => {
   const pathname = usePathname();
