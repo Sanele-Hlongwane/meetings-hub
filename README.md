@@ -71,9 +71,10 @@ Install the project dependencies using npm:
 
 
 
-Set Up Environment Variables
+3. **Set Up Environment Variables**
 
 Create a new file named .env in the root of your project and add the following content:
+```bash
   
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
   CLERK_SECRET_KEY=
@@ -86,13 +87,13 @@ Create a new file named .env in the root of your project and add the following c
   
   DATABASE_URL=
 
-Replace the placeholder values with your actual Clerk, getstream, and Prisma (Neon Database) credentials. You can obtain these credentials by signing up on the respective websites.
+**Replace the placeholder values with your actual Clerk, getstream, and Prisma (Neon Database) credentials. You can obtain these credentials by signing up on the respective websites.**
 
-Running the Project
-
+4. **Running the Project**
+```bash
 npm run 
 
-Open http://localhost:3000 in your browser to view the project.
+**Open http://localhost:3000 in your browser to view the project.**
 <a name="snippets">🕸️ Assets & Code</a>
 <details>
 <summary><code>app/globals.css</code></summary>
