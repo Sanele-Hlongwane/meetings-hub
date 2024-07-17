@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "Eagles Ring",
   description: "Connecting investors with entrepreneurs",
   icons: {
-    icon: "/Eagle",
+    icon: "/Eagle.png",
   },
 };
 
@@ -27,7 +27,7 @@ export default function RootLayout({
         appearance={{
           layout: {
             socialButtonsVariant: "iconButton",
-            logoImageUrl: "/icons/yoom-logo.svg",
+            logoImageUrl: "/EaglesRingLogoDark.png",
           },
           variables: {
             colorText: "#fff",
