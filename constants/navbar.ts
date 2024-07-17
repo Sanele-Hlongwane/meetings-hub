@@ -6,7 +6,7 @@ export const navbarLinks = [
   },
 
   {
-    imgURL: '/icons/about-info.svg',
+    imgURL: '/icons/about.svg',
     route: '/about',
     label: 'About',
   },
@@ -17,16 +17,8 @@ export const navbarLinks = [
   },
   {
     imgURL: '/icons/Services.svg',
-    route: '/services',
+    route: '/services-info',
     label: 'Sevices',
   },
   
-];
-
-export const avatarImages = [
-  '/images/avatar-1.jpeg',
-  '/images/avatar-2.jpeg',
-  '/images/avatar-3.png',
-  '/images/avatar-4.png',
-  '/images/avatar-5.png',
 ];
