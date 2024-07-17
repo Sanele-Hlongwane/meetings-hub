@@ -1,12 +1,12 @@
 export const navbarLinks = [
   {
-    imgURL: '/icons/Home.svg',
+    imgURL: '/icons/home-svg.svg',
     route: '/',
     label: 'Home',
   },
 
   {
-    imgURL: '/icons/about.svg',
+    imgURL: '/icons/about-info.svg',
     route: '/about',
     label: 'About',
   },
