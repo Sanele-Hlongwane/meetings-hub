@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { sidebarLinks } from '@/constants';
-import { navbarLinks } from '@/constants/NavBar';
+import { navbarLinks } from '@/constants/navbar';
 import { cn } from '@/lib/utils';
 
 const MobileNav = () => {
