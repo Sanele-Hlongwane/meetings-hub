@@ -17,43 +17,43 @@ const Footer = () => {
           </p>
         </div>
         <div className="flex flex-col">
-          <h3 className="text-sm font-semibold text-white mb-4">Contact Us</h3>
+          <h3 className="text-xl font-semibold text-white mb-4">Contact Us</h3>
           <div className="flex items-center mb-2">
-            <FontAwesomeIcon icon={faMapMarkerAlt} className="text-gray-400 mr-2" />
+            <FontAwesomeIcon icon={faMapMarkerAlt} className="text-gray-400 text-sm mr-2" />
             <p className="text-sm lg:text-base">123 Investment Street, Business City, Country</p>
           </div>
           <div className="flex items-center mb-2">
-            <FontAwesomeIcon icon={faPhone} className="text-gray-400 mr-2" />
+            <FontAwesomeIcon icon={faPhone} className="text-gray-400 text-sm mr-2" />
             <p className="text-sm lg:text-base">+123 456 7890</p>
           </div>
           <div className="flex items-center mb-2">
-            <FontAwesomeIcon icon={faEnvelope} className="text-gray-400 mr-2" />
+            <FontAwesomeIcon icon={faEnvelope} className="text-gray-400 text-sm mr-2" />
             <p className="text-sm lg:text-base">info@eaglesring.com</p>
           </div>
         </div>
         <div className="flex flex-col">
-          <h3 className="text-sm font-semibold text-white mb-4">Follow Us</h3>
+          <h3 className="text-xl font-semibold text-white mb-4">Follow Us</h3>
           <div className="flex items-center mb-2">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
-              <FontAwesomeIcon icon={faFacebook} className="text-sm mr-2" />
+              <FontAwesomeIcon icon={faFacebook} className="text-lg mr-2" />
               <span>Facebook</span>
             </a>
           </div>
           <div className="flex items-center mb-2">
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
-              <FontAwesomeIcon icon={faTwitter} className="text-sm mr-2" />
+              <FontAwesomeIcon icon={faTwitter} className="text-lg mr-2" />
               <span>Twitter</span>
             </a>
           </div>
           <div className="flex items-center mb-2">
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
-              <FontAwesomeIcon icon={faLinkedin} className="text-sm mr-2" />
+              <FontAwesomeIcon icon={faLinkedin} className="text-lg mr-2" />
               <span>LinkedIn</span>
             </a>
           </div>
           <div className="flex items-center mb-2">
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
-              <FontAwesomeIcon icon={faInstagram} className="text-sm mr-2" />
+              <FontAwesomeIcon icon={faInstagram} className="text-lg mr-2" />
               <span>Instagram</span>
             </a>
           </div>
