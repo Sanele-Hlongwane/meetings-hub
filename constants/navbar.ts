@@ -16,9 +16,8 @@ export const navbarLinks = [
     label: 'Contact',
   },
   {
-    imgURL: '/icons/Services.svg',
-    route: '/services-info',
+    imgURL: '/icons/services-info.svg',
+    route: '/services',
     label: 'Sevices',
   },
-  
 ];
