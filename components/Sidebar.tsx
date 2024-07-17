@@ -14,7 +14,8 @@ interface TabProps {
   onClick: () => void;
 }
 
-const Tab: React.FC<TabProps> = ({ label, route, imgURL, onClick }) => {
+
+export const Tab : React.FC<TabProps> = ({ label, route, imgURL, onClick }) => {
   const pathname = usePathname();
   const isActive = pathname === route;
 
@@ -47,7 +48,6 @@ const Tab: React.FC<TabProps> = ({ label, route, imgURL, onClick }) => {
   );
 };
 
-export const Tab;
 
 const SideNav = () => {
   const pathname = usePathname();
