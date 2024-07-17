@@ -55,5 +55,9 @@ Follow these steps to get started with the project:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/Sanele-Hlongwane/eagles-ring.git
-   cd eagles-ring
+   git clone https://github.com/Sanele-Hlongwane/eaglesring.git
+   cd eaglesring
+
+2. **See deployment**
+   ```link
+  https://eaglesring.vercel.app
