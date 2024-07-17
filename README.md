@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-    <a href="/" target="_blank">
+    <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank">
       <img src="./public/EaglesRingLogo.png" alt="Project Banner">
     </a>
   <br />
