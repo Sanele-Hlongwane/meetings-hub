@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
-
+import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
@@ -15,6 +15,7 @@ const RootLayout = ({ children }: Readonly<{children: ReactNode}>) => {
         <section className="">
           <div className="w-full">{children}</div>
         </section>
+      <Footer />
     </main>
   );
 };
