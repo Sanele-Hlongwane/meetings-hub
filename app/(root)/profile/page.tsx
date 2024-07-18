@@ -272,9 +272,10 @@ const ProfilePage = () => {
 
           <button onClick={handleEdit}>Edit</button>
         </div>
-      )}
+      }
     </div>
   );
 };
 
 export default ProfilePage;
+
