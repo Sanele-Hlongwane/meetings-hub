@@ -19,6 +19,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
           clerkId: user.id,
         },
+        include: {
+          entrepreneur: true,
+          investor: true,
+        },
       });
 
       if (!existingUser) {
@@ -38,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Check if the user is an entrepreneur or investor and update accordingly
       if (existingUser.entrepreneur) {
         await prisma.entrepreneur.update({
-          where: { id: existingUser.entrepreneurId },
+          where: { id: existingUser.entrepreneur.id },
           data: {
             businessName: data.businessName,
             businessPlan: data.businessPlan,
@@ -55,7 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (existingUser.investor) {
         await prisma.investor.update({
-          where: { id: existingUser.investorId },
+          where: { id: existingUser.investor.id },
           data: {
             fundsAvailable: data.fundsAvailable,
             investmentPreferences: data.investmentPreferences,
