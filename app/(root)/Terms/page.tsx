@@ -64,4 +64,40 @@ const TermsAndConditions = () => {
 
       <h2 id="intellectual-property" className="text-2xl font-semibold mb-2">4. Intellectual Property Rights</h2>
       <p className="mb-4">
-        Our platform and its entire contents, features, and functionality (including but not limited to all information, software, text, displays,
+        Our platform and its entire contents, features, and functionality (including but not limited to all information, software, text, displays, and other materials) are protected by intellectual property laws. You may not use, reproduce, distribute, or display any content from our platform without obtaining the necessary rights.
+      </p>
+
+      <h2 id="termination" className="text-2xl font-semibold mb-2">5. Termination</h2>
+      <p className="mb-4">
+        We reserve the right to terminate or suspend your account and access to our platform at our sole discretion, without prior notice or liability, for any reason, including if you breach these terms.
+      </p>
+
+      <h2 id="disclaimer" className="text-2xl font-semibold mb-2">6. Disclaimer of Warranties</h2>
+      <p className="mb-4">
+        Our platform is provided on an "as is" and "as available" basis. We disclaim all warranties, express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, and non-infringement.
+      </p>
+
+      <h2 id="limitation" className="text-2xl font-semibold mb-2">7. Limitation of Liability</h2>
+      <p className="mb-4">
+        To the fullest extent permitted by law, we shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or in connection with your use of our platform.
+      </p>
+
+      <h2 id="governing-law" className="text-2xl font-semibold mb-2">8. Governing Law</h2>
+      <p className="mb-4">
+        These terms and conditions shall be governed by and construed in accordance with the laws of South Africa, without regard to its conflict of law principles.
+      </p>
+
+      <h2 id="changes" className="text-2xl font-semibold mb-2">9. Changes to Terms</h2>
+      <p className="mb-4">
+        We reserve the right to modify these terms at any time. Any changes will be posted on this page with an updated revision date. Your continued use of our platform after such changes constitutes your acceptance of the new terms.
+      </p>
+
+      <h2 id="contact" className="text-2xl font-semibold mb-2">10. Contact Information</h2>
+      <p className="mb-4">
+        If you have any questions about these terms and conditions, please contact us at <a href="mailto:contact@eaglesring.com" className="text-blue-600 dark:text-blue-400 hover:underline">contact@eaglesring.com</a>.
+      </p>
+    </div>
+  );
+};
+
+export default TermsAndConditions;
