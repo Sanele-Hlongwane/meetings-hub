@@ -3,13 +3,13 @@
 import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { currentUser } from '@clerk/nextjs/server';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 const ProfilePage = () => {
-  const [userProfile, setUserProfile] = useState<any>(null); // Adjust type as per your schema
-  const [role, setRole] = useState('');
+  const [userProfile, setUserProfile] = useState<User | null>(null);
+  const [role, setRole] = useState<string>('');
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
 
@@ -122,22 +122,22 @@ const ProfilePage = () => {
       <form ref={formRef} onSubmit={handleSubmit}>
         <label>
           Location:
-          <input type="text" name="location" defaultValue={userProfile.location} />
+          <input type="text" name="location" defaultValue={userProfile.location || ''} />
         </label>
         <br />
         <label>
           Age:
-          <input type="number" name="age" defaultValue={userProfile.age?.toString()} />
+          <input type="number" name="age" defaultValue={userProfile.age?.toString() || ''} />
         </label>
         <br />
         <label>
           Gender:
-          <input type="text" name="gender" defaultValue={userProfile.gender} />
+          <input type="text" name="gender" defaultValue={userProfile.gender || ''} />
         </label>
         <br />
         <label>
           Interests (comma-separated):
-          <input type="text" name="interests" defaultValue={userProfile.interests?.join(', ')} />
+          <input type="text" name="interests" defaultValue={userProfile.interests?.join(', ') || ''} />
         </label>
         <br />
         <button type="submit">Update Profile</button>
