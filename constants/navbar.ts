@@ -11,13 +11,18 @@ export const navbarLinks = [
     label: 'About',
   },
   {
-    imgURL: '/icons/contact.svg',
-    route: '/contact',
-    label: 'Contact',
-  },
-  {
     imgURL: '/icons/services-info.svg',
     route: '/services',
     label: 'Sevices',
+  },
+  {
+    imgURL: '/icons/profile.svg',
+    route: '/profile',
+    label: 'Profile',
+  },
+  {
+    imgURL: '/icons/contact.svg',
+    route: '/contact',
+    label: 'Contact',
   },
 ];
