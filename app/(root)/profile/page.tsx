@@ -4,11 +4,11 @@ import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { currentUser } from '@clerk/nextjs/server';
-import {db} from '@/lib/prisma';
+import prisma, { User, Role, Entrepreneur, Investor } from '@/lib/prisma'; // Adjusted import statement
 
 const ProfilePage = () => {
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null); // Ensure User type is correctly imported
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
     businessName: '',
@@ -236,3 +236,4 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+
