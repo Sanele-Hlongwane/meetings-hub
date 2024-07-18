@@ -8,15 +8,15 @@ export const metadata: Metadata = {
   description: 'Update profile to keep in touch and be available.',
 };
 
-const RootLayout = ({ children }: Readonly<{children: ReactNode}>) => {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <main className="h-screen">
+    <div className="h-screen flex flex-col">
       <Navbar />
-        <section className="">
-          <div className="w-full">{children}</div>
-        </section>
+      <main className="flex-grow">
+        {children}
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 };
 
