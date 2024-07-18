@@ -28,10 +28,10 @@ const ProfilePage = () => {
           throw new Error('User not found');
         }
 
-        // Fetch user from Prisma
-        const existingUser = await prisma.user.findUnique({
+        // Fetch user from db
+        const existingUser = await db.user.findUnique({
           where: {
-            clerkId: clerkUser.id, // Adjust field name based on your Prisma schema
+            clerkId: clerkUser.id, // Adjust field name based on your db schema
           },
           include: {
             role: true,
@@ -86,7 +86,7 @@ const ProfilePage = () => {
         // Handle saving for default role
         // Example: create or update entrepreneur/investor profile based on form data
         if (user.entrepreneur) {
-          await prisma.entrepreneur.update({
+          await db.entrepreneur.update({
             where: { id: user.entrepreneur.id },
             data: {
               businessName: formData.businessName,
@@ -94,7 +94,7 @@ const ProfilePage = () => {
             },
           });
         } else if (user.investor) {
-          await prisma.investor.update({
+          await db.investor.update({
             where: { id: user.investor.id },
             data: {
               fundsAvailable: formData.fundsAvailable,
