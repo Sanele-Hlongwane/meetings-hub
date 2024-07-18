@@ -3,16 +3,30 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { currentUser } from '@clerk/nextjs/server';
-import { prisma } from '@/lib/prisma';
+import axios from 'axios';
 
-interface UserProfile extends User {
-  role: Role;
-  entrepreneur?: Entrepreneur & {
-    professionalProfile?: ProEntrepreneurProfile;
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  role: { name: string };
+  entrepreneur?: {
+    businessName: string;
+    businessPlan: string;
+    professionalProfile?: {
+      companyName: string;
+      companyWebsite: string;
+      linkedinUrl: string;
+    };
   };
-  investor?: Investor & {
-    professionalProfile?: ProInvestorProfile;
+  investor?: {
+    fundsAvailable: number;
+    investmentPreferences: string;
+    professionalProfile?: {
+      companyName: string;
+      companyWebsite: string;
+      linkedinUrl: string;
+    };
   };
 }
 
@@ -35,48 +49,20 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const clerkUser = await currentUser();
-        if (!clerkUser) {
-          throw new Error('User not found');
-        }
-
-        // Fetch user from prisma
-        const existingUser = await prisma.user.findUnique({
-          where: {
-            clerkId: clerkUser.id,
-          },
-          include: {
-            role: true,
-            entrepreneur: {
-              include: {
-                professionalProfile: true,
-              },
-            },
-            investor: {
-              include: {
-                professionalProfile: true,
-              },
-            },
-          },
+        const { data } = await axios.get('/api/user');
+        setUser(data);
+        setFormData({
+          businessName: data.entrepreneur?.businessName || '',
+          businessPlan: data.entrepreneur?.businessPlan || '',
+          fundsAvailable: data.investor?.fundsAvailable || 0,
+          investmentPreferences: data.investor?.investmentPreferences || '',
+          companyName: data.investor?.professionalProfile?.companyName || '',
+          companyWebsite: data.investor?.professionalProfile?.companyWebsite || '',
+          linkedinUrl: data.investor?.professionalProfile?.linkedinUrl || '',
         });
 
-        if (existingUser) {
-          setUser(existingUser as UserProfile);
-          setFormData({
-            businessName: existingUser.entrepreneur?.businessName || '',
-            businessPlan: existingUser.entrepreneur?.businessPlan || '',
-            fundsAvailable: existingUser.investor?.fundsAvailable || 0,
-            investmentPreferences: existingUser.investor?.investmentPreferences || '',
-            companyName: existingUser.investor?.professionalProfile?.companyName || '',
-            companyWebsite: existingUser.investor?.professionalProfile?.companyWebsite || '',
-            linkedinUrl: existingUser.investor?.professionalProfile?.linkedinUrl || '',
-          });
-
-          if (existingUser.role.name === 'default') {
-            setRoleSelectionMode(true);
-          }
-        } else {
-          throw new Error('User not found in database');
+        if (data.role.name === 'default') {
+          setRoleSelectionMode(true);
         }
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -86,7 +72,7 @@ const ProfilePage = () => {
     };
 
     fetchUser();
-  }, []);
+  }, [router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -103,16 +89,11 @@ const ProfilePage = () => {
     }
 
     try {
-      const updatedUser = await prisma.user.update({
-        where: { id: user?.id },
-        data: {
-          role: {
-            connect: { name: selectedRole },
-          },
-        },
+      const { data } = await axios.put('/api/user', {
+        role: selectedRole,
       });
 
-      setUser(updatedUser as UserProfile);
+      setUser(data);
       setRoleSelectionMode(false);
     } catch (error) {
       console.error('Error updating role:', error);
@@ -122,26 +103,24 @@ const ProfilePage = () => {
 
   const handleSave = async () => {
     try {
-      if (user?.role.name === 'entrepreneur') {
-        await prisma.entrepreneur.update({
-          where: { id: user.entrepreneur?.id },
-          data: {
+      const { data } = await axios.put('/api/user', {
+        role: user?.role.name,
+        data: {
+          ...(user?.role.name === 'entrepreneur' && {
             businessName: formData.businessName,
             businessPlan: formData.businessPlan,
-          },
-        });
-      } else if (user?.role.name === 'investor') {
-        await prisma.investor.update({
-          where: { id: user.investor?.id },
-          data: {
+          }),
+          ...(user?.role.name === 'investor' && {
             fundsAvailable: formData.fundsAvailable,
             investmentPreferences: formData.investmentPreferences,
-          },
-        });
-      } else {
-        throw new Error('Unsupported role');
-      }
+          }),
+          companyName: formData.companyName,
+          companyWebsite: formData.companyWebsite,
+          linkedinUrl: formData.linkedinUrl,
+        },
+      });
 
+      setUser(data);
       toast.success('Profile updated successfully');
       setEditMode(false); // Exit edit mode after saving
     } catch (error) {
@@ -275,6 +254,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
-
-
