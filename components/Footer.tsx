@@ -6,7 +6,6 @@ import { checkUser } from '@/lib/checkUser';
 
 const Footer = async () => {
   const user = await checkUser(null);
-  console.log(user);
 
   return (
     <footer className="bg-black text-white py-12 shadow-xl" style={{ width: '100vw' }}>
