@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { currentUser } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs/server';
 import prisma, { User, Role, Entrepreneur, Investor, ProEntrepreneurProfile, ProInvestorProfile } from '@/lib/prisma';
 
 interface UserProfile extends User {
