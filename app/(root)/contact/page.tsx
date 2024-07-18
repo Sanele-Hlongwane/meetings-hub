@@ -1,6 +1,6 @@
 'use client';
-// Import necessary components and styles
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faTwitter, faLinkedin } from '@fortawesome/free-brands-svg-icons';
@@ -23,58 +23,34 @@ const ContactPage = () => {
     setIsLoading(true);
 
     try {
-      // Send email functionality here (optional if you're just opening the email client)
-
       const { name, email, message } = formData;
       const subject = 'Contact Inquiry from Eagles Ring';
       const body = `Name: ${name}%0AEmail: ${email}%0AMessage: ${message}`;
 
-      // Construct the mailto link
       let mailtoLink = `mailto:contact@eaglesring.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-      // Open the default email client
       window.location.href = mailtoLink;
 
-      // Show success toast
       toast.success('Email sent successfully!');
     } catch (error) {
-      // Show error toast
       toast.error('Failed to send email. Please try again.');
     } finally {
       setIsLoading(false);
     }
 
-    // Reset form fields after submission (optional)
     setFormData({
       name: '',
       email: '',
       message: ''
     });
 
-    // Clear submit status after a few seconds
     setTimeout(() => {
-      toast.dismiss(); // Dismiss any lingering toasts
+      toast.dismiss();
     }, 10000);
   };
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    const handleThemeChange = (event: MediaQueryListEvent) => {
-      setIsDarkMode(event.matches);
-    };
-
-    setIsDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', handleThemeChange);
-
-    return () => {
-      window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', handleThemeChange);
-    };
-  }, []);
-
   return (
-    <div className={`bg-${isDarkMode ? 'dark-1' : 'dark-1'} text-${isDarkMode ? 'white' : 'white'} min-h-screen py-16 px-4`} style={{ width: '100vw' }}>
+    <div className="bg-bg-dark-1 dark:bg-dark-1 text-white dark:text-white min-h-screen py-16 px-4" style={{ width: '100vw' }}>
       <div className="max-w-7xl mx-auto pt-20">
         <div className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Contact Us</h1>
@@ -94,7 +70,7 @@ const ContactPage = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className={`mt-1 block w-full px-3 py-2 border border-${isDarkMode ? 'gray-300' : 'gray-300'} bg-${isDarkMode ? 'black' : 'white'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-${isDarkMode ? 'white' : 'black'}`}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white dark:bg-black rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black dark:text-white"
               />
             </div>
 
@@ -107,7 +83,7 @@ const ContactPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className={`mt-1 block w-full px-3 py-2 border border-${isDarkMode ? 'gray-300' : 'gray-300'} bg-${isDarkMode ? 'black' : 'white'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-${isDarkMode ? 'white' : 'black'}`}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white dark:bg-black rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black dark:text-white"
               />
             </div>
 
@@ -120,7 +96,7 @@ const ContactPage = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
-                className={`mt-1 block w-full px-3 py-2 border border-${isDarkMode ? 'gray-300' : 'gray-300'} bg-${isDarkMode ? 'black' : 'white'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-${isDarkMode ? 'white' : 'black'}`}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white dark:bg-black rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black dark:text-white"
               />
             </div>
 
@@ -146,19 +122,19 @@ const ContactPage = () => {
               <p className="text-sm lg:text-base">contact@eaglesring.com</p>
             </div>
             <div className="flex items-center mb-2">
-              <a href="https://www.facebook.com/eaglesring" target="_blank" rel="noopener noreferrer" className={`flex items-center text-${isDarkMode ? 'white' : 'black'} hover:text-gray-400 transition duration-300`}>
+              <a href="https://www.facebook.com/eaglesring" target="_blank" rel="noopener noreferrer" className="flex items-center text-white dark:text-white hover:text-gray-400 transition duration-300">
                 <FontAwesomeIcon icon={faFacebook} className="text-2xl mr-2" />
                 <span>Facebook</span>
               </a>
             </div>
             <div className="flex items-center mb-2">
-              <a href="https://twitter.com/eaglesring" target="_blank" rel="noopener noreferrer" className={`flex items-center text-${isDarkMode ? 'white' : 'black'} hover:text-gray-400 transition duration-300`}>
+              <a href="https://twitter.com/eaglesring" target="_blank" rel="noopener noreferrer" className="flex items-center text-white dark:text-white hover:text-gray-400 transition duration-300">
                 <FontAwesomeIcon icon={faTwitter} className="text-2xl mr-2" />
                 <span>Twitter</span>
               </a>
             </div>
             <div className="flex items-center mb-2">
-              <a href="https://www.linkedin.com/company/eaglesring" target="_blank" rel="noopener noreferrer" className={`flex items-center text-${isDarkMode ? 'white' : 'black'} hover:text-gray-400 transition duration-300`}>
+              <a href="https://www.linkedin.com/company/eaglesring" target="_blank" rel="noopener noreferrer" className="flex items-center text-white dark:text-white hover:text-gray-400 transition duration-300">
                 <FontAwesomeIcon icon={faLinkedin} className="text-2xl mr-2" />
                 <span>LinkedIn</span>
               </a>
