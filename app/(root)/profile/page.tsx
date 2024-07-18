@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { currentUser } from '@clerk/nextjs/server';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, UserInclude } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -40,7 +40,7 @@ const ProfilePage = () => {
               professionalProfile: true,
             },
           },
-        },
+        } as UserInclude<DefaultArgs> // Explicitly type the include as UserInclude<DefaultArgs>
       });
 
       if (userProfile) {
@@ -52,12 +52,8 @@ const ProfilePage = () => {
     } catch (error) {
       console.error('Error fetching user profile:', error);
       // Handle error state or redirect to login page if user data is not available
-      router.push('/sign-in');
+      router.push('/login');
     }
-  };
-
-  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setRole(event.target.value);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -74,10 +70,10 @@ const ProfilePage = () => {
 
     try {
       let updatedUser;
-      if (userProfile.role.name === 'entrepreneur') {
+      if (userProfile.role.name === 'entrepreneur' && userProfile.entrepreneur) {
         updatedUser = await prisma.entrepreneur.update({
           where: {
-            userId: userProfile.id,
+            userId: userProfile.entrepreneur.userId,
           },
           data: {
             professionalProfile: {
@@ -88,10 +84,10 @@ const ProfilePage = () => {
             professionalProfile: true,
           },
         });
-      } else if (userProfile.role.name === 'investor') {
+      } else if (userProfile.role.name === 'investor' && userProfile.investor) {
         updatedUser = await prisma.investor.update({
           where: {
-            userId: userProfile.id,
+            userId: userProfile.investor.userId,
           },
           data: {
             professionalProfile: {
@@ -123,98 +119,33 @@ const ProfilePage = () => {
       <p>Email: {userProfile.email}</p>
       <p>Role: {userProfile.role.name}</p>
 
-      {userProfile.role.name === 'entrepreneur' && (
-        <div>
-          <h2>Entrepreneur Profile</h2>
-          <p>Business Name: {userProfile.entrepreneur.businessName}</p>
-          <p>Business Plan: {userProfile.entrepreneur.businessPlan}</p>
-
-          {userProfile.entrepreneur.professionalProfile && (
-            <div>
-              <h3>Professional Profile</h3>
-              <p>Company Name: {userProfile.entrepreneur.professionalProfile.companyName}</p>
-              <p>Company Website: {userProfile.entrepreneur.professionalProfile.companyWebsite}</p>
-              <p>LinkedIn URL: {userProfile.entrepreneur.professionalProfile.linkedinUrl}</p>
-              <p>Location: {userProfile.entrepreneur.professionalProfile.location}</p>
-              <p>Age: {userProfile.entrepreneur.professionalProfile.age}</p>
-              <p>Gender: {userProfile.entrepreneur.professionalProfile.gender}</p>
-              <p>Interests: {userProfile.entrepreneur.professionalProfile.interests.join(', ')}</p>
-            </div>
-          )}
-
-          <form ref={formRef} onSubmit={handleSubmit}>
-            <label>
-              Location:
-              <input type="text" name="location" defaultValue={userProfile.entrepreneur.professionalProfile?.location} />
-            </label>
-            <br />
-            <label>
-              Age:
-              <input type="number" name="age" defaultValue={userProfile.entrepreneur.professionalProfile?.age?.toString()} />
-            </label>
-            <br />
-            <label>
-              Gender:
-              <input type="text" name="gender" defaultValue={userProfile.entrepreneur.professionalProfile?.gender} />
-            </label>
-            <br />
-            <label>
-              Interests:
-              <input type="text" name="interests" defaultValue={userProfile.entrepreneur.professionalProfile?.interests.join(', ')} />
-            </label>
-            <br />
-            <button type="submit">Update Profile</button>
-          </form>
-        </div>
-      )}
-
-      {userProfile.role.name === 'investor' && (
-        <div>
-          <h2>Investor Profile</h2>
-          <p>Funds Available: {userProfile.investor.fundsAvailable}</p>
-          <p>Investment Preferences: {userProfile.investor.investmentPreferences}</p>
-
-          {userProfile.investor.professionalProfile && (
-            <div>
-              <h3>Professional Profile</h3>
-              <p>Company Name: {userProfile.investor.professionalProfile.companyName}</p>
-              <p>Company Website: {userProfile.investor.professionalProfile.companyWebsite}</p>
-              <p>LinkedIn URL: {userProfile.investor.professionalProfile.linkedinUrl}</p>
-              <p>Location: {userProfile.investor.professionalProfile.location}</p>
-              <p>Age: {userProfile.investor.professionalProfile.age}</p>
-              <p>Gender: {userProfile.investor.professionalProfile.gender}</p>
-              <p>Interests: {userProfile.investor.professionalProfile.interests.join(', ')}</p>
-            </div>
-          )}
-
-          <form ref={formRef} onSubmit={handleSubmit}>
-            <label>
-              Location:
-              <input type="text" name="location" defaultValue={userProfile.investor.professionalProfile?.location} />
-            </label>
-            <br />
-            <label>
-              Age:
-              <input type="number" name="age" defaultValue={userProfile.investor.professionalProfile?.age?.toString()} />
-            </label>
-            <br />
-            <label>
-              Gender:
-              <input type="text" name="gender" defaultValue={userProfile.investor.professionalProfile?.gender} />
-            </label>
-            <br />
-            <label>
-              Interests:
-              <input type="text" name="interests" defaultValue={userProfile.investor.professionalProfile?.interests.join(', ')} />
-            </label>
-            <br />
-            <button type="submit">Update Profile</button>
-          </form>
-        </div>
-      )}
+      <form ref={formRef} onSubmit={handleSubmit}>
+        <label>
+          Location:
+          <input type="text" name="location" defaultValue={userProfile.location} />
+        </label>
+        <br />
+        <label>
+          Age:
+          <input type="number" name="age" defaultValue={userProfile.age?.toString()} />
+        </label>
+        <br />
+        <label>
+          Gender:
+          <input type="text" name="gender" defaultValue={userProfile.gender} />
+        </label>
+        <br />
+        <label>
+          Interests (comma-separated):
+          <input type="text" name="interests" defaultValue={userProfile.interests?.join(', ')} />
+        </label>
+        <br />
+        <button type="submit">Update Profile</button>
+      </form>
     </div>
   );
 };
 
 export default ProfilePage;
+
 
