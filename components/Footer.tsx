@@ -1,8 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
+import { checkUser } from '@/lib/checkUser';
 
-const Footer = () => {
+const Footer = async () => {
+  const user = await checkUser(null);
+  console.log(user);
   return (
     <footer className="bg-black text-white py-12 shadow-xl" style={{ width: '100vw' }}>
       <div className="container mx-auto text-center">
