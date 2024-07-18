@@ -1,29 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { currentUser } from '@clerk/nextjs/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { getUser } from '@/lib/getUser'; // Adjust this path according to your project structure
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PUT') {
     try {
       const data = req.body;
-      const user = await currentUser();
 
-      if (!user) {
-        return res.status(401).json({ error: 'User not authenticated' });
-      }
-
-      // Find the user from the database
-      const existingUser = await prisma.user.findUnique({
-        where: {
-          clerkId: user.id,
-        },
-        include: {
-          entrepreneur: true,
-          investor: true,
-        },
-      });
+      // Fetch user details using getUser
+      const existingUser = await getUser();
 
       if (!existingUser) {
         return res.status(404).json({ error: 'User not found' });
