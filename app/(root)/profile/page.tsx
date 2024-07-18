@@ -1,15 +1,25 @@
 'use client';
-
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { currentUser } from '@clerk/nextjs/server';
-import prisma, { User, Role, Entrepreneur, Investor } from '@/lib/prisma';
+import { currentUser } from '@clerk/nextjs';
+import prisma, { User, Role, Entrepreneur, Investor, ProEntrepreneurProfile, ProInvestorProfile } from '@/lib/prisma';
+
+interface UserProfile extends User {
+  role: Role;
+  entrepreneur?: Entrepreneur & {
+    professionalProfile?: ProEntrepreneurProfile;
+  };
+  investor?: Investor & {
+    professionalProfile?: ProInvestorProfile;
+  };
+}
 
 const ProfilePage = () => {
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null); // Ensure User type is correctly imported
+  const [user, setUser] = useState<UserProfile | null>(null); 
   const [editMode, setEditMode] = useState(false);
+  const [roleSelectionMode, setRoleSelectionMode] = useState(false);
   const [formData, setFormData] = useState({
     businessName: '',
     businessPlan: '',
@@ -19,6 +29,7 @@ const ProfilePage = () => {
     companyWebsite: '',
     linkedinUrl: '',
   });
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -49,7 +60,7 @@ const ProfilePage = () => {
         });
 
         if (existingUser) {
-          setUser(existingUser);
+          setUser(existingUser as UserProfile);
           setFormData({
             businessName: existingUser.entrepreneur?.businessName || '',
             businessPlan: existingUser.entrepreneur?.businessPlan || '',
@@ -59,6 +70,10 @@ const ProfilePage = () => {
             companyWebsite: existingUser.investor?.professionalProfile?.companyWebsite || '',
             linkedinUrl: existingUser.investor?.professionalProfile?.linkedinUrl || '',
           });
+
+          if (existingUser.role.name === 'default') {
+            setRoleSelectionMode(true);
+          }
         } else {
           throw new Error('User not found in database');
         }
@@ -80,29 +95,48 @@ const ProfilePage = () => {
     }));
   };
 
+  const handleRoleChange = async () => {
+    if (!selectedRole) {
+      toast.error('Please select a role');
+      return;
+    }
+
+    try {
+      const updatedUser = await prisma.user.update({
+        where: { id: user?.id },
+        data: {
+          role: {
+            connect: { name: selectedRole },
+          },
+        },
+      });
+
+      setUser(updatedUser as UserProfile);
+      setRoleSelectionMode(false);
+    } catch (error) {
+      console.error('Error updating role:', error);
+      toast.error('Failed to update role');
+    }
+  };
+
   const handleSave = async () => {
     try {
-      if (user?.role.name === 'default') {
-        // Handle saving for default role
-        if (user.entrepreneur) {
-          await prisma.entrepreneur.update({
-            where: { id: user.entrepreneur.id },
-            data: {
-              businessName: formData.businessName,
-              businessPlan: formData.businessPlan,
-            },
-          });
-        } else if (user.investor) {
-          await prisma.investor.update({
-            where: { id: user.investor.id },
-            data: {
-              fundsAvailable: formData.fundsAvailable,
-              investmentPreferences: formData.investmentPreferences,
-            },
-          });
-        } else {
-          throw new Error('User does not have a valid entrepreneur or investor profile');
-        }
+      if (user?.role.name === 'entrepreneur') {
+        await prisma.entrepreneur.update({
+          where: { id: user.entrepreneur?.id },
+          data: {
+            businessName: formData.businessName,
+            businessPlan: formData.businessPlan,
+          },
+        });
+      } else if (user?.role.name === 'investor') {
+        await prisma.investor.update({
+          where: { id: user.investor?.id },
+          data: {
+            fundsAvailable: formData.fundsAvailable,
+            investmentPreferences: formData.investmentPreferences,
+          },
+        });
       } else {
         throw new Error('Unsupported role');
       }
@@ -129,53 +163,60 @@ const ProfilePage = () => {
       <p>Name: {user.name}</p>
       <p>Email: {user.email}</p>
       <p>Role: {user.role.name}</p>
-      
-      {editMode ? (
+
+      {roleSelectionMode ? (
+        <div>
+          <h2>Select Your Role</h2>
+          <select
+            value={selectedRole || ''}
+            onChange={(e) => setSelectedRole(e.target.value)}
+          >
+            <option value="" disabled>Select role</option>
+            <option value="entrepreneur">Entrepreneur</option>
+            <option value="investor">Investor</option>
+          </select>
+          <button onClick={handleRoleChange}>Save Role</button>
+        </div>
+      ) : editMode ? (
         <div>
           {/* Form fields based on role */}
-          {user.role.name === 'default' && (
+          {user.role.name === 'entrepreneur' && (
             <>
-              {/* Entrepreneur fields */}
-              {user.entrepreneur && (
-                <>
-                  <input
-                    type="text"
-                    name="businessName"
-                    value={formData.businessName}
-                    onChange={handleInputChange}
-                    placeholder="Business Name"
-                  />
-                  <textarea
-                    name="businessPlan"
-                    value={formData.businessPlan}
-                    onChange={handleInputChange}
-                    placeholder="Business Plan"
-                  />
-                </>
-              )}
-
-              {/* Investor fields */}
-              {user.investor && (
-                <>
-                  <input
-                    type="number"
-                    name="fundsAvailable"
-                    value={formData.fundsAvailable}
-                    onChange={handleInputChange}
-                    placeholder="Funds Available"
-                  />
-                  <input
-                    type="text"
-                    name="investmentPreferences"
-                    value={formData.investmentPreferences}
-                    onChange={handleInputChange}
-                    placeholder="Investment Preferences"
-                  />
-                </>
-              )}
+              <input
+                type="text"
+                name="businessName"
+                value={formData.businessName}
+                onChange={handleInputChange}
+                placeholder="Business Name"
+              />
+              <textarea
+                name="businessPlan"
+                value={formData.businessPlan}
+                onChange={handleInputChange}
+                placeholder="Business Plan"
+              />
             </>
           )}
-          
+
+          {user.role.name === 'investor' && (
+            <>
+              <input
+                type="number"
+                name="fundsAvailable"
+                value={formData.fundsAvailable}
+                onChange={handleInputChange}
+                placeholder="Funds Available"
+              />
+              <input
+                type="text"
+                name="investmentPreferences"
+                value={formData.investmentPreferences}
+                onChange={handleInputChange}
+                placeholder="Investment Preferences"
+              />
+            </>
+          )}
+
           {/* Common fields for both roles */}
           <input
             type="text"
@@ -204,25 +245,22 @@ const ProfilePage = () => {
       ) : (
         <div>
           {/* Display profile details */}
-          {/* Entrepreneur details */}
-          {user.role.name === 'default' && user.entrepreneur && (
+          {user.role.name === 'entrepreneur' && (
             <>
               <h2>Entrepreneur Details</h2>
-              <p>Business Name: {user.entrepreneur.businessName}</p>
-              <p>Business Plan: {user.entrepreneur.businessPlan}</p>
+              <p>Business Name: {user.entrepreneur?.businessName}</p>
+              <p>Business Plan: {user.entrepreneur?.businessPlan}</p>
             </>
           )}
 
-          {/* Investor details */}
-          {user.role.name === 'default' && user.investor && (
+          {user.role.name === 'investor' && (
             <>
               <h2>Investor Details</h2>
-              <p>Funds Available: {user.investor.fundsAvailable}</p>
-              <p>Investment Preferences: {user.investor.investmentPreferences}</p>
+              <p>Funds Available: {user.investor?.fundsAvailable}</p>
+              <p>Investment Preferences: {user.investor?.investmentPreferences}</p>
             </>
           )}
 
-          {/* Common profile details */}
           <h2>Professional Profile</h2>
           <p>Company Name: {user.investor?.professionalProfile?.companyName || user.entrepreneur?.professionalProfile?.companyName}</p>
           <p>Company Website: {user.investor?.professionalProfile?.companyWebsite || user.entrepreneur?.professionalProfile?.companyWebsite}</p>
