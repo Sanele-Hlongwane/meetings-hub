@@ -1,83 +1,32 @@
+// app/api/user.ts
+
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '@/lib/prisma'; // Make sure the path to your Prisma instance is correct
-import { currentUser } from '@clerk/nextjs/server';
+import prisma from '@/lib/prisma'; // Adjust this path according to your project structure
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'GET') {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method === 'PUT') {
     try {
-      const clerkUser = await currentUser();
+      const data = req.body;
 
-      if (!clerkUser) {
-        return res.status(401).json({ message: 'Unauthorized' });
-      }
-
-      const user = await prisma.user.findUnique({
-        where: {
-          clerkId: clerkUser.id,
-        },
-        include: {
-          role: true,
-          entrepreneur: {
-            include: {
-              professionalProfile: true,
-            },
-          },
-          investor: {
-            include: {
-              professionalProfile: true,
-            },
-          },
+      // Update the user first
+      const updatedUser = await prisma.user.update({
+        where: { id: data.id },
+        data: {
+          // Update user fields as needed
+          name: data.name,
+          email: data.email,
+          // Ensure other fields are handled here
         },
       });
 
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-
-      res.status(200).json(user);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
-    }
-  } else if (req.method === 'PUT') {
-    try {
-      const clerkUser = await currentUser();
-
-      if (!clerkUser) {
-        return res.status(401).json({ message: 'Unauthorized' });
-      }
-
-      const { role, data } = req.body;
-
-      // Handle updating the user role
-      if (role) {
-        const updatedUser = await prisma.user.update({
-          where: { clerkId: clerkUser.id },
+      // Check if the user is an entrepreneur or investor and update accordingly
+      if (updatedUser.entrepreneur) {
+        await prisma.entrepreneur.update({
+          where: { id: updatedUser.entrepreneurId },
           data: {
-            role: {
-              connect: { name: role },
-            },
-          },
-        });
-
-        res.status(200).json(updatedUser);
-      } else {
-        // Handle updating user data
-        const updatedUser = await prisma.user.update({
-          where: { clerkId: clerkUser.id },
-          data: {
-            entrepreneur: {
-              update: {
-                businessName: data.businessName,
-                businessPlan: data.businessPlan,
-              },
-            },
-            investor: {
-              update: {
-                fundsAvailable: data.fundsAvailable,
-                investmentPreferences: data.investmentPreferences,
-              },
-            },
+            businessName: data.businessName,
+            businessPlan: data.businessPlan,
+            // Update professionalProfile if exists
             professionalProfile: {
               update: {
                 companyName: data.companyName,
@@ -87,15 +36,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             },
           },
         });
-
-        res.status(200).json(updatedUser);
       }
+
+      if (updatedUser.investor) {
+        await prisma.investor.update({
+          where: { id: updatedUser.investorId },
+          data: {
+            fundsAvailable: data.fundsAvailable,
+            investmentPreferences: data.investmentPreferences,
+            // Update professionalProfile if exists
+            professionalProfile: {
+              update: {
+                companyName: data.companyName,
+                companyWebsite: data.companyWebsite,
+                linkedinUrl: data.linkedinUrl,
+              },
+            },
+          },
+        });
+      }
+
+      res.status(200).json(updatedUser);
     } catch (error) {
       console.error('Error updating user:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+      res.status(500).json({ error: 'Failed to update user' });
     }
   } else {
-    res.setHeader('Allow', ['GET', 'PUT']);
+    res.setHeader('Allow', ['PUT']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-}
+};
+
+export default handler;
