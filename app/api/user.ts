@@ -1,55 +1,65 @@
-// app/api/user.ts
-
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '@/lib/prisma'; // Adjust this path according to your project structure
+import prisma from '@/lib/prisma'; // Adjust this path according to your project structure
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PUT') {
     try {
       const data = req.body;
 
+      // Validate the input
+      if (!data.id) {
+        return res.status(400).json({ error: 'User ID is required' });
+      }
+
       // Update the user first
       const updatedUser = await prisma.user.update({
         where: { id: data.id },
         data: {
-          // Update user fields as needed
           name: data.name,
           email: data.email,
           // Ensure other fields are handled here
         },
       });
 
-      // Check if the user is an entrepreneur or investor and update accordingly
-      if (updatedUser.entrepreneur) {
+      // Fetch related records to check if the user is an entrepreneur or investor
+      const entrepreneur = await prisma.entrepreneur.findUnique({
+        where: { userId: data.id },
+      });
+
+      const investor = await prisma.investor.findUnique({
+        where: { userId: data.id },
+      });
+
+      // Check if the user is an entrepreneur and update accordingly
+      if (entrepreneur) {
         await prisma.entrepreneur.update({
-          where: { id: updatedUser.entrepreneurId },
+          where: { id: entrepreneur.id },
           data: {
-            businessName: data.businessName,
-            businessPlan: data.businessPlan,
-            // Update professionalProfile if exists
+            businessName: data.businessName || undefined,
+            businessPlan: data.businessPlan || undefined,
             professionalProfile: {
               update: {
-                companyName: data.companyName,
-                companyWebsite: data.companyWebsite,
-                linkedinUrl: data.linkedinUrl,
+                companyName: data.companyName || undefined,
+                companyWebsite: data.companyWebsite || undefined,
+                linkedinUrl: data.linkedinUrl || undefined,
               },
             },
           },
         });
       }
 
-      if (updatedUser.investor) {
+      // Check if the user is an investor and update accordingly
+      if (investor) {
         await prisma.investor.update({
-          where: { id: updatedUser.investorId },
+          where: { id: investor.id },
           data: {
-            fundsAvailable: data.fundsAvailable,
-            investmentPreferences: data.investmentPreferences,
-            // Update professionalProfile if exists
+            fundsAvailable: data.fundsAvailable || undefined,
+            investmentPreferences: data.investmentPreferences || undefined,
             professionalProfile: {
               update: {
-                companyName: data.companyName,
-                companyWebsite: data.companyWebsite,
-                linkedinUrl: data.linkedinUrl,
+                companyName: data.companyName || undefined,
+                companyWebsite: data.companyWebsite || undefined,
+                linkedinUrl: data.linkedinUrl || undefined,
               },
             },
           },
