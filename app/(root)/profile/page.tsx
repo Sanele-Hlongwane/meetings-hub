@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { currentUser } from '@clerk/nextjs/server';
-import db, { User, Role, Entrepreneur, Investor } from '@/lib/prisma';
+import {db}, { User, Role, Entrepreneur, Investor } from '@/lib/prisma';
 
 const ProfilePage = () => {
   const router = useRouter();
