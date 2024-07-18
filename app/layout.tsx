@@ -41,7 +41,13 @@ export default function RootLayout({
       >
         <body className={`${inter.className} bg-dark-2`}>
           <Toaster />
-          <ToastContainer />
+          <ToastContainer position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            closeOnClick
+            pauseOnHover
+            draggable
+            pauseOnFocusLoss />
           {children}
         </body>
       </ClerkProvider>
