@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -115,34 +116,35 @@ const ProfilePage = () => {
 
   const handleSave = async () => {
     try {
-      if (user?.role.name === 'entrepreneur') {
-        await fetch('/api/entrepreneur', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
+      const response = await fetch('/api/user', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          role: user?.role.name,
+          data: {
+            ...(user?.role.name === 'entrepreneur' && {
+              businessName: formData.businessName,
+              businessPlan: formData.businessPlan,
+            }),
+            ...(user?.role.name === 'investor' && {
+              fundsAvailable: formData.fundsAvailable,
+              investmentPreferences: formData.investmentPreferences,
+            }),
+            companyName: formData.companyName,
+            companyWebsite: formData.companyWebsite,
+            linkedinUrl: formData.linkedinUrl,
           },
-          body: JSON.stringify({
-            id: user.entrepreneur?.id,
-            businessName: formData.businessName,
-            businessPlan: formData.businessPlan,
-          }),
-        });
-      } else if (user?.role.name === 'investor') {
-        await fetch('/api/investor', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id: user.investor?.id,
-            fundsAvailable: formData.fundsAvailable,
-            investmentPreferences: formData.investmentPreferences,
-          }),
-        });
-      } else {
-        throw new Error('Unsupported role');
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save profile');
       }
 
+      const updatedUser = await response.json();
+      setUser(updatedUser);
       toast.success('Profile updated successfully');
       setEditMode(false); // Exit edit mode after saving
     } catch (error) {
