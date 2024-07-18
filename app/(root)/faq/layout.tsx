@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-  title: 'FAQ's',
+  title: 'FAQs',
   description: 'Discover the services offered by Eagles Ring to help entrepreneurs and investors succeed.',
 };
 
