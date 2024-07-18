@@ -1,9 +1,14 @@
-import { PrismaClient, User, Role, Entrepreneur, Investor, ProEntrepreneurProfile, ProInvestorProfile, PrismaClientKnownRequestError } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+// Declare global variable prisma
+declare global {
+  var prisma: PrismaClient | undefined;
+}
 
-export default prisma;
+// Initialize prisma using globalThis if available, otherwise create a new instance
+export const prisma = globalThis.prisma || new PrismaClient();
 
-// Exporting types explicitly using `export type`
-export type { User, Role, Entrepreneur, Investor,  ProEntrepreneurProfile, ProInvestorProfile, PrismaClientKnownRequestError };
-export { PrismaClient };
+// Assign prisma to globalThis only in non-production environments
+if (process.env.NODE_ENV !== 'production') {
+  globalThis.prisma = prisma;
+}
