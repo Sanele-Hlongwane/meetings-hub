@@ -25,7 +25,7 @@ const Footer = async () => {
             <p className="hover:text-yellow-500 transition-colors duration-300">FAQ</p>
           </Link>
         </div>
-          <div className="flex items-center">
+          <div className="text-sm lg:text-base flex justify-center items-center">
             <FontAwesomeIcon icon={faPhone} className="text-gray-400 mr-2" />
             <span>060 317 9552</span>
           </div>
