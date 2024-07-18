@@ -3,12 +3,12 @@
 import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { currentUser } from '@clerk/nextjs/server';
-import { PrismaClient, UserInclude } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 const ProfilePage = () => {
-  const [userProfile, setUserProfile] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<any>(null); // Adjust type as per your schema
   const [role, setRole] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
@@ -40,7 +40,7 @@ const ProfilePage = () => {
               professionalProfile: true,
             },
           },
-        } as UserInclude<DefaultArgs> // Explicitly type the include as UserInclude<DefaultArgs>
+        },
       });
 
       if (userProfile) {
