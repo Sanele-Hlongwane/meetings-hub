@@ -30,7 +30,7 @@ const AddRole = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto my-20 p-6 bg-white rounded-xl shadow-md space-y-4">
+    <div className="max-w-md mx-auto my-20 p-6 bg-dark-1 rounded-xl shadow-md py-24 space-y-4 h-screen">
       <h3 className="text-2xl font-bold text-gray-800">Assign Role</h3>
       <form ref={formRef} onSubmit={clientAction}>
         <div className='relative'>
