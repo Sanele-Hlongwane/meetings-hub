@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 
 interface UserProfile {
   id: string;
@@ -49,7 +48,12 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data } = await axios.get('/api/user');
+        const response = await fetch('/api/user');
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
+
+        const data = await response.json();
         setUser(data);
         setFormData({
           businessName: data.entrepreneur?.businessName || '',
@@ -89,11 +93,20 @@ const ProfilePage = () => {
     }
 
     try {
-      const { data } = await axios.put('/api/user', {
-        role: selectedRole,
+      const response = await fetch('/api/user', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ role: selectedRole }),
       });
 
-      setUser(data);
+      if (!response.ok) {
+        throw new Error('Failed to update role');
+      }
+
+      const updatedUser = await response.json();
+      setUser(updatedUser);
       setRoleSelectionMode(false);
     } catch (error) {
       console.error('Error updating role:', error);
@@ -103,24 +116,35 @@ const ProfilePage = () => {
 
   const handleSave = async () => {
     try {
-      const { data } = await axios.put('/api/user', {
-        role: user?.role.name,
-        data: {
-          ...(user?.role.name === 'entrepreneur' && {
-            businessName: formData.businessName,
-            businessPlan: formData.businessPlan,
-          }),
-          ...(user?.role.name === 'investor' && {
-            fundsAvailable: formData.fundsAvailable,
-            investmentPreferences: formData.investmentPreferences,
-          }),
-          companyName: formData.companyName,
-          companyWebsite: formData.companyWebsite,
-          linkedinUrl: formData.linkedinUrl,
+      const response = await fetch('/api/user', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          role: user?.role.name,
+          data: {
+            ...(user?.role.name === 'entrepreneur' && {
+              businessName: formData.businessName,
+              businessPlan: formData.businessPlan,
+            }),
+            ...(user?.role.name === 'investor' && {
+              fundsAvailable: formData.fundsAvailable,
+              investmentPreferences: formData.investmentPreferences,
+            }),
+            companyName: formData.companyName,
+            companyWebsite: formData.companyWebsite,
+            linkedinUrl: formData.linkedinUrl,
+          },
+        }),
       });
 
-      setUser(data);
+      if (!response.ok) {
+        throw new Error('Failed to save profile');
+      }
+
+      const updatedUser = await response.json();
+      setUser(updatedUser);
       toast.success('Profile updated successfully');
       setEditMode(false); // Exit edit mode after saving
     } catch (error) {
