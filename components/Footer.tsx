@@ -25,25 +25,22 @@ const Footer = async () => {
             <p className="hover:text-yellow-500 transition-colors duration-300">FAQ</p>
           </Link>
         </div>
-          <div className="text-sm lg:text-base flex justify-center items-center">
-            <FontAwesomeIcon icon={faPhone} className="text-gray-400 mr-2" />
-            <span>060 317 9552</span>
-          </div>
+          
         <div className="text-sm lg:text-base flex justify-center items-center space-x-6">
           <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="ml-2">
-            <FontAwesomeIcon icon={faTwitter} className="text-gray-400 hover:text-white transition-colors duration-50" />
+            <FontAwesomeIcon icon={faTwitter} className="text-gray-400 hover:text-white transition-colors duration-300" />
             <span className="sr-only">Twitter</span>
           </a>
           <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="ml-2">
-            <FontAwesomeIcon icon={faFacebook} className="text-gray-400 hover:text-white transition-colors duration-50" />
+            <FontAwesomeIcon icon={faFacebook} className="text-gray-400 hover:text-white transition-colors duration-300" />
             <span className="sr-only">Facebook</span>
           </a>
           <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="ml-2">
-            <FontAwesomeIcon icon={faInstagram} className="text-gray-400 hover:text-white transition-colors duration-50" />
+            <FontAwesomeIcon icon={faInstagram} className="text-gray-400 hover:text-white transition-colors duration-300" />
             <span className="sr-only">Instagram</span>
           </a>
           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="ml-2">
-            <FontAwesomeIcon icon={faLinkedin} className="text-gray-400 hover:text-white transition-colors duration-50" />
+            <FontAwesomeIcon icon={faLinkedin} className="text-gray-400 hover:text-white transition-colors duration-300" />
             <span className="sr-only">LinkedIn</span>
           </a>
         </div>
