@@ -110,3 +110,30 @@
     width: 100%;
   }
 }
+
+
+/* global styles */
+.Toastify__toast {
+  @apply bg-dark-1 text-white; /* Use Tailwind classes for background and text colors */
+}
+
+.Toastify__toast--info {
+  @apply bg-dark-1 text-white;
+}
+
+.Toastify__toast--success {
+  @apply bg-dark-1 text-white;
+}
+
+.Toastify__toast--warning {
+  @apply bg-dark-1 text-white;
+}
+
+.Toastify__toast--error {
+  @apply bg-dark-1 text-white;
+}
+
+.Toastify__progress-bar {
+  @apply bg-white; /* Customize progress bar if needed */
+}
+
