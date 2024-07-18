@@ -74,7 +74,7 @@ const ContactPage = () => {
   }, []);
 
   return (
-    <div className={`bg-${isDarkMode ? 'black' : 'white'} text-${isDarkMode ? 'white' : 'black'} min-h-screen py-16 px-4`} style={{ width: '100vw' }}>
+    <div className={`bg-${isDarkMode ? 'dark-1' : 'dark-1'} text-${isDarkMode ? 'white' : 'white'} min-h-screen py-16 px-4`} style={{ width: '100vw' }}>
       <div className="max-w-7xl mx-auto pt-20">
         <div className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Contact Us</h1>
@@ -94,7 +94,7 @@ const ContactPage = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className={`mt-1 block w-full px-3 py-2 border border-${isDarkMode ? 'gray-300' : 'gray-800'} bg-${isDarkMode ? 'black' : 'white'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-${isDarkMode ? 'white' : 'black'}`}
+                className={`mt-1 block w-full px-3 py-2 border border-${isDarkMode ? 'gray-300' : 'gray-300'} bg-${isDarkMode ? 'black' : 'white'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-${isDarkMode ? 'white' : 'black'}`}
               />
             </div>
 
@@ -107,7 +107,7 @@ const ContactPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className={`mt-1 block w-full px-3 py-2 border border-${isDarkMode ? 'gray-300' : 'gray-800'} bg-${isDarkMode ? 'black' : 'white'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-${isDarkMode ? 'white' : 'black'}`}
+                className={`mt-1 block w-full px-3 py-2 border border-${isDarkMode ? 'gray-300' : 'gray-300'} bg-${isDarkMode ? 'black' : 'white'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-${isDarkMode ? 'white' : 'black'}`}
               />
             </div>
 
@@ -120,7 +120,7 @@ const ContactPage = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
-                className={`mt-1 block w-full px-3 py-2 border border-${isDarkMode ? 'gray-300' : 'gray-800'} bg-${isDarkMode ? 'black' : 'white'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-${isDarkMode ? 'white' : 'black'}`}
+                className={`mt-1 block w-full px-3 py-2 border border-${isDarkMode ? 'gray-300' : 'gray-300'} bg-${isDarkMode ? 'black' : 'white'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-${isDarkMode ? 'white' : 'black'}`}
               />
             </div>
 
