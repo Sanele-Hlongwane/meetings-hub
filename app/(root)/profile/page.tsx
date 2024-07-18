@@ -28,8 +28,8 @@ const ProfilePage = () => {
           throw new Error('User not found');
         }
 
-        // Fetch user from db
-        const existingUser = await db.user.findUnique({
+        // Fetch user from prisma
+        const existingUser = await prisma.user.findUnique({
           where: {
             clerkId: clerkUser.id,
           },
@@ -85,7 +85,7 @@ const ProfilePage = () => {
       if (user?.role.name === 'default') {
         // Handle saving for default role
         if (user.entrepreneur) {
-          await db.entrepreneur.update({
+          await prisma.entrepreneur.update({
             where: { id: user.entrepreneur.id },
             data: {
               businessName: formData.businessName,
@@ -93,7 +93,7 @@ const ProfilePage = () => {
             },
           });
         } else if (user.investor) {
-          await db.investor.update({
+          await prisma.investor.update({
             where: { id: user.investor.id },
             data: {
               fundsAvailable: formData.fundsAvailable,
