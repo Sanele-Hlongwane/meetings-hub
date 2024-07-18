@@ -1,11 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User, Role, Entrepreneur, Investor, PrismaClientKnownRequestError } from '@prisma/client';
 
-declare global {
-  var prisma: PrismaClient | undefined;
-}
+const prisma = new PrismaClient();
 
-export const prisma = globalThis.prisma || new PrismaClient();
+export default prisma;
 
-if (process.env.NODE_ENV !== 'production') {
-  globalThis.prisma = prisma;
-}
+// Exporting types explicitly using `export type`
+export type { User, Role, Entrepreneur, Investor, PrismaClientKnownRequestError };
+export { PrismaClient };
