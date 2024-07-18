@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTwitter, faFacebook, faInstagram, faLinkedin, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faTwitter, faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { checkUser } from '@/lib/checkUser';
 
@@ -59,4 +60,3 @@ const Footer = async () => {
 };
 
 export default Footer;
-
