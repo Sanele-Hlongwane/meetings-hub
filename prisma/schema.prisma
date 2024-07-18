@@ -1,5 +1,3 @@
-// Prisma schema file
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,15 +9,22 @@ datasource db {
 
 // User model
 model User {
-  id        String  @id @default(uuid())
-  clerkId   String  @unique
-  email     String  @unique
-  name      String?
-  imageUrl  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Role     @relation(fields: [roleId], references: [id])
-  roleId    String
+  id           String           @id @default(uuid())
+  clerkId      String           @unique
+  email        String           @unique
+  name         String?
+  username     String?
+  imageUrl     String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  role         Role             @relation(fields: [roleId], references: [id])
+  roleId       String
+  entrepreneur Entrepreneur?
+  investor     Investor?
+  location     String?
+  age          Int?
+  gender       String?
+  interests    String[]
 }
 
 // Role model
@@ -27,4 +32,54 @@ model Role {
   id    String @id @default(uuid())
   name  String @unique
   users User[]
+}
+
+// Entrepreneur model
+model Entrepreneur {
+  id                  String                @id @default(uuid())
+  userId              String                @unique
+  user                User                  @relation(fields: [userId], references: [id])
+  businessName        String
+  businessPlan        String
+  professionalProfile ProEntrepreneurProfile?
+}
+
+// ProEntrepreneurProfile model
+model ProEntrepreneurProfile {
+  id               String            @id @default(uuid())
+  entrepreneurId   String            @unique
+  entrepreneur     Entrepreneur      @relation(fields: [entrepreneurId], references: [id])
+  companyName      String
+  companyWebsite   String
+  linkedinUrl      String
+  verificationStatus String           @default("pending")
+  location         String?
+  age              Int?
+  gender           String?
+  interests        String[]
+}
+
+// Investor model
+model Investor {
+  id                   String           @id @default(uuid())
+  userId               String           @unique
+  user                 User             @relation(fields: [userId], references: [id])
+  fundsAvailable       Float
+  investmentPreferences String
+  professionalProfile ProInvestorProfile?
+}
+
+// ProInvestorProfile model
+model ProInvestorProfile {
+  id               String         @id @default(uuid())
+  investorId       String         @unique
+  investor         Investor       @relation(fields: [investorId], references: [id])
+  companyName      String
+  companyWebsite   String
+  linkedinUrl      String
+  verificationStatus String       @default("pending")
+  location         String?
+  age              Int?
+  gender           String?
+  interests        String[]
 }
