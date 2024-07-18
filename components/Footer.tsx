@@ -6,7 +6,7 @@ import { checkUser } from '@/lib/checkUser';
 
 const Footer = async () => {
   const user = await checkUser(null);
-
+  console.log(user);
   return (
     <footer className="bg-black text-white py-12 shadow-xl" style={{ width: '100vw' }}>
       <div className="container mx-auto text-center">
@@ -18,10 +18,10 @@ const Footer = async () => {
           <Link href="/Terms" passHref>
             <p className="hover:text-yellow-500 transition-colors duration-300">Terms and Conditions</p>
           </Link>
-          <Link href="/Privacy" passHref>
+          <Link href="/privacy-policy" passHref>
             <p className="hover:text-yellow-500 transition-colors duration-300">Privacy Policy</p>
           </Link>
-          <Link href="/FAQ" passHref>
+          <Link href="/faq" passHref>
             <p className="hover:text-yellow-500 transition-colors duration-300">FAQ</p>
           </Link>
         </div>
