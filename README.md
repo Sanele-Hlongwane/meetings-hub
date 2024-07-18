@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
   </div>
 
-  <h3 align="center">Eagles Ring</h3>
+  <h1 align="center">Eagles Ring</h1>
 
    <div align="center">
      Dive into Eagles Ring, an innovative platform that connects aspiring entrepreneurs with seasoned investors. Present your business model to the "Eagles" and secure funding for your ideas.
@@ -60,17 +60,14 @@ Follow these steps to get started with the project:
    cd eaglesring
 
 2. **See deployment**
-   ```link
-  https://eaglesring.vercel.app
-
-Installation
-
+   <div><link>https://eaglesring.vercel.app</link></div>
+  
+## <a name="install">🤸 Installation</a>
 Install the project dependencies using npm:
   ```bash
   npm install
 
-
-
+## <a name="setup">🤸 Setup</a>
 3. **Set Up Environment Variables**
 
 Create a new file named .env in the root of your project and add the following content:
@@ -85,14 +82,14 @@ Create a new file named .env in the root of your project and add the following c
   NEXT_PUBLIC_STREAM_API_KEY=
   STREAM_SECRET_KEY=
   
-  DATABASE_URL=
+  - DATABASE_URL=
 
 **Replace the placeholder values with your actual Clerk, getstream, and Prisma (Neon Database) credentials. You can obtain these credentials by signing up on the respective websites.**
 
 4. **Running the Project**
 ```bash
 npm run 
-
+ <div align="center">
 **Open http://localhost:3000 in your browser to view the project.**
 <a name="snippets">🕸️ Assets & Code</a>
 <details>
@@ -124,8 +121,7 @@ const config = {
 };
 
 export default config;
-
-</details>
+</div>
 <a name="more">🚀 More</a>
 
 For more details on how to contribute to this project, report issues, or request features, please visit the GitHub repository.
