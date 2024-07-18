@@ -4,11 +4,11 @@ import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { currentUser } from '@clerk/nextjs/server';
-import {db} from '@/lib/prisma';
+import db, { User, Role, Entrepreneur, Investor } from '@/lib/prisma';
 
 const ProfilePage = () => {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
     businessName: '',
@@ -31,7 +31,7 @@ const ProfilePage = () => {
         // Fetch user from db
         const existingUser = await db.user.findUnique({
           where: {
-            clerkId: clerkUser.id, // Adjust field name based on your db schema
+            clerkId: clerkUser.id,
           },
           include: {
             role: true,
@@ -82,9 +82,8 @@ const ProfilePage = () => {
 
   const handleSave = async () => {
     try {
-      if (user.role.name === 'default') {
+      if (user?.role.name === 'default') {
         // Handle saving for default role
-        // Example: create or update entrepreneur/investor profile based on form data
         if (user.entrepreneur) {
           await db.entrepreneur.update({
             where: { id: user.entrepreneur.id },
@@ -105,7 +104,6 @@ const ProfilePage = () => {
           throw new Error('User does not have a valid entrepreneur or investor profile');
         }
       } else {
-        // Handle other roles if needed
         throw new Error('Unsupported role');
       }
 
@@ -238,8 +236,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
-
-
-
-
