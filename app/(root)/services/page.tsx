@@ -13,7 +13,7 @@ const Services = () => {
           Connecting innovative ideas with strategic investments.
         </p>
         <Link href="#investor-section">
-          <button className="bg-blue text-white dark:text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:border-blue-500 hover:border-opacity-50">
+          <button className="bg-yellow-500 text-gray-900 dark:text-gray-900 font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:border-blue-500 hover:border-opacity-50">
             Become an Investor
           </button>
         </Link>
@@ -31,7 +31,7 @@ const Services = () => {
                 <li>Networking opportunities</li>
               </ul>
               <Link href="/sign-up">
-                <button className="bg-blue text-white dark:text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:border-blue-500 hover:border-opacity-50">
+                <button className="bg-yellow-500 text-gray-900 dark:text-gray-900 font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:border-blue-500 hover:border-opacity-50">
                   Apply Now
                 </button>
               </Link>
@@ -48,7 +48,7 @@ const Services = () => {
                 <li>Exclusive access to innovative solutions</li>
               </ul>
               <Link href="/opportunities">
-                <button className="bg-blue text-white dark:text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:border-blue-500 hover:border-opacity-50">
+                <button className="bg-yellow-500 text-gray-900 dark:text-gray-900 font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:border-blue-500 hover:border-opacity-50">
                   Explore Opportunities
                 </button>
               </Link>
@@ -62,7 +62,7 @@ const Services = () => {
             Join us in transforming ideas into successful ventures.
           </p>
           <Link href="/contact">
-            <button className="bg-blue text-white dark:text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:border-blue-500 hover:border-opacity-50">
+            <button className="bg-yellow-500 text-gray-900 dark:text-gray-900 font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:border-blue-500 hover:border-opacity-50">
               Contact Us
             </button>
           </Link>
