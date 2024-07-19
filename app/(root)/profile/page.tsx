@@ -1,9 +1,9 @@
+
 'use client';
 import { useState, useEffect } from 'react';
 import updateRole from '@/app/actions/updateRole';
 import addEntrepreneur from '@/app/actions/addEntrepreneur';
 import addInvestor from '@/app/actions/addInvestor';
-import { toast } from 'react-toastify';
 import { checkUser } from '@/lib/checkUser';
 
 const AddRole = () => {
@@ -28,16 +28,16 @@ const AddRole = () => {
     const roleName = formData.get('name') as string;
 
     if (!roleName) {
-      toast.error('Role name is required');
+      alert('Role name is required');
       return;
     }
 
     const { data, error } = await updateRole({ name: roleName });
 
     if (error) {
-      toast.error(error);
+      alert(error);
     } else {
-      toast.success(`Role ${data?.name} assigned`);
+      // Set the role and transition to the corresponding form
       setRole(roleName);
     }
   };
@@ -49,16 +49,16 @@ const AddRole = () => {
     const businessPlan = formData.get('businessPlan') as string;
 
     if (!businessName || !businessPlan) {
-      toast.error('All fields are required');
+      alert('All fields are required');
       return;
     }
 
     const { data, error } = await addEntrepreneur({ businessName, businessPlan });
 
     if (error) {
-      toast.error(error);
+      alert(error);
     } else {
-      toast.success(`Entrepreneur data added for ${data?.businessName}`);
+      alert(`Entrepreneur data added for ${data?.businessName}`);
     }
   };
 
@@ -69,16 +69,16 @@ const AddRole = () => {
     const investmentPreferences = formData.get('investmentPreferences') as string;
 
     if (isNaN(fundsAvailable) || !investmentPreferences) {
-      toast.error('All fields are required');
+      alert('All fields are required');
       return;
     }
 
     const { data, error } = await addInvestor({ fundsAvailable, investmentPreferences });
 
     if (error) {
-      toast.error(error);
+      alert(error);
     } else {
-      toast.success(`Investor data added with ${data?.fundsAvailable} funds available`);
+      alert(`Investor data added with ${data?.fundsAvailable} funds available`);
     }
   };
 
