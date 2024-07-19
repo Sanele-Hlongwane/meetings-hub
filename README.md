@@ -1,12 +1,12 @@
-<div align="center">
-<div class="card" onclick="window.open('https://www.youtube.com/@TechInvaders-bv5kv', '_blank')">
-        <div class="card-inner">
-            <div class="card-front"></div>
-            <div class="card-back">
-                <p>Click to watch YouTube videos</p>
-            </div>
-        </div>
+<div class="card">
+  <div class="card-inner">
+    <div class="card-front"></div>
+    <div class="card-back">
+      <div class="interactive-text">Click to watch YouTube videos</div>
+      <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank" style="display: block; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; opacity: 0;"></a>
     </div>
+  </div>
+</div>
 
 <Link rel="stylesheet" href="Readme.modules.css"/>
     
