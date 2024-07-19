@@ -3,6 +3,7 @@ import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
 
 interface ProEntrepreneurProfileData {
+  entrepreneurId: string;
   companyName: string;
   companyWebsite: string;
   linkedinUrl: string;
@@ -35,14 +36,14 @@ async function addProEntrepreneurProfile(data: ProEntrepreneurProfileData): Prom
 
     // Check if a ProEntrepreneurProfile record already exists for this user
     let profile = await prisma.proEntrepreneurProfile.findUnique({
-      where: { userId: user.id }
+      where: { entrepreneurId: user.id }
     });
 
     if (!profile) {
       // Create ProEntrepreneurProfile record
       profile = await prisma.proEntrepreneurProfile.create({
         data: {
-          userId: user.id,
+          entrepreneurId: user.id,
           companyName: data.companyName,
           companyWebsite: data.companyWebsite,
           linkedinUrl: data.linkedinUrl,
@@ -55,7 +56,7 @@ async function addProEntrepreneurProfile(data: ProEntrepreneurProfileData): Prom
     } else {
       // Update existing ProEntrepreneurProfile record if needed
       profile = await prisma.proEntrepreneurProfile.update({
-        where: { userId: user.id },
+        where: { entrepreneurId: user.id },
         data: {
           companyName: data.companyName,
           companyWebsite: data.companyWebsite,
