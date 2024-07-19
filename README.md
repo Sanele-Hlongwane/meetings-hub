@@ -180,7 +180,7 @@ Follow these steps to get started with the project:
 
 ## <a name="more">🚀 More</a>
 
-For more details on how to contribute to this project, report issues, or request features, please visit the [GitHub repository](https://github.com/Sanele-Hlongwane/eaglesring) or contact Sanele Hlongwane at 0603179552/sanelehlongwane61@gmail.com.
+For more details on how to contribute to this project, report issues, or request features, please visit the [GitHub repository](https://github.com/Sanele-Hlongwane/eaglesring) or contact Sanele Hlongwane at +27603179552/sanelehlongwane61@gmail.com.
 
 Happy coding!
 
