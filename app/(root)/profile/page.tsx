@@ -3,32 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { checkUser } from '@/lib/checkUser';
-
-interface UserProfile {
-  id: string;
-  name: string | null;
-  email: string;
-  role: { name: string };
-  entrepreneur?: {
-    businessName: string;
-    businessPlan: string;
-    professionalProfile?: {
-      companyName: string;
-      companyWebsite: string;
-      linkedinUrl: string;
-    };
-  };
-  investor?: {
-    fundsAvailable: number;
-    investmentPreferences: string;
-    professionalProfile?: {
-      companyName: string;
-      companyWebsite: string;
-      linkedinUrl: string;
-    };
-  };
-}
+import { checkUser } from '@/lib/checkUser'; // Adjust the import path based on your project structure
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -49,29 +24,21 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userData = await checkUser(null);
-        if (!userData) {
-          throw new Error('User data not found');
-        }
-
-        // Ensure name is not null
-        setUser({
-          ...userData,
-          name: userData.name || 'Unknown' // Replace null with a default value
-        });
-
-        setFormData({
-          businessName: userData.entrepreneur?.businessName || '',
-          businessPlan: userData.entrepreneur?.businessPlan || '',
-          fundsAvailable: userData.investor?.fundsAvailable || 0,
-          investmentPreferences: userData.investor?.investmentPreferences || '',
-          companyName: userData.investor?.professionalProfile?.companyName || '',
-          companyWebsite: userData.investor?.professionalProfile?.companyWebsite || '',
-          linkedinUrl: userData.investor?.professionalProfile?.linkedinUrl || '',
-        });
+        const userData = await checkUser(); // Use checkUser to get the user data
+        setUser(userData);
 
         if (userData.role.name === 'default') {
           setRoleSelectionMode(true);
+        } else {
+          setFormData({
+            businessName: userData.entrepreneur?.businessName || '',
+            businessPlan: userData.entrepreneur?.businessPlan || '',
+            fundsAvailable: userData.investor?.fundsAvailable || 0,
+            investmentPreferences: userData.investor?.investmentPreferences || '',
+            companyName: userData.entrepreneur?.professionalProfile?.companyName || userData.investor?.professionalProfile?.companyName || '',
+            companyWebsite: userData.entrepreneur?.professionalProfile?.companyWebsite || userData.investor?.professionalProfile?.companyWebsite || '',
+            linkedinUrl: userData.entrepreneur?.professionalProfile?.linkedinUrl || userData.investor?.professionalProfile?.linkedinUrl || '',
+          });
         }
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -120,6 +87,8 @@ const ProfilePage = () => {
   };
 
   const handleSave = async () => {
+    if (!user) return;
+
     try {
       const response = await fetch('/api/user', {
         method: 'PUT',
@@ -127,19 +96,21 @@ const ProfilePage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          role: user?.role.name,
+          role: user.role.name,
           data: {
-            ...(user?.role.name === 'entrepreneur' && {
+            ...(user.role.name === 'entrepreneur' && {
               businessName: formData.businessName,
               businessPlan: formData.businessPlan,
             }),
-            ...(user?.role.name === 'investor' && {
+            ...(user.role.name === 'investor' && {
               fundsAvailable: formData.fundsAvailable,
               investmentPreferences: formData.investmentPreferences,
             }),
-            companyName: formData.companyName,
-            companyWebsite: formData.companyWebsite,
-            linkedinUrl: formData.linkedinUrl,
+            professionalProfile: {
+              companyName: formData.companyName,
+              companyWebsite: formData.companyWebsite,
+              linkedinUrl: formData.linkedinUrl,
+            },
           },
         }),
       });
@@ -169,7 +140,7 @@ const ProfilePage = () => {
   return (
     <div>
       <h1>Profile Page</h1>
-      <p>Name: {user.name}</p>
+      <p>Name: {user.name || 'N/A'}</p>
       <p>Email: {user.email}</p>
       <p>Role: {user.role.name}</p>
 
@@ -257,23 +228,23 @@ const ProfilePage = () => {
           {user.role.name === 'entrepreneur' && (
             <>
               <h2>Entrepreneur Details</h2>
-              <p>Business Name: {user.entrepreneur?.businessName}</p>
-              <p>Business Plan: {user.entrepreneur?.businessPlan}</p>
+              <p>Business Name: {user.entrepreneur?.businessName || 'N/A'}</p>
+              <p>Business Plan: {user.entrepreneur?.businessPlan || 'N/A'}</p>
             </>
           )}
 
           {user.role.name === 'investor' && (
             <>
               <h2>Investor Details</h2>
-              <p>Funds Available: {user.investor?.fundsAvailable}</p>
-              <p>Investment Preferences: {user.investor?.investmentPreferences}</p>
+              <p>Funds Available: {user.investor?.fundsAvailable || 'N/A'}</p>
+              <p>Investment Preferences: {user.investor?.investmentPreferences || 'N/A'}</p>
             </>
           )}
 
           <h2>Professional Profile</h2>
-          <p>Company Name: {user.investor?.professionalProfile?.companyName || user.entrepreneur?.professionalProfile?.companyName}</p>
-          <p>Company Website: {user.investor?.professionalProfile?.companyWebsite || user.entrepreneur?.professionalProfile?.companyWebsite}</p>
-          <p>LinkedIn URL: {user.investor?.professionalProfile?.linkedinUrl || user.entrepreneur?.professionalProfile?.linkedinUrl}</p>
+          <p>Company Name: {user.investor?.professionalProfile?.companyName || user.entrepreneur?.professionalProfile?.companyName || 'N/A'}</p>
+          <p>Company Website: {user.investor?.professionalProfile?.companyWebsite || user.entrepreneur?.professionalProfile?.companyWebsite || 'N/A'}</p>
+          <p>LinkedIn URL: {user.investor?.professionalProfile?.linkedinUrl || user.entrepreneur?.professionalProfile?.linkedinUrl || 'N/A'}</p>
 
           <button onClick={handleEdit}>Edit Profile</button>
         </div>
