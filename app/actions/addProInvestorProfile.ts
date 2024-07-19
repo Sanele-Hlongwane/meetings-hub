@@ -6,10 +6,10 @@ interface ProInvestorProfileData {
   investorId: string;
   companyName: string;
   companyWebsite: string;
-  linkedinUrl: string;
-  location: string;
-  age: number;
-  gender: string;
+  linkedinUrl: string | null;
+  location: string | null; // Allow null values
+  age: number | null;      // Allow null values
+  gender: string | null;   // Allow null values
   interests: string[];
 }
 
