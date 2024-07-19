@@ -21,25 +21,41 @@ async function addInvestor(data: InvestorData): Promise<InvestorResult> {
 
   try {
     const user = await prisma.user.findUnique({
-      where: { id: userId }
+      where: { clerkId: userId }
     });
 
     if (!user) {
       return { error: 'User does not exist' };
     }
 
-    // Create investor record
-    const investor = await prisma.investor.create({
-      data: {
-        userId: user.id,
-        fundsAvailable: data.fundsAvailable,
-        investmentPreferences: data.investmentPreferences,
-      }
+    // Check if an Investor record already exists for this user
+    let investor = await prisma.investor.findUnique({
+      where: { userId: user.id }
     });
+
+    if (!investor) {
+      // Create Investor record
+      investor = await prisma.investor.create({
+        data: {
+          userId: user.id,
+          fundsAvailable: data.fundsAvailable,
+          investmentPreferences: data.investmentPreferences,
+        }
+      });
+    } else {
+      // Update existing Investor record if needed
+      investor = await prisma.investor.update({
+        where: { userId: user.id },
+        data: {
+          fundsAvailable: data.fundsAvailable,
+          investmentPreferences: data.investmentPreferences,
+        }
+      });
+    }
 
     return { data: investor };
   } catch (error) {
-    return { error: 'Failed to add investor data' };
+    return { error: 'Failed to add or update investor data' };
   }
 }
 
