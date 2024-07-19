@@ -35,7 +35,7 @@ const AboutUs = () => {
               <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mx-auto mb-4 overflow-hidden">
                 <Image
                   className="w-full h-full"
-                  src="/images/mike.png"
+                  src="/images/mike.jpg"
                   alt="John Doe"
                   width={128}
                   height={128}
@@ -52,7 +52,7 @@ const AboutUs = () => {
               <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mx-auto mb-4 overflow-hidden">
                 <Image
                   className="w-full h-full"
-                  src="/images/jane.png"
+                  src="/images/jane.jpg"
                   alt="Jane Smith"
                   width={128}
                   height={128}
@@ -69,7 +69,7 @@ const AboutUs = () => {
               <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mx-auto mb-4 overflow-hidden">
                 <Image
                   className="w-full h-full"
-                  src="/images/alice.png"
+                  src="/images/alice.jpg"
                   alt="Alice Johnson"
                   width={128}
                   height={128}
