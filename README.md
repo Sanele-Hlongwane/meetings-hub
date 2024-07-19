@@ -1,74 +1,10 @@
-<div align="center">
+<div align="center" backgroundColor='red'>
   <br />
-  <div
-    style="
-      position: relative;
-      width: 250px;
-      height: 250px;
-      perspective: 1000px;
-      display: inline-block;
-    "
-  >
-    <div
-      style="
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        transition: transform 0.6s;
-        transform-style: preserve-3d;
-        cursor: pointer;
-      "
-      onmouseover="this.style.transform = 'rotateY(180deg)';"
-      onmouseout="this.style.transform = 'rotateY(0deg)';"
-    >
-      <div
-        style="
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          backface-visibility: hidden;
-        "
-      >
-        <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank">
-          <img src="./public/EaglesRingLogo.png" alt="Eagles Ring Logo" style="width: 100%; height: 100%; object-fit: cover;">
-        </a>
-      </div>
-      <div
-        style="
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          background-color: #000;
-          color: #fff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          transform: rotateY(180deg);
-          backface-visibility: hidden;
-          overflow: hidden;
-        "
-      >
-        <span
-          style="
-            position: relative;
-            font-size: 16px;
-            white-space: nowrap;
-            transition: transform 0.6s;
-            display: block;
-          "
-          onmouseover="this.style.transform = 'translate(-50%, -50%)';"
-          onmouseout="this.style.transform = 'translate(0, 0)';"
-        >
-          Click to watch YouTube videos
-        </span>
-      </div>
-    </div>
-  </div>
+     <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank">
+     <img src="./public/EaglesRingLogo.png" alt="Project Banner" style="height: 250px;">
+   </a>
   <br />
 
-<Link rel="stylesheet" href="Readme.modules.css"/>
-    
  <div>
     <img src="https://img.shields.io/badge/-JavaScript-black?style=for-the-badge&logoColor=white&logo=javascript&color=F7DF1E" alt="javascript" />
     <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
