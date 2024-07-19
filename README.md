@@ -135,7 +135,7 @@ or
   yarn dev
   ```
 5. **Open http://localhost:3000 in your browser to view the project.**
- <div align="center">
+
 <a name="snippets">🕸️ Assets & Code</a>
 <details>
 <summary><code>app/globals.css</code></summary>
