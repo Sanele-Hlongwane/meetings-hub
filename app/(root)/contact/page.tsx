@@ -14,11 +14,11 @@ const ContactPage = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e: { target: { name: string; value: string; }; }) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -50,7 +50,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="bg-bg-dark-1 dark:bg-dark-1 text-white dark:text-white min-h-screen py-24 px-4" style={{ width: '100vw' }}>
+    <div className="bg-dark-1 text-white min-h-screen py-24 px-4" style={{ width: '100vw' }}>
       <div className="max-w-7xl mx-auto pt-20">
         <div className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Contact Us</h1>
@@ -60,7 +60,7 @@ const ContactPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
+          <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-dark-1 p-6 rounded-lg shadow-lg">
             <div className="mb-4">
               <label htmlFor="name" className="block text-sm font-medium">Name</label>
               <input
@@ -70,7 +70,7 @@ const ContactPage = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-blue bg-dark-1 dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white dark:text-white"
+                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white"
               />
             </div>
 
@@ -83,7 +83,7 @@ const ContactPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-dark-1 dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white dark:text-white"
+                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white"
               />
             </div>
 
@@ -96,7 +96,7 @@ const ContactPage = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-dark-1 dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white dark:text-white"
+                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white"
               />
             </div>
 
@@ -122,19 +122,19 @@ const ContactPage = () => {
               <p className="text-sm lg:text-base">contact@eaglesring.com</p>
             </div>
             <div className="flex items-center mb-2">
-              <a href="https://www.facebook.com/eaglesring" target="_blank" rel="noopener noreferrer" className="flex items-center text-white dark:text-white hover:text-gray-400 transition duration-300">
+              <a href="https://www.facebook.com/eaglesring" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
                 <FontAwesomeIcon icon={faFacebook} className="text-2xl mr-2" />
                 <span>Facebook</span>
               </a>
             </div>
             <div className="flex items-center mb-2">
-              <a href="https://twitter.com/eaglesring" target="_blank" rel="noopener noreferrer" className="flex items-center text-white dark:text-white hover:text-gray-400 transition duration-300">
+              <a href="https://twitter.com/eaglesring" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
                 <FontAwesomeIcon icon={faTwitter} className="text-2xl mr-2" />
                 <span>Twitter</span>
               </a>
             </div>
             <div className="flex items-center mb-2">
-              <a href="https://www.linkedin.com/company/eaglesring" target="_blank" rel="noopener noreferrer" className="flex items-center text-white dark:text-white hover:text-gray-400 transition duration-300">
+              <a href="https://www.linkedin.com/company/eaglesring" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-gray-400 transition duration-300">
                 <FontAwesomeIcon icon={faLinkedin} className="text-2xl mr-2" />
                 <span>LinkedIn</span>
               </a>
