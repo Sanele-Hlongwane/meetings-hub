@@ -1,12 +1,81 @@
-<div class="card">
-  <div class="card-inner">
-    <div class="card-front"></div>
-    <div class="card-back">
-      <div class="interactive-text">Click to watch YouTube videos</div>
-      <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank" style="display: block; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; opacity: 0;"></a>
+<div align="center">
+  <br />
+  <div style="
+    position: relative;
+    width: 250px;
+    height: 250px;
+    perspective: 1000px;
+  ">
+    <div style="
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+      transform: rotateY(0deg);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    " id="card">
+      <!-- Front side -->
+      <div style="
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border-radius: 8px;
+      ">
+        <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank">
+          <img src="./public/EaglesRingLogo.png" alt="Project Banner" style="height: 250px; width: 100%; border-radius: 8px;">
+        </a>
+      </div>
+      <!-- Back side -->
+      <div style="
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #333;
+        color: white;
+        border-radius: 8px;
+        transform: rotateY(180deg);
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px;
+      " id="back">
+        Click to watch YouTube videos
+      </div>
     </div>
   </div>
-</div>
+  <br />
+
+<script>
+  document.querySelector('#card').addEventListener('mouseenter', function() {
+    this.style.transform = 'rotateY(180deg)';
+  });
+  
+  document.querySelector('#card').addEventListener('mouseleave', function() {
+    this.style.transform = 'rotateY(0deg)';
+  });
+  
+  document.querySelector('#back').addEventListener('mousemove', function(e) {
+    const { clientX: mouseX, clientY: mouseY } = e;
+    const { clientWidth: cardWidth, clientHeight: cardHeight } = this.parentNode;
+    
+    const offsetX = mouseX / cardWidth * 20 - 10;
+    const offsetY = mouseY / cardHeight * 20 - 10;
+    
+    this.style.transform = `rotateX(${offsetY}deg) rotateY(${offsetX}deg)`;
+  });
+</script>
+
 
 <Link rel="stylesheet" href="Readme.modules.css"/>
     
