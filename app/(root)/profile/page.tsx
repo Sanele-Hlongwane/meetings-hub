@@ -148,7 +148,7 @@ const AddRole = () => {
       toast.success(`Pro Entrepreneur Profile data added for ${data?.companyName}`);
       // Fetch updated entrepreneur profile data
       const entrepreneurProfile = await fetchProEntrepreneurProfile(user?.id);
-      setEntrepreneurData(entrepreneurshipProfile);
+      setEntrepreneurData(entrepreneurProfile);
     }
   };
 
