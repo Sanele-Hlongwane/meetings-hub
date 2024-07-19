@@ -1,3 +1,4 @@
+// pages/contact.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -50,7 +51,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="bg-dark-1 text-white min-h-screen py-24 px-4" style={{ width: '100vw' }}>
+    <div className="bg-bg-dark-1 dark:bg-dark-1 text-white dark:text-white min-h-screen py-24 px-4" style={{ width: '100vw' }}>
       <div className="max-w-7xl mx-auto pt-20">
         <div className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Contact Us</h1>
@@ -60,7 +61,7 @@ const ContactPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-dark-1 p-6 rounded-lg shadow-lg">
+          <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white dark:bg-dark-1 p-6 rounded-lg shadow-lg">
             <div className="mb-4">
               <label htmlFor="name" className="block text-sm font-medium">Name</label>
               <input
@@ -70,7 +71,7 @@ const ContactPage = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white"
+                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-white dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black dark:text-white"
               />
             </div>
 
@@ -83,7 +84,7 @@ const ContactPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white"
+                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-white dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black dark:text-white"
               />
             </div>
 
@@ -96,7 +97,7 @@ const ContactPage = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white"
+                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-white dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black dark:text-white"
               />
             </div>
 
