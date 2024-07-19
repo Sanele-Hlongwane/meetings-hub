@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import updateRole from '@/app/actions/updateRole';
 import addEntrepreneur from '@/app/actions/addEntrepreneur';
 import addInvestor from '@/app/actions/addInvestor';
+import { toast } from 'react-toastify';
 import { checkUser } from '@/lib/checkUser';
 
 const AddRole = () => {
@@ -28,16 +29,15 @@ const AddRole = () => {
     const roleName = formData.get('name') as string;
 
     if (!roleName) {
-      alert('Role name is required');
+      toast.error('Role name is required');
       return;
     }
 
     const { data, error } = await updateRole({ name: roleName });
 
     if (error) {
-      alert(error);
+      toast.error(error);
     } else {
-      // Set the role and transition to the corresponding form
       setRole(roleName);
     }
   };
@@ -49,16 +49,16 @@ const AddRole = () => {
     const businessPlan = formData.get('businessPlan') as string;
 
     if (!businessName || !businessPlan) {
-      alert('All fields are required');
+      toast.error('All fields are required');
       return;
     }
 
     const { data, error } = await addEntrepreneur({ businessName, businessPlan });
 
     if (error) {
-      alert(error);
+      toast.error(error);
     } else {
-      alert(`Entrepreneur data added for ${data?.businessName}`);
+      toast.success(`Entrepreneur data added for ${data?.businessName}`);
     }
   };
 
@@ -69,87 +69,93 @@ const AddRole = () => {
     const investmentPreferences = formData.get('investmentPreferences') as string;
 
     if (isNaN(fundsAvailable) || !investmentPreferences) {
-      alert('All fields are required');
+      toast.error('All fields are required');
       return;
     }
 
     const { data, error } = await addInvestor({ fundsAvailable, investmentPreferences });
 
     if (error) {
-      alert(error);
+      toast.error(error);
     } else {
-      alert(`Investor data added with ${data?.fundsAvailable} funds available`);
+      toast.success(`Investor data added with ${data?.fundsAvailable} funds available`);
     }
   };
 
   const renderRoleForm = () => {
     if (role === 'entrepreneur') {
       return (
-        <form onSubmit={handleEntrepreneurSubmit} className="bg-dark-1 text-white space-y-4">
-          <div className="relative">
-            <label htmlFor="businessName" className="block text-sm font-medium text-white">
-              Business Name
-            </label>
-            <input
-              type="text"
-              id="businessName"
-              name="businessName"
-              className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              required
-            />
-          </div>
-          <div className="relative">
-            <label htmlFor="businessPlan" className="block text-sm font-medium text-white">
-              Business Plan
-            </label>
-            <textarea
-              id="businessPlan"
-              name="businessPlan"
-              className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-          >
-            Submit Entrepreneur Data
-          </button>
-        </form>
+        <div>
+          <h4 className="text-xl font-bold text-yellow-500">Entrepreneur Form</h4>
+          <form onSubmit={handleEntrepreneurSubmit} className="bg-dark-1 text-white space-y-4">
+            <div className="relative">
+              <label htmlFor="businessName" className="block text-sm font-medium text-white">
+                Business Name
+              </label>
+              <input
+                type="text"
+                id="businessName"
+                name="businessName"
+                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                required
+              />
+            </div>
+            <div className="relative">
+              <label htmlFor="businessPlan" className="block text-sm font-medium text-white">
+                Business Plan
+              </label>
+              <textarea
+                id="businessPlan"
+                name="businessPlan"
+                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+            >
+              Submit Entrepreneur Data
+            </button>
+          </form>
+        </div>
       );
     } else if (role === 'investor') {
       return (
-        <form onSubmit={handleInvestorSubmit} className="bg-dark-1 text-white space-y-4">
-          <div className="relative">
-            <label htmlFor="fundsAvailable" className="block text-sm font-medium text-white">
-              Funds Available
-            </label>
-            <input
-              type="number"
-              id="fundsAvailable"
-              name="fundsAvailable"
-              className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              required
-            />
-          </div>
-          <div className="relative">
-            <label htmlFor="investmentPreferences" className="block text-sm font-medium text-white">
-              Investment Preferences
-            </label>
-            <textarea
-              id="investmentPreferences"
-              name="investmentPreferences"
-              className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-          >
-            Submit Investor Data
-          </button>
-        </form>
+        <div>
+          <h4 className="text-xl font-bold text-yellow-500">Investor Form</h4>
+          <form onSubmit={handleInvestorSubmit} className="bg-dark-1 text-white space-y-4">
+            <div className="relative">
+              <label htmlFor="fundsAvailable" className="block text-sm font-medium text-white">
+                Funds Available
+              </label>
+              <input
+                type="number"
+                id="fundsAvailable"
+                name="fundsAvailable"
+                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                required
+              />
+            </div>
+            <div className="relative">
+              <label htmlFor="investmentPreferences" className="block text-sm font-medium text-white">
+                Investment Preferences
+              </label>
+              <textarea
+                id="investmentPreferences"
+                name="investmentPreferences"
+                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+            >
+              Submit Investor Data
+            </button>
+          </form>
+        </div>
       );
     }
     return null;
@@ -198,3 +204,4 @@ const AddRole = () => {
 };
 
 export default AddRole;
+
