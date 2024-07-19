@@ -1,6 +1,3 @@
-// pages/about-us.tsx
-'use client';
-
 import React from 'react';
 import Image from 'next/image';
 
@@ -16,21 +13,21 @@ const AboutUs = () => {
         </p>
       </div>
 
-      <section className="mb-8 py-8 px-6 rounded-lg shadow-lg w-full max-w-screen-sm md:max-w-screen-md mx-auto  border-2 border-blue-500 bg-dark-1 dark:bg-dark-1 text-white dark:text-white">
+      <section className="mb-8 py-8 px-6 rounded-lg shadow-lg w-full max-w-screen-sm md:max-w-screen-md mx-auto border-2 border-blue-500 bg-dark-1 dark:bg-dark-1 text-white dark:text-white">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4">Our Mission</h2>
         <p className="text-base sm:text-lg md:text-xl">
           At Eagles Ring, our mission is to bridge the gap between innovative entrepreneurs and visionary investors. We provide a platform where entrepreneurs can present their groundbreaking ideas to a panel of experienced business moguls, known as the &quot;Eagles.&rdquo; Our goal is to foster entrepreneurship and drive economic growth by facilitating access to capital and mentorship.
         </p>
       </section>
 
-      <section className="mb-8 py-8 px-6 rounded-lg shadow-lg w-full max-w-screen-sm md:max-w-screen-md mx-auto  border-2 border-blue-500 bg-dark-1 dark:bg-dark-1 text-white dark:text-white">
+      <section className="mb-8 py-8 px-6 rounded-lg shadow-lg w-full max-w-screen-sm md:max-w-screen-md mx-auto border-2 border-blue-500 bg-dark-1 dark:bg-dark-1 text-white dark:text-white">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4">Our Vision</h2>
         <p className="text-base sm:text-lg md:text-xl">
           We envision a world where every entrepreneur has the resources and support to turn their innovative ideas into reality. Through our platform, we aim to create a thriving community of entrepreneurs and investors who work together to build successful businesses and foster economic growth.
         </p>
       </section>
 
-      <section className="mb-8 py-8 px-6 rounded-lg shadow-lg w-full max-w-screen-sm md:max-w-screen-md mx-auto  border-2 border-blue-500 bg-dark-1 dark:bg-dark-1 text-white dark:text-white">
+      <section className="mb-8 py-8 px-6 rounded-lg shadow-lg w-full max-w-screen-sm md:max-w-screen-md mx-auto border-2 border-blue-500 bg-dark-1 dark:bg-dark-1 text-white dark:text-white">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4">Meet the Team</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           <div className="text-center">
@@ -86,7 +83,7 @@ const AboutUs = () => {
         </div>
       </section>
 
-      <section className="bg-dark-1 dark:bg-dark-1 py-8 px-6 rounded-lg shadow-lg w-full max-w-screen-sm md:max-w-screen-md mx-auto  border-2 border-blue-500 text-white dark:text-white">
+      <section className="bg-dark-1 dark:bg-dark-1 py-8 px-6 rounded-lg shadow-lg w-full max-w-screen-sm md:max-w-screen-md mx-auto border-2 border-blue-500 text-white dark:text-white">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4">Our Values</h2>
         <p className="text-base sm:text-lg md:text-xl">
           Integrity, innovation, and inclusivity are at the heart of everything we do. We believe in creating a supportive and transparent environment for entrepreneurs and investors alike.
