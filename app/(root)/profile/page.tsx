@@ -11,12 +11,11 @@ import { checkUser } from '@/lib/checkUser';
 const AddRole = () => {
   const [role, setRole] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null); 
-  const [profileDetailsFormVisible, setProfileDetailsFormVisible] = useState<boolean>(false);
   const [entrepreneurData, setEntrepreneurData] = useState<any>(null);
   const [investorData, setInvestorData] = useState<any>(null);
+  const [profileDetailsFormVisible, setProfileDetailsFormVisible] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  // Fetch user details and profile data on component mount
   useEffect(() => {
     const fetchUserAndProfileData = async () => {
       const userData = await checkUser();
@@ -26,11 +25,9 @@ const AddRole = () => {
         setRole(userData.role.name);
 
         if (userData.role.name === 'entrepreneur') {
-          // Fetch entrepreneur profile data
           const entrepreneurProfile = await fetchProEntrepreneurProfile(userData.id);
           setEntrepreneurData(entrepreneurProfile);
         } else if (userData.role.name === 'investor') {
-          // Fetch investor profile data
           const investorProfile = await fetchProInvestorProfile(userData.id);
           setInvestorData(investorProfile);
         }
@@ -41,16 +38,29 @@ const AddRole = () => {
   }, []);
 
   const fetchProEntrepreneurProfile = async (entrepreneurId: string) => {
-    // Implement the function to fetch ProEntrepreneurProfile data
+    try {
+      const response = await fetch(`/api/entrepreneurProfile/${entrepreneurId}`);
+      if (!response.ok) throw new Error('Failed to fetch profile data');
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   };
 
   const fetchProInvestorProfile = async (investorId: string) => {
-    // Implement the function to fetch ProInvestorProfile data
+    try {
+      const response = await fetch(`/api/investorProfile/${investorId}`);
+      if (!response.ok) throw new Error('Failed to fetch profile data');
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   };
 
-  const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleRoleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const formData = new FormData(event.currentTarget);
     const roleName = formData.get('name') as string;
 
@@ -70,52 +80,6 @@ const AddRole = () => {
   };
 
   const handleEntrepreneurSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const businessName = formData.get('businessName') as string;
-    const businessPlan = formData.get('businessPlan') as string;
-
-    if (!businessName || !businessPlan) {
-      toast.error('All fields are required');
-      return;
-    }
-
-    const { data, error } = await addEntrepreneur({ businessName, businessPlan });
-
-    if (error) {
-      toast.error(error);
-    } else {
-      toast.success(`Entrepreneur data added for ${data?.businessName}`);
-      // Fetch and set entrepreneur profile data
-      const entrepreneurProfile = await fetchProEntrepreneurProfile(user?.id);
-      setEntrepreneurData(entrepreneurProfile);
-    }
-  };
-
-  const handleInvestorSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const fundsAvailable = parseFloat(formData.get('fundsAvailable') as string);
-    const investmentPreferences = formData.get('investmentPreferences') as string;
-
-    if (isNaN(fundsAvailable) || !investmentPreferences) {
-      toast.error('All fields are required');
-      return;
-    }
-
-    const { data, error } = await addInvestor({ fundsAvailable, investmentPreferences });
-
-    if (error) {
-      toast.error(error);
-    } else {
-      toast.success(`Investor data added with ${data?.fundsAvailable} funds available`);
-      // Fetch and set investor profile data
-      const investorProfile = await fetchProInvestorProfile(user?.id);
-      setInvestorData(investorProfile);
-    }
-  };
-
-  const handleProEntrepreneurProfileSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const companyName = formData.get('companyName') as string;
@@ -146,13 +110,12 @@ const AddRole = () => {
       toast.error(error);
     } else {
       toast.success(`Pro Entrepreneur Profile data added for ${data?.companyName}`);
-      // Fetch updated entrepreneur profile data
       const entrepreneurProfile = await fetchProEntrepreneurProfile(user?.id);
       setEntrepreneurData(entrepreneurProfile);
     }
   };
 
-  const handleProInvestorProfileSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleInvestorSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const companyName = formData.get('companyName') as string;
@@ -183,7 +146,6 @@ const AddRole = () => {
       toast.error(error);
     } else {
       toast.success(`Pro Investor Profile data added for ${data?.companyName}`);
-      // Fetch updated investor profile data
       const investorProfile = await fetchProInvestorProfile(user?.id);
       setInvestorData(investorProfile);
     }
@@ -211,39 +173,86 @@ const AddRole = () => {
               </button>
             </div>
           ) : (
-            <>
-              <form onSubmit={handleEntrepreneurSubmit} className="bg-dark-1 text-white space-y-4">
-                <div className="relative">
-                  <label htmlFor="businessName" className="block text-sm font-medium text-white">
-                    Business Name
-                  </label>
-                  <input
-                    type="text"
-                    id="businessName"
-                    name="businessName"
-                    className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    required
-                  />
-                </div>
-                <div className="relative">
-                  <label htmlFor="businessPlan" className="block text-sm font-medium text-white">
-                    Business Plan
-                  </label>
-                  <textarea
-                    id="businessPlan"
-                    name="businessPlan"
-                    className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-                >
-                  Submit Entrepreneur Data
-                </button>
-              </form>
-            </>
+            <form onSubmit={handleProEntrepreneurProfileSubmit} className="bg-dark-1 text-white space-y-4">
+              <div className="relative">
+                <label htmlFor="companyName" className="block text-sm font-medium text-white">Company Name</label>
+                <input
+                  type="text"
+                  id="companyName"
+                  name="companyName"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={entrepreneurData?.companyName || ''}
+                  required
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="companyWebsite" className="block text-sm font-medium text-white">Company Website</label>
+                <input
+                  type="url"
+                  id="companyWebsite"
+                  name="companyWebsite"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={entrepreneurData?.companyWebsite || ''}
+                  required
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="linkedinUrl" className="block text-sm font-medium text-white">LinkedIn URL</label>
+                <input
+                  type="url"
+                  id="linkedinUrl"
+                  name="linkedinUrl"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={entrepreneurData?.linkedinUrl || ''}
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="location" className="block text-sm font-medium text-white">Location</label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={entrepreneurData?.location || ''}
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="age" className="block text-sm font-medium text-white">Age</label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={entrepreneurData?.age || ''}
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="gender" className="block text-sm font-medium text-white">Gender</label>
+                <input
+                  type="text"
+                  id="gender"
+                  name="gender"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={entrepreneurData?.gender || ''}
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="interests" className="block text-sm font-medium text-white">Interests (comma separated)</label>
+                <input
+                  type="text"
+                  id="interests"
+                  name="interests"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={entrepreneurData?.interests.join(', ') || ''}
+                />
+              </div>
+              <button
+                type="submit"
+                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+              >
+                Save
+              </button>
+            </form>
           )}
         </>
       );
@@ -268,60 +277,106 @@ const AddRole = () => {
               </button>
             </div>
           ) : (
-            <>
-              <form onSubmit={handleInvestorSubmit} className="bg-dark-1 text-white space-y-4">
-                <div className="relative">
-                  <label htmlFor="fundsAvailable" className="block text-sm font-medium text-white">
-                    Funds Available
-                  </label>
-                  <input
-                    type="number"
-                    id="fundsAvailable"
-                    name="fundsAvailable"
-                    className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    required
-                  />
-                </div>
-                <div className="relative">
-                  <label htmlFor="investmentPreferences" className="block text-sm font-medium text-white">
-                    Investment Preferences
-                  </label>
-                  <textarea
-                    id="investmentPreferences"
-                    name="investmentPreferences"
-                    className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-                >
-                  Submit Investor Data
-                </button>
-              </form>
-            </>
+            <form onSubmit={handleProInvestorProfileSubmit} className="bg-dark-1 text-white space-y-4">
+              <div className="relative">
+                <label htmlFor="companyName" className="block text-sm font-medium text-white">Company Name</label>
+                <input
+                  type="text"
+                  id="companyName"
+                  name="companyName"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={investorData?.companyName || ''}
+                  required
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="companyWebsite" className="block text-sm font-medium text-white">Company Website</label>
+                <input
+                  type="url"
+                  id="companyWebsite"
+                  name="companyWebsite"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={investorData?.companyWebsite || ''}
+                  required
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="linkedinUrl" className="block text-sm font-medium text-white">LinkedIn URL</label>
+                <input
+                  type="url"
+                  id="linkedinUrl"
+                  name="linkedinUrl"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={investorData?.linkedinUrl || ''}
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="location" className="block text-sm font-medium text-white">Location</label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={investorData?.location || ''}
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="age" className="block text-sm font-medium text-white">Age</label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={investorData?.age || ''}
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="gender" className="block text-sm font-medium text-white">Gender</label>
+                <input
+                  type="text"
+                  id="gender"
+                  name="gender"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={investorData?.gender || ''}
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="interests" className="block text-sm font-medium text-white">Interests (comma separated)</label>
+                <input
+                  type="text"
+                  id="interests"
+                  name="interests"
+                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  defaultValue={investorData?.interests.join(', ') || ''}
+                />
+              </div>
+              <button
+                type="submit"
+                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+              >
+                Save
+              </button>
+            </form>
           )}
         </>
       );
     } else {
       return (
-        <form onSubmit={clientAction} className="bg-dark-1 text-white space-y-4">
+        <form onSubmit={handleRoleSubmit} className="bg-dark-1 text-white space-y-4">
           <div className="relative">
-            <label htmlFor="name" className="block text-sm font-medium text-white">
-              Role
-            </label>
-            <input
-              type="text"
-              id="name"
+            <label htmlFor="role" className="block text-sm font-medium text-white">Assign Role</label>
+            <select
+              id="role"
               name="name"
               className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              required
-            />
+            >
+              <option value="entrepreneur">Entrepreneur</option>
+              <option value="investor">Investor</option>
+            </select>
           </div>
           <button
             type="submit"
-            className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
           >
             Assign Role
           </button>
@@ -332,14 +387,8 @@ const AddRole = () => {
 
   return (
     <div className="p-4">
-      {role ? (
-        <div>
-          <p className="text-white">Your role is: {role}</p>
-          {renderRoleForm()}
-        </div>
-      ) : (
-        renderRoleForm()
-      )}
+      <h1 className="text-2xl font-bold text-white">Assign or Edit Role</h1>
+      {renderRoleForm()}
     </div>
   );
 };
