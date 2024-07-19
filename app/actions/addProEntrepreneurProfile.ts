@@ -1,25 +1,46 @@
+'use server';
+
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
 
-export default async function addProEntrepreneurProfile(data) {
-  const { entrepreneurId, companyName, companyWebsite, linkedinUrl, verificationStatus, location, age, gender, interests } = data;
+interface ProInvestorProfileData {
+  companyName: string;
+  companyWebsite: string;
+  linkedinUrl: string;
+  verificationStatus: string;
+  location?: string;
+  age?: number;
+  gender?: string;
+  interests: string[];
+}
+
+export default async function addProInvestorProfile(data: ProInvestorProfileData) {
+  const { companyName, companyWebsite, linkedinUrl, verificationStatus, location, age, gender, interests } = data;
+
+  const { userId } = auth();
+
+  if (!userId) {
+    return { error: 'User not authenticated' };
+  }
 
   try {
-    const profile = await prisma.proEntrepreneurProfile.create({
+    const proInvestorProfile = await prisma.proInvestorProfile.create({
       data: {
-        entrepreneurId,
+        investorId: userId, // Assuming `userId` is used as the `investorId`
         companyName,
         companyWebsite,
         linkedinUrl,
         verificationStatus,
         location,
-        age: parseInt(age),
+        age,
         gender,
         interests
       }
     });
-    return profile;
+
+    return { data: proInvestorProfile };
   } catch (error) {
-    console.error('Error creating profile:', error);
-    throw new Error('Internal server error');
+    console.error('Failed to add pro investor profile', error);
+    return { error: 'Failed to add pro investor profile' };
   }
 }
