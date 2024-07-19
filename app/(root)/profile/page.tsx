@@ -4,7 +4,7 @@ import updateRole from '@/app/actions/updateRole';
 import addEntrepreneur from '@/app/actions/addEntrepreneur';
 import addInvestor from '@/app/actions/addInvestor';
 import { toast } from 'react-toastify';
-import { getUser } from '@/app/actions/getUser'; // Import a function to get user details
+import { checkUser } from '@/app/actions/checkUser'; // Import a function to get user details
 
 const AddRole = () => {
   const [role, setRole] = useState<string | null>(null);
@@ -14,7 +14,7 @@ const AddRole = () => {
   // Fetch user details on component mount
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await getUser(); // Fetch user details from the server
+      const userData = await checkUser(); // Fetch user details from the server
       setUser(userData);
 
       if (userData?.role) {
