@@ -1,13 +1,29 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import updateRole from '@/app/actions/updateRole';
 import addEntrepreneur from '@/app/actions/addEntrepreneur';
 import addInvestor from '@/app/actions/addInvestor';
 import { toast } from 'react-toastify';
+import { checkUser } from '@/lib/checkUser'; // Import a function to get user details
 
 const AddRole = () => {
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null); // Replace `any` with your user type
   const formRef = useRef<HTMLFormElement>(null);
+
+  // Fetch user details on component mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await checkUser(); // Fetch user details from the server
+      setUser(userData);
+
+      if (userData?.role) {
+        setRole(userData.role.name); // Set the role from user data
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -143,10 +159,9 @@ const AddRole = () => {
     return null;
   };
 
-  return (
-    <div className="max-w-md mx-auto my-20 p-6 bg-dark-1 text-white rounded-xl shadow-md space-y-4">
-      <div className="max-w-7xl mx-auto pt-20">
-        <h3 className="text-2xl font-bold text-white">Assign Role</h3>
+  const renderRoleAssignmentForm = () => {
+    if (!role) {
+      return (
         <form ref={formRef} onSubmit={clientAction} className="bg-dark-1 text-white">
           <div className='relative'>
             <label htmlFor='name' className='block text-sm font-medium text-white'>
@@ -171,10 +186,32 @@ const AddRole = () => {
             Assign Role
           </button>
         </form>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <div className="max-w-md mx-auto my-20 p-6 bg-dark-1 text-white rounded-xl shadow-md space-y-4">
+      <div className="max-w-7xl mx-auto pt-20">
+        <h3 className="text-2xl font-bold text-white">Assign Role</h3>
+        {renderRoleAssignmentForm()}
         {role && (
           <div className="mt-8">
             <h3 className="text-2xl font-bold text-white">Add {role.charAt(0).toUpperCase() + role.slice(1)} Data</h3>
             {renderRoleForm()}
+          </div>
+        )}
+        {user && role && (
+          <div className="mt-8">
+            <h3 className="text-2xl font-bold text-white">Profile Details</h3>
+            {/* Display user profile details here */}
+            <button
+              className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              onClick={() => {/* Handle edit profile except role */}}
+            >
+              Edit Profile
+            </button>
           </div>
         )}
       </div>
