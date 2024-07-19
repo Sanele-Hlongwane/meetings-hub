@@ -101,8 +101,12 @@ Follow these steps to get started with the project:
 1. **Delete package-lock.json file and node_modules folder**
 2. **Install the project dependencies using npm:**
   ```
-  npm install or yarn add
-```
+    npm install
+  ```
+or
+  ```
+    yarn add
+  ```
 ## <a name="setup">⚙️ Setup</a>
 3. **Set Up Environment Variables**
 
