@@ -1,11 +1,72 @@
 <div align="center">
-  <br />
-     <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank">
-     <img src="./public/EaglesRingLogo.png" alt="Project Banner" style="height: 250px;">
-   </a>
-  <br />
+<div class="card" onclick="window.open('https://www.youtube.com/@TechInvaders-bv5kv', '_blank')">
+        <div class="card-inner">
+            <div class="card-front"></div>
+            <div class="card-back">
+                <p>Click to watch YouTube videos</p>
+            </div>
+        </div>
+    </div>
 
 
+    <style>
+        .card {
+            width: 250px;
+            height: 250px;
+            perspective: 1000px;
+            margin: 0 auto;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+        }
+
+        .card-front {
+            background: url('./public/EaglesRingLogo.png') no-repeat center center;
+            background-size: cover;
+        }
+
+        .card-back {
+            background: #282828; /* Dark background for contrast */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotateY(180deg);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-back p {
+            position: absolute;
+            white-space: nowrap;
+            margin: 0;
+            animation: moveText 3s infinite;
+        }
+
+        @keyframes moveText {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+            100% { transform: translate(0, 0); }
+        }
+    </style>
  <div>
     <img src="https://img.shields.io/badge/-JavaScript-black?style=for-the-badge&logoColor=white&logo=javascript&color=F7DF1E" alt="javascript" />
     <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
