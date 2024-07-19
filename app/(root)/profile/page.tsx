@@ -1,256 +1,63 @@
 'use client';
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
+import updateRole from '@/app/actions/updateRole';
 import { toast } from 'react-toastify';
-import { checkUser } from '@/lib/checkUser'; // Adjust the import path based on your project structure
+import { currentUser } from '@clerk/nextjs/server';
 
-const ProfilePage = () => {
-  const router = useRouter();
-  const [user, setUser] = useState<UserProfile | null>(null); 
-  const [editMode, setEditMode] = useState(false);
-  const [roleSelectionMode, setRoleSelectionMode] = useState(false);
-  const [formData, setFormData] = useState({
-    businessName: '',
-    businessPlan: '',
-    fundsAvailable: 0,
-    investmentPreferences: '',
-    companyName: '',
-    companyWebsite: '',
-    linkedinUrl: '',
-  });
-  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+const AddRole = () => {
+  
+  const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await checkUser(); // Use checkUser to get the user data
-        setUser(userData);
+  const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-        if (userData.role.name === 'default') {
-          setRoleSelectionMode(true);
-        } else {
-          setFormData({
-            businessName: userData.entrepreneur?.businessName || '',
-            businessPlan: userData.entrepreneur?.businessPlan || '',
-            fundsAvailable: userData.investor?.fundsAvailable || 0,
-            investmentPreferences: userData.investor?.investmentPreferences || '',
-            companyName: userData.entrepreneur?.professionalProfile?.companyName || userData.investor?.professionalProfile?.companyName || '',
-            companyWebsite: userData.entrepreneur?.professionalProfile?.companyWebsite || userData.investor?.professionalProfile?.companyWebsite || '',
-            linkedinUrl: userData.entrepreneur?.professionalProfile?.linkedinUrl || userData.investor?.professionalProfile?.linkedinUrl || '',
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error);
-        toast.error('Failed to fetch user information');
-        router.push('/'); // Redirect to home or login page on error
-      }
-    };
+    const formData = new FormData(event.currentTarget);
+    const roleName = formData.get('name') as string; // Ensure role name is captured correctly
 
-    fetchUser();
-  }, [router]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleRoleChange = async () => {
-    if (!selectedRole) {
-      toast.error('Please select a role');
+    if (!roleName || roleName === '') {
+      toast.error('Role name is required');
       return;
     }
 
-    try {
-      const response = await fetch('/api/user', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ role: selectedRole }),
-      });
+    const { data, error } = await updateRole({ name: roleName });
 
-      if (!response.ok) {
-        throw new Error('Failed to update role');
-      }
-
-      const updatedUser = await response.json();
-      setUser(updatedUser);
-      setRoleSelectionMode(false);
-    } catch (error) {
-      console.error('Error updating role:', error);
-      toast.error('Failed to update role');
+    if (error) {
+      toast.error(error);
+    } else {
+      toast.success(`Role ${data?.name} assigned`);
+      formRef.current?.reset();
     }
   };
-
-  const handleSave = async () => {
-    if (!user) return;
-
-    try {
-      const response = await fetch('/api/user', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          role: user.role.name,
-          data: {
-            ...(user.role.name === 'entrepreneur' && {
-              businessName: formData.businessName,
-              businessPlan: formData.businessPlan,
-            }),
-            ...(user.role.name === 'investor' && {
-              fundsAvailable: formData.fundsAvailable,
-              investmentPreferences: formData.investmentPreferences,
-            }),
-            professionalProfile: {
-              companyName: formData.companyName,
-              companyWebsite: formData.companyWebsite,
-              linkedinUrl: formData.linkedinUrl,
-            },
-          },
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to save profile');
-      }
-
-      const updatedUser = await response.json();
-      setUser(updatedUser);
-      toast.success('Profile updated successfully');
-      setEditMode(false); // Exit edit mode after saving
-    } catch (error) {
-      console.error('Error saving profile:', error);
-      toast.error('Failed to save profile');
-    }
-  };
-
-  const handleEdit = () => {
-    setEditMode(true);
-  };
-
-  if (!user) {
-    return <div>Loading...</div>; // or a loading indicator
-  }
 
   return (
-    <div>
-      <h1>Profile Page</h1>
-      <p>Name: {user.name || 'N/A'}</p>
-      <p>Email: {user.email}</p>
-      <p>Role: {user.role.name}</p>
-
-      {roleSelectionMode ? (
-        <div>
-          <h2>Select Your Role</h2>
+    <div className="max-w-md mx-auto my-20 p-6 bg-dark-1 text-white rounded-xl shadow-md space-y-4">
+       <div className="max-w-7xl mx-auto pt-20">
+      <h3 className="text-2xl font-bold text-white">Assign Role</h3>
+      <form ref={formRef} onSubmit={clientAction} classname="bg-dark-1 text-white>
+        <div className='relative'>
+          <label htmlFor='name' className='block text-sm font-medium text-white'>
+            Role Name
+          </label>
           <select
-            value={selectedRole || ''}
-            onChange={(e) => setSelectedRole(e.target.value)}
+            id='name'
+            name='name'
+            className='mt-1 block w-full bg-gray=800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
           >
-            <option value="" disabled>Select role</option>
-            <option value="entrepreneur">Entrepreneur</option>
-            <option value="investor">Investor</option>
+            <option value=''>Select role</option>
+            <option value='entrepreneur'>Entrepreneur</option>
+            <option value='investor'>Investor</option>
           </select>
-          <button onClick={handleRoleChange}>Save Role</button>
         </div>
-      ) : editMode ? (
-        <div>
-          {/* Form fields based on role */}
-          {user.role.name === 'entrepreneur' && (
-            <>
-              <input
-                type="text"
-                name="businessName"
-                value={formData.businessName}
-                onChange={handleInputChange}
-                placeholder="Business Name"
-              />
-              <textarea
-                name="businessPlan"
-                value={formData.businessPlan}
-                onChange={handleInputChange}
-                placeholder="Business Plan"
-              />
-            </>
-          )}
-
-          {user.role.name === 'investor' && (
-            <>
-              <input
-                type="number"
-                name="fundsAvailable"
-                value={formData.fundsAvailable}
-                onChange={handleInputChange}
-                placeholder="Funds Available"
-              />
-              <input
-                type="text"
-                name="investmentPreferences"
-                value={formData.investmentPreferences}
-                onChange={handleInputChange}
-                placeholder="Investment Preferences"
-              />
-            </>
-          )}
-
-          {/* Common fields for both roles */}
-          <input
-            type="text"
-            name="companyName"
-            value={formData.companyName}
-            onChange={handleInputChange}
-            placeholder="Company Name"
-          />
-          <input
-            type="text"
-            name="companyWebsite"
-            value={formData.companyWebsite}
-            onChange={handleInputChange}
-            placeholder="Company Website"
-          />
-          <input
-            type="text"
-            name="linkedinUrl"
-            value={formData.linkedinUrl}
-            onChange={handleInputChange}
-            placeholder="LinkedIn URL"
-          />
-
-          <button onClick={handleSave}>Save</button>
-        </div>
-      ) : (
-        <div>
-          {/* Display profile details */}
-          {user.role.name === 'entrepreneur' && (
-            <>
-              <h2>Entrepreneur Details</h2>
-              <p>Business Name: {user.entrepreneur?.businessName || 'N/A'}</p>
-              <p>Business Plan: {user.entrepreneur?.businessPlan || 'N/A'}</p>
-            </>
-          )}
-
-          {user.role.name === 'investor' && (
-            <>
-              <h2>Investor Details</h2>
-              <p>Funds Available: {user.investor?.fundsAvailable || 'N/A'}</p>
-              <p>Investment Preferences: {user.investor?.investmentPreferences || 'N/A'}</p>
-            </>
-          )}
-
-          <h2>Professional Profile</h2>
-          <p>Company Name: {user.investor?.professionalProfile?.companyName || user.entrepreneur?.professionalProfile?.companyName || 'N/A'}</p>
-          <p>Company Website: {user.investor?.professionalProfile?.companyWebsite || user.entrepreneur?.professionalProfile?.companyWebsite || 'N/A'}</p>
-          <p>LinkedIn URL: {user.investor?.professionalProfile?.linkedinUrl || user.entrepreneur?.professionalProfile?.linkedinUrl || 'N/A'}</p>
-
-          <button onClick={handleEdit}>Edit Profile</button>
-        </div>
-      )}
+        <button
+          type='submit'
+          className='mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500'
+        >
+          Assign Role
+        </button>
+      </form>
     </div>
+</dv>
   );
 };
 
-export default ProfilePage;
+export default AddRole;
