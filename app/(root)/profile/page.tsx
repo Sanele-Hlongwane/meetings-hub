@@ -4,7 +4,7 @@ import updateRole from '@/app/actions/updateRole';
 import addEntrepreneur from '@/app/actions/addEntrepreneur';
 import addInvestor from '@/app/actions/addInvestor';
 import { toast } from 'react-toastify';
-import { checkUser } from '@/app/actions/checkUser'; // Import a function to get user details
+import { checkUser } from '@/lib/checkUser'; // Import a function to get user details
 
 const AddRole = () => {
   const [role, setRole] = useState<string | null>(null);
