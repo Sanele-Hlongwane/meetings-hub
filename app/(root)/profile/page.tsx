@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import updateRole from '@/app/actions/updateRole';
 import addEntrepreneur from '@/app/actions/addEntrepreneur';
