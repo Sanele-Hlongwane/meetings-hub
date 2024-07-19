@@ -1,11 +1,14 @@
-<div align="center" backgroundColor='red'>
+To enhance the styling of your README file and improve its visual appeal, you can use Markdown combined with some HTML for layout and styling. Here's an updated version of your README with a more polished UI:
+
+```markdown
+<div align="center">
   <br />
-     <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank">
-     <img src="./public/EaglesRingLogo.png" alt="Project Banner" style="height: 250px;">
-   </a>
+  <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank">
+    <img src="./public/EaglesRingLogo.png" alt="Project Banner" style="height: 250px;">
+  </a>
   <br />
 
- <div>
+  <div>
     <img src="https://img.shields.io/badge/-JavaScript-black?style=for-the-badge&logoColor=white&logo=javascript&color=F7DF1E" alt="javascript" />
     <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
     <img src="https://img.shields.io/badge/-GetStream-black?style=for-the-badge&logoColor=white&logo=getstream&color=1E88E5" alt="getstream" />
@@ -17,15 +20,13 @@
     <img src="https://img.shields.io/badge/-Clerk-black?style=for-the-badge&logoColor=white&logo=clerk&color=3C3C3D" alt="clerk" />
     <img src="https://img.shields.io/badge/-Next_JS-black?style=for-the-badge&logoColor=white&logo=nextdotjs&color=000000" alt="nextdotjs" />
     <img src="https://img.shields.io/badge/-Vercel-black?style=for-the-badge&logoColor=white&logo=vercel&color=000000" alt="vercel" />
-</div>
-
-
+  </div>
 
   <h1 align="center">Eagles Ring</h1>
 
-   <div align="center">
-     Dive into Eagles Ring, an innovative platform that connects aspiring entrepreneurs with seasoned investors. Present your business model to the "Eagles" and secure funding for your ideas.
-    </div>
+  <div align="center">
+    Dive into Eagles Ring, an innovative platform that connects aspiring entrepreneurs with seasoned investors. Present your business model to the "Eagles" and secure funding for your ideas.
+  </div>
 </div>
 
 ## 📋 <a name="table">Table of Contents</a>
@@ -38,7 +39,6 @@
 6. ⚙️ [Setup](#setup)
 7. 🕸️ [Assets & Code](#assets-and-code)
 8. 🚀 [More](#more)
-
 
 ## <a name="introduction">🤖 Introduction</a>
 
@@ -83,7 +83,6 @@ Eagles Ring is an investment platform that matches aspiring entrepreneurs from a
 - **Role-Based Access Control**: Different access levels for entrepreneurs, investors, and admins.
   - Ensure appropriate permissions and access to various features based on user roles.
 
-
 ## <a name="quick-start">🤸 Quick Start</a>
 
 Follow these steps to get started with the project:
@@ -92,86 +91,99 @@ Follow these steps to get started with the project:
    ```bash
    git clone https://github.com/Sanele-Hlongwane/eaglesring.git
    cd eaglesring
+   ```
 
-2. **See deployment**
-   <div><link>https://eaglesring.vercel.app</link></div>
-  
-## <a name="install">🛠️ Installation</a>
+2. **See Deployment**
+   - [Eagles Ring Live Demo](https://eaglesring.vercel.app)
+
+## <a name="installation">🛠️ Installation</a>
+
 1. **Delete package-lock.json file and node_modules folder**
 2. **Install the project dependencies using npm:**
-  ```
-    npm install
-  ```
-or
-  ```
-    yarn add
-  ```
+   ```bash
+   npm install
+   ```
+   or
+   ```bash
+   yarn add
+   ```
+
 ## <a name="setup">⚙️ Setup</a>
+
 3. **Set Up Environment Variables**
 
-Create a new file named .env in the root of your project and add the following content:
-```
-  
-  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-  CLERK_SECRET_KEY=
-  CLERK_WEBHOOK_SECRET=
+   Create a new file named `.env` in the root of your project and add the following content:
+   ```
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+   CLERK_SECRET_KEY=
+   CLERK_WEBHOOK_SECRET=
 
-  NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-  NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-  
-  NEXT_PUBLIC_STREAM_API_KEY=
-  STREAM_SECRET_KEY=
-  
-  DATABASE_URL=
-```
-**Replace the placeholder values with your actual Clerk, getstream, and Prisma (Neon Database) credentials. You can obtain these credentials by signing up on the respective websites.**
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+   NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+
+   NEXT_PUBLIC_STREAM_API_KEY=
+   STREAM_SECRET_KEY=
+
+   DATABASE_URL=
+   ```
+   **Replace the placeholder values with your actual Clerk, GetStream, and Prisma (Neon Database) credentials. You can obtain these credentials by signing up on the respective websites.**
 
 4. **Running the Project**
-```bash
-npm run dev 
-```
-or
-  ```
-  yarn dev
-  ```
-5. **Open http://localhost:3000 in your browser to view the project.**
-6. </div>
-<div  align="center">
-<a name="snippets">🕸️ Assets & Code</a>
+   ```bash
+   npm run dev
+   ```
+   or
+   ```bash
+   yarn dev
+   ```
+5. **Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.**
+
+## <a name="assets-and-code">🕸️ Assets & Code</a>
+
 <details>
-<summary><code>app/globals.css</code></summary>
+  <summary><code>app/globals.css</code></summary>
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+  ```css
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  ```
 </details>
+
 <details>
-<summary><code>tailwind.config.ts</code></summary>
-import type { Config } from 'tailwindcss';
+  <summary><code>tailwind.config.ts</code></summary>
 
-const config = {
-  darkMode: ['class'],
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-};
+  ```ts
+  import type { Config } from 'tailwindcss';
 
-export default config;
-</div>
+  const config: Config = {
+    darkMode: ['class'],
+    content: [
+      './pages/**/*.{js,ts,jsx,tsx}',
+      './components/**/*.{js
+
+,ts,jsx,tsx}',
+    ],
+    theme: {
+      extend: {},
+    },
+    plugins: [],
+  };
+
+  export default config;
+  ```
+</details>
+
 ## <a name="more">🚀 More</a>
 
-For more details on how to contribute to this project, report issues, or request features, please visit the GitHub repository or contact Sanele Hlongwane 0603179552/sanelehlongwane61@gmail.com .
+For more details on how to contribute to this project, report issues, or request features, please visit the [GitHub repository](https://github.com/Sanele-Hlongwane/eaglesring) or contact Sanele Hlongwane at 0603179552/sanelehlongwane61@gmail.com.
+
 Happy coding!
 
-NB: Production of this app is prohibited
+**NB: Production of this app is prohibited**
