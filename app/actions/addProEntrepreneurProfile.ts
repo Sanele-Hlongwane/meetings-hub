@@ -13,6 +13,44 @@ interface ProEntrepreneurProfileData {
   interests: string[];
 }
 
+const handleProEntrepreneurProfileSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  
+  const formData = new FormData(event.currentTarget);
+  const companyName = formData.get('companyName') as string;
+  const companyWebsite = formData.get('companyWebsite') as string;
+  const linkedinUrl = formData.get('linkedinUrl') as string;
+  const location = formData.get('location') as string;
+  const age = parseInt(formData.get('age') as string, 10);
+  const gender = formData.get('gender') as string;
+  const interests = (formData.getAll('interests') as string[]);
+
+  if (!companyName || !companyWebsite || !linkedinUrl) {
+    toast.error('All required fields must be filled');
+    return;
+  }
+
+  const { data, error } = await addProEntrepreneurProfile({
+    entrepreneurId: user?.id,
+    companyName,
+    companyWebsite,
+    linkedinUrl,
+    location,
+    age,
+    gender,
+    interests
+  });
+
+  if (error) {
+    toast.error(error);
+  } else {
+    toast.success(`Pro Entrepreneur Profile data added for ${data?.companyName}`);
+    // Fetch updated entrepreneur profile data
+    const entrepreneurProfile = await fetchProEntrepreneurProfile(user?.id);
+    setEntrepreneurData(entrepreneurProfile);
+  }
+};
+
 interface ProEntrepreneurProfileResult {
   data?: ProEntrepreneurProfileData;
   error?: string;
