@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { checkUser } from '@/lib/checkUser';
 
 interface UserProfile {
   id: string;
@@ -48,24 +49,23 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch('/api/user');
-        if (!response.ok) {
-          throw new Error('Failed to fetch user');
+        const userData = await checkUser(null);
+        if (!userData) {
+          throw new Error('User data not found');
         }
 
-        const data = await response.json();
-        setUser(data);
+        setUser(userData);
         setFormData({
-          businessName: data.entrepreneur?.businessName || '',
-          businessPlan: data.entrepreneur?.businessPlan || '',
-          fundsAvailable: data.investor?.fundsAvailable || 0,
-          investmentPreferences: data.investor?.investmentPreferences || '',
-          companyName: data.investor?.professionalProfile?.companyName || '',
-          companyWebsite: data.investor?.professionalProfile?.companyWebsite || '',
-          linkedinUrl: data.investor?.professionalProfile?.linkedinUrl || '',
+          businessName: userData.entrepreneur?.businessName || '',
+          businessPlan: userData.entrepreneur?.businessPlan || '',
+          fundsAvailable: userData.investor?.fundsAvailable || 0,
+          investmentPreferences: userData.investor?.investmentPreferences || '',
+          companyName: userData.investor?.professionalProfile?.companyName || '',
+          companyWebsite: userData.investor?.professionalProfile?.companyWebsite || '',
+          linkedinUrl: userData.investor?.professionalProfile?.linkedinUrl || '',
         });
 
-        if (data.role.name === 'default') {
+        if (userData.role.name === 'default') {
           setRoleSelectionMode(true);
         }
       } catch (error) {
