@@ -64,14 +64,14 @@ Follow these steps to get started with the project:
   
 ## <a name="install">🤸 Installation</a>
 Install the project dependencies using npm:
-  ```bash
+  ```
   npm install
-
+```
 ## <a name="setup">🤸 Setup</a>
 3. **Set Up Environment Variables**
 
 Create a new file named .env in the root of your project and add the following content:
-```bash
+```
   
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
   CLERK_SECRET_KEY=
@@ -82,18 +82,20 @@ Create a new file named .env in the root of your project and add the following c
   NEXT_PUBLIC_STREAM_API_KEY=
   STREAM_SECRET_KEY=
   
-  - DATABASE_URL=
-
+  DATABASE_URL=
+```
 **Replace the placeholder values with your actual Clerk, getstream, and Prisma (Neon Database) credentials. You can obtain these credentials by signing up on the respective websites.**
 
 4. **Running the Project**
 ```bash
-npm run 
+npm run
+```
  <div align="center">
 **Open http://localhost:3000 in your browser to view the project.**
 <a name="snippets">🕸️ Assets & Code</a>
 <details>
 <summary><code>app/globals.css</code></summary>
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -124,5 +126,8 @@ export default config;
 </div>
 <a name="more">🚀 More</a>
 
-For more details on how to contribute to this project, report issues, or request features, please visit the GitHub repository.
+For more details on how to contribute to this project, report issues, or request features, please visit the GitHub repository or contact Sanele Hlongwane 0603179552/sanelehlongwane@gmail.com .
 Happy coding!
+
+NB:Exact copying of this app is prohibited
+
