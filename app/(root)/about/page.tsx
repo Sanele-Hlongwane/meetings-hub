@@ -1,9 +1,12 @@
+// pages/about-us.tsx
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 
 const AboutUs = () => {
   return (
-    <div className="py-24 bg-bg-dark-1 dark:bg-dark-1 text-white dark:text-white">
+    <div className="py-24 bg-dark-1 dark:bg-dark-1 text-white dark:text-white">
       <div className="container mx-auto text-center pt-20 max-w-screen-sm md:max-w-screen-md">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
           About <span className="text-gold-500">Eagles Ring</span>
