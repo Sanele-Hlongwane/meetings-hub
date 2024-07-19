@@ -7,7 +7,7 @@ import { checkUser } from '@/lib/checkUser';
 
 interface UserProfile {
   id: string;
-  name: string;
+  name: string | null;
   email: string;
   role: { name: string };
   entrepreneur?: {
@@ -54,7 +54,12 @@ const ProfilePage = () => {
           throw new Error('User data not found');
         }
 
-        setUser(userData);
+        // Ensure name is not null
+        setUser({
+          ...userData,
+          name: userData.name || 'Unknown' // Replace null with a default value
+        });
+
         setFormData({
           businessName: userData.entrepreneur?.businessName || '',
           businessPlan: userData.entrepreneur?.businessPlan || '',
@@ -270,7 +275,7 @@ const ProfilePage = () => {
           <p>Company Website: {user.investor?.professionalProfile?.companyWebsite || user.entrepreneur?.professionalProfile?.companyWebsite}</p>
           <p>LinkedIn URL: {user.investor?.professionalProfile?.linkedinUrl || user.entrepreneur?.professionalProfile?.linkedinUrl}</p>
 
-          <button onClick={handleEdit}>Edit</button>
+          <button onClick={handleEdit}>Edit Profile</button>
         </div>
       )}
     </div>
