@@ -33,7 +33,7 @@ const AddRole = () => {
     <div className="max-w-md mx-auto my-20 p-6 bg-dark-1 text-white rounded-xl shadow-md space-y-4">
        <div className="max-w-7xl mx-auto pt-20">
       <h3 className="text-2xl font-bold text-white">Assign Role</h3>
-      <form ref={formRef} onSubmit={clientAction} classname="bg-dark-1 text-white>
+      <form ref={formRef} onSubmit={clientAction} className="bg-dark-1 text-white">
         <div className='relative'>
           <label htmlFor='name' className='block text-sm font-medium text-white'>
             Role Name
@@ -41,7 +41,7 @@ const AddRole = () => {
           <select
             id='name'
             name='name'
-            className='mt-1 block w-full bg-gray=800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
+            className='mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
           >
             <option value=''>Select role</option>
             <option value='entrepreneur'>Entrepreneur</option>
@@ -56,7 +56,7 @@ const AddRole = () => {
         </button>
       </form>
     </div>
-</dv>
+  </div>
   );
 };
 
