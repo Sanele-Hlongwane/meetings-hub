@@ -3,7 +3,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
 
-interface ProInvestorProfileData {
+interface ProEntrepreneurProfileData {
   companyName: string;
   companyWebsite: string;
   linkedinUrl: string;
@@ -14,7 +14,7 @@ interface ProInvestorProfileData {
   interests: string[];
 }
 
-export default async function addProInvestorProfile(data: ProInvestorProfileData) {
+export default async function addProEntrepreneurProfile(data: ProEntrepreneurProfileData) {
   const { companyName, companyWebsite, linkedinUrl, verificationStatus, location, age, gender, interests } = data;
 
   const { userId } = auth();
@@ -24,9 +24,9 @@ export default async function addProInvestorProfile(data: ProInvestorProfileData
   }
 
   try {
-    const proInvestorProfile = await prisma.proInvestorProfile.create({
+    const proEntrepreneurProfile = await prisma.proEntrepreneurProfile.create({
       data: {
-        investorId: userId, // Assuming `userId` is used as the `investorId`
+        entrepreneurId: userId, // Assuming `userId` is used as the `entrepreneurId`
         companyName,
         companyWebsite,
         linkedinUrl,
@@ -38,9 +38,9 @@ export default async function addProInvestorProfile(data: ProInvestorProfileData
       }
     });
 
-    return { data: proInvestorProfile };
+    return { data: proEntrepreneurProfile };
   } catch (error) {
-    console.error('Failed to add pro investor profile', error);
-    return { error: 'Failed to add pro investor profile' };
+    console.error('Failed to add pro entrepreneur profile', error);
+    return { error: 'Failed to add pro entrepreneur profile' };
   }
 }
