@@ -1,7 +1,7 @@
 <div align="center">
   <br />
      <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank">
-     <img src="./public/EaglesRingLogo.png" alt="Project Banner" style="height: 50px;">
+     <img src="./public/EaglesRingLogo.png" alt="Project Banner" style="height: 250px;">
    </a>
   <br />
 
