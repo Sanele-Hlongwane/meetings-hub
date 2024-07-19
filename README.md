@@ -24,9 +24,12 @@
 1. 🤖 [Introduction](#introduction)
 2. ⚙️ [Tech Stack](#tech-stack)
 3. 🔋 [Features](#features)
-4. 🤸 [Quick Start](#quick-start)
-5. 🕸️ [Assets & Code](#snippets)
-6. 🚀 [More](#more)
+4. 🛠️ [Installation](#installation)
+5. ⚙️ [Setup](#setup)
+6. 🤸 [Quick Start](#quick-start)
+7. 🕸️ [Assets & Code](#assets-and-code)
+8. 🚀 [More](#more)
+
 
 ## <a name="introduction">🤖 Introduction</a>
 
@@ -34,11 +37,12 @@ Eagles Ring is an investment platform that matches aspiring entrepreneurs from a
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
-- **Frontend**: Next.js, Tailwind CSS
-- **Backend**: Node.js, Prisma
-- **Database**: Neon PostgreSQL
-- **Authentication**: Clerk
-- **Messaging & File Sharing**: Custom implementation
+- **Frontend**: [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/)
+- **Backend**: [Node.js](https://nodejs.org/), [Prisma](https://www.prisma.io/)
+- **Database**: [Neon PostgreSQL](https://neon.tech/)
+- **Authentication**: [Clerk](https://clerk.dev/)
+- **Messaging & File Sharing**: [Custom Implementation](#custom-implementation)
+- **Video Calling**: [GetStream](https://getstream.io/)
 
 ## <a name="features">🔋 Features</a>
 
@@ -62,12 +66,12 @@ Follow these steps to get started with the project:
 2. **See deployment**
    <div><link>https://eaglesring.vercel.app</link></div>
   
-## <a name="install">🤸 Installation</a>
+## <a name="install">🛠️ Installation</a>
 Install the project dependencies using npm:
   ```
   npm install
 ```
-## <a name="setup">🤸 Setup</a>
+## <a name="setup">⚙️ Setup</a>
 3. **Set Up Environment Variables**
 
 Create a new file named .env in the root of your project and add the following content:
