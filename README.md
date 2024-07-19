@@ -129,8 +129,12 @@ Create a new file named .env in the root of your project and add the following c
 
 4. **Running the Project**
 ```bash
-npm run dev or yarn dev
+npm run dev 
 ```
+or
+  ```
+    yarn dev
+  ```
  <div align="center">
 **Open http://localhost:3000 in your browser to view the project.**
 <a name="snippets">🕸️ Assets & Code</a>
