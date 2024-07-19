@@ -6,27 +6,47 @@ import addInvestor from '@/app/actions/addInvestor';
 import addProEntrepreneurProfile from '@/app/actions/addProEntrepreneurProfile';
 import addProInvestorProfile from '@/app/actions/addProInvestorProfile';
 import { toast } from 'react-toastify';
-import { checkUser } from '@/lib/checkUser';
+import { checkUser } from '@/lib/checkUser'; 
 
 const AddRole = () => {
   const [role, setRole] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
-  const [isProfileDetailsFormVisible, setProfileDetailsFormVisible] = useState<boolean>(false);
+  const [user, setUser] = useState<any>(null); 
+  const [profileDetailsFormVisible, setProfileDetailsFormVisible] = useState<boolean>(false);
+  const [entrepreneurData, setEntrepreneurData] = useState<any>(null);
+  const [investorData, setInvestorData] = useState<any>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  // Fetch user details on component mount
+  // Fetch user details and profile data on component mount
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUserAndProfileData = async () => {
       const userData = await checkUser();
       setUser(userData);
 
       if (userData?.role) {
         setRole(userData.role.name);
+
+        if (userData.role.name === 'entrepreneur') {
+          // Fetch entrepreneur profile data
+          const entrepreneurProfile = await fetchProEntrepreneurProfile(userData.id);
+          setEntrepreneurData(entrepreneurProfile);
+        } else if (userData.role.name === 'investor') {
+          // Fetch investor profile data
+          const investorProfile = await fetchProInvestorProfile(userData.id);
+          setInvestorData(investorProfile);
+        }
       }
     };
 
-    fetchUser();
+    fetchUserAndProfileData();
   }, []);
+
+  const fetchProEntrepreneurProfile = async (entrepreneurId: string) => {
+    // Implement the function to fetch ProEntrepreneurProfile data
+  };
+
+  const fetchProInvestorProfile = async (investorId: string) => {
+    // Implement the function to fetch ProInvestorProfile data
+  };
 
   const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -66,7 +86,9 @@ const AddRole = () => {
       toast.error(error);
     } else {
       toast.success(`Entrepreneur data added for ${data?.businessName}`);
-      setProfileDetailsFormVisible(true);
+      // Fetch and set entrepreneur profile data
+      const entrepreneurProfile = await fetchProEntrepreneurProfile(user?.id);
+      setEntrepreneurData(entrepreneurProfile);
     }
   };
 
@@ -87,7 +109,9 @@ const AddRole = () => {
       toast.error(error);
     } else {
       toast.success(`Investor data added with ${data?.fundsAvailable} funds available`);
-      setProfileDetailsFormVisible(true);
+      // Fetch and set investor profile data
+      const investorProfile = await fetchProInvestorProfile(user?.id);
+      setInvestorData(investorProfile);
     }
   };
 
@@ -122,6 +146,9 @@ const AddRole = () => {
       toast.error(error);
     } else {
       toast.success(`Pro Entrepreneur Profile data added for ${data?.companyName}`);
+      // Fetch updated entrepreneur profile data
+      const entrepreneurProfile = await fetchProEntrepreneurProfile(user?.id);
+      setEntrepreneurData(entrepreneurshipProfile);
     }
   };
 
@@ -156,6 +183,9 @@ const AddRole = () => {
       toast.error(error);
     } else {
       toast.success(`Pro Investor Profile data added for ${data?.companyName}`);
+      // Fetch updated investor profile data
+      const investorProfile = await fetchProInvestorProfile(user?.id);
+      setInvestorData(investorProfile);
     }
   };
 
@@ -163,254 +193,114 @@ const AddRole = () => {
     if (role === 'entrepreneur') {
       return (
         <>
-          <form onSubmit={handleEntrepreneurSubmit} className="bg-dark-1 text-white space-y-4">
-            <div className="relative">
-              <label htmlFor="businessName" className="block text-sm font-medium text-white">
-                Business Name
-              </label>
-              <input
-                type="text"
-                id="businessName"
-                name="businessName"
-                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                required
-              />
-            </div>
-            <div className="relative">
-              <label htmlFor="businessPlan" className="block text-sm font-medium text-white">
-                Business Plan
-              </label>
-              <textarea
-                id="businessPlan"
-                name="businessPlan"
-                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-            >
-              Submit Entrepreneur Data
-            </button>
-          </form>
-
-          {isProfileDetailsFormVisible && (
-            <form onSubmit={handleProEntrepreneurProfileSubmit} className="bg-dark-1 text-white space-y-4 mt-6">
-              <div className="relative">
-                <label htmlFor="companyName" className="block text-sm font-medium text-white">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  id="companyName"
-                  name="companyName"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                  required
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="companyWebsite" className="block text-sm font-medium text-white">
-                  Company Website
-                </label>
-                <input
-                  type="text"
-                  id="companyWebsite"
-                  name="companyWebsite"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                  required
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="linkedinUrl" className="block text-sm font-medium text-white">
-                  LinkedIn URL
-                </label>
-                <input
-                  type="text"
-                  id="linkedinUrl"
-                  name="linkedinUrl"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                  required
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="location" className="block text-sm font-medium text-white">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="age" className="block text-sm font-medium text-white">
-                  Age
-                </label>
-                <input
-                  type="number"
-                  id="age"
-                  name="age"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="gender" className="block text-sm font-medium text-white">
-                  Gender
-                </label>
-                <input
-                  type="text"
-                  id="gender"
-                  name="gender"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="interests" className="block text-sm font-medium text-white">
-                  Interests
-                </label>
-                <input
-                  type="text"
-                  id="interests"
-                  name="interests"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                />
-              </div>
+          {entrepreneurData ? (
+            <div>
+              <h2 className="text-xl font-bold text-white">Entrepreneur Profile</h2>
+              <p className="text-white">Company Name: {entrepreneurData.companyName}</p>
+              <p className="text-white">Company Website: {entrepreneurData.companyWebsite}</p>
+              <p className="text-white">LinkedIn URL: {entrepreneurData.linkedinUrl}</p>
+              <p className="text-white">Location: {entrepreneurData.location}</p>
+              <p className="text-white">Age: {entrepreneurData.age}</p>
+              <p className="text-white">Gender: {entrepreneurData.gender}</p>
+              <p className="text-white">Interests: {entrepreneurData.interests.join(', ')}</p>
               <button
-                type="submit"
-                className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                className="mt-4 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                onClick={() => setProfileDetailsFormVisible(true)}
               >
-                Submit Pro Entrepreneur Profile
+                Edit Profile
               </button>
-            </form>
+            </div>
+          ) : (
+            <>
+              <form onSubmit={handleEntrepreneurSubmit} className="bg-dark-1 text-white space-y-4">
+                <div className="relative">
+                  <label htmlFor="businessName" className="block text-sm font-medium text-white">
+                    Business Name
+                  </label>
+                  <input
+                    type="text"
+                    id="businessName"
+                    name="businessName"
+                    className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    required
+                  />
+                </div>
+                <div className="relative">
+                  <label htmlFor="businessPlan" className="block text-sm font-medium text-white">
+                    Business Plan
+                  </label>
+                  <textarea
+                    id="businessPlan"
+                    name="businessPlan"
+                    className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                >
+                  Submit Entrepreneur Data
+                </button>
+              </form>
+            </>
           )}
         </>
       );
     } else if (role === 'investor') {
       return (
         <>
-          <form onSubmit={handleInvestorSubmit} className="bg-dark-1 text-white space-y-4">
-            <div className="relative">
-              <label htmlFor="fundsAvailable" className="block text-sm font-medium text-white">
-                Funds Available
-              </label>
-              <input
-                type="number"
-                id="fundsAvailable"
-                name="fundsAvailable"
-                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                required
-              />
-            </div>
-            <div className="relative">
-              <label htmlFor="investmentPreferences" className="block text-sm font-medium text-white">
-                Investment Preferences
-              </label>
-              <textarea
-                id="investmentPreferences"
-                name="investmentPreferences"
-                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-            >
-              Submit Investor Data
-            </button>
-          </form>
-
-          {isProfileDetailsFormVisible && (
-            <form onSubmit={handleProInvestorProfileSubmit} className="bg-dark-1 text-white space-y-4 mt-6">
-              <div className="relative">
-                <label htmlFor="companyName" className="block text-sm font-medium text-white">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  id="companyName"
-                  name="companyName"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                  required
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="companyWebsite" className="block text-sm font-medium text-white">
-                  Company Website
-                </label>
-                <input
-                  type="text"
-                  id="companyWebsite"
-                  name="companyWebsite"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                  required
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="linkedinUrl" className="block text-sm font-medium text-white">
-                  LinkedIn URL
-                </label>
-                <input
-                  type="text"
-                  id="linkedinUrl"
-                  name="linkedinUrl"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                  required
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="location" className="block text-sm font-medium text-white">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="age" className="block text-sm font-medium text-white">
-                  Age
-                </label>
-                <input
-                  type="number"
-                  id="age"
-                  name="age"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="gender" className="block text-sm font-medium text-white">
-                  Gender
-                </label>
-                <input
-                  type="text"
-                  id="gender"
-                  name="gender"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                />
-              </div>
-              <div className="relative">
-                <label htmlFor="interests" className="block text-sm font-medium text-white">
-                  Interests
-                </label>
-                <input
-                  type="text"
-                  id="interests"
-                  name="interests"
-                  className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                />
-              </div>
+          {investorData ? (
+            <div>
+              <h2 className="text-xl font-bold text-white">Investor Profile</h2>
+              <p className="text-white">Company Name: {investorData.companyName}</p>
+              <p className="text-white">Company Website: {investorData.companyWebsite}</p>
+              <p className="text-white">LinkedIn URL: {investorData.linkedinUrl}</p>
+              <p className="text-white">Location: {investorData.location}</p>
+              <p className="text-white">Age: {investorData.age}</p>
+              <p className="text-white">Gender: {investorData.gender}</p>
+              <p className="text-white">Interests: {investorData.interests.join(', ')}</p>
               <button
-                type="submit"
-                className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                className="mt-4 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                onClick={() => setProfileDetailsFormVisible(true)}
               >
-                Submit Pro Investor Profile
+                Edit Profile
               </button>
-            </form>
+            </div>
+          ) : (
+            <>
+              <form onSubmit={handleInvestorSubmit} className="bg-dark-1 text-white space-y-4">
+                <div className="relative">
+                  <label htmlFor="fundsAvailable" className="block text-sm font-medium text-white">
+                    Funds Available
+                  </label>
+                  <input
+                    type="number"
+                    id="fundsAvailable"
+                    name="fundsAvailable"
+                    className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    required
+                  />
+                </div>
+                <div className="relative">
+                  <label htmlFor="investmentPreferences" className="block text-sm font-medium text-white">
+                    Investment Preferences
+                  </label>
+                  <textarea
+                    id="investmentPreferences"
+                    name="investmentPreferences"
+                    className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                >
+                  Submit Investor Data
+                </button>
+              </form>
+            </>
           )}
         </>
       );
@@ -419,7 +309,7 @@ const AddRole = () => {
         <form onSubmit={clientAction} className="bg-dark-1 text-white space-y-4">
           <div className="relative">
             <label htmlFor="name" className="block text-sm font-medium text-white">
-              Role Name
+              Role
             </label>
             <input
               type="text"
@@ -440,7 +330,18 @@ const AddRole = () => {
     }
   };
 
-  return <div className="p-6">{renderRoleForm()}</div>;
+  return (
+    <div className="p-4">
+      {role ? (
+        <div>
+          <p className="text-white">Your role is: {role}</p>
+          {renderRoleForm()}
+        </div>
+      ) : (
+        renderRoleForm()
+      )}
+    </div>
+  );
 };
 
 export default AddRole;
