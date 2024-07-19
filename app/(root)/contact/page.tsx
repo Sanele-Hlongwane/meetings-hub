@@ -139,7 +139,6 @@ const ContactPage = () => {
                 <span>LinkedIn</span>
               </a>
             </div>
-            {/* Add more contact methods as needed */}
           </div>
         </div>
       </div>
