@@ -1,24 +1,20 @@
-'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import updateRole from '@/app/actions/updateRole';
 import addEntrepreneur from '@/app/actions/addEntrepreneur';
 import addInvestor from '@/app/actions/addInvestor';
 import { toast } from 'react-toastify';
-import { checkUser } from '@/lib/checkUser'; // Import a function to get user details
+import { checkUser } from '@/lib/checkUser';
 
 const AddRole = () => {
   const [role, setRole] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null); // Replace `any` with your user type
-  const formRef = useRef<HTMLFormElement>(null);
 
-  // Fetch user details on component mount
   useEffect(() => {
     const fetchUser = async () => {
       const userData = await checkUser(); // Fetch user details from the server
       setUser(userData);
-
       if (userData?.role) {
-        setRole(userData.role.name); // Set the role from user data
+        setRole(userData.role.name); // Adjust according to your data structure
       }
     };
 
@@ -27,11 +23,10 @@ const AddRole = () => {
 
   const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const formData = new FormData(event.currentTarget);
     const roleName = formData.get('name') as string;
 
-    if (!roleName || roleName === '') {
+    if (!roleName) {
       toast.error('Role name is required');
       return;
     }
@@ -162,7 +157,7 @@ const AddRole = () => {
   const renderRoleAssignmentForm = () => {
     if (!role) {
       return (
-        <form ref={formRef} onSubmit={clientAction} className="bg-dark-1 text-white">
+        <form onSubmit={clientAction} className="bg-dark-1 text-white">
           <div className='relative'>
             <label htmlFor='name' className='block text-sm font-medium text-white'>
               Role Name
@@ -171,7 +166,6 @@ const AddRole = () => {
               id='name'
               name='name'
               className='mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
-              onChange={(e) => setRole(e.target.value)}
               required
             >
               <option value=''>Select role</option>
@@ -196,24 +190,7 @@ const AddRole = () => {
       <div className="max-w-7xl mx-auto pt-20">
         <h3 className="text-2xl font-bold text-white">Assign Role</h3>
         {renderRoleAssignmentForm()}
-        {role && (
-          <div className="mt-8">
-            <h3 className="text-2xl font-bold text-white">Add {role.charAt(0).toUpperCase() + role.slice(1)} Data</h3>
-            {renderRoleForm()}
-          </div>
-        )}
-        {user && role && (
-          <div className="mt-8">
-            <h3 className="text-2xl font-bold text-white">Profile Details</h3>
-            {/* Display user profile details here */}
-            <button
-              className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              onClick={() => {/* Handle edit profile except role */}}
-            >
-              Edit Profile
-            </button>
-          </div>
-        )}
+        {renderRoleForm()}
       </div>
     </div>
   );
