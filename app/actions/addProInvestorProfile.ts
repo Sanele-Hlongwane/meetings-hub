@@ -3,6 +3,7 @@ import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
 
 interface ProInvestorProfileData {
+  investorId: string;
   companyName: string;
   companyWebsite: string;
   linkedinUrl: string;
@@ -35,14 +36,14 @@ async function addProInvestorProfile(data: ProInvestorProfileData): Promise<ProI
 
     // Check if a ProInvestorProfile record already exists for this user
     let profile = await prisma.proInvestorProfile.findUnique({
-      where: { userId: user.id }
+      where: { investorId: user.id }
     });
 
     if (!profile) {
       // Create ProInvestorProfile record
       profile = await prisma.proInvestorProfile.create({
         data: {
-          userId: user.id,
+          investorId: user.id,
           companyName: data.companyName,
           companyWebsite: data.companyWebsite,
           linkedinUrl: data.linkedinUrl,
@@ -55,7 +56,7 @@ async function addProInvestorProfile(data: ProInvestorProfileData): Promise<ProI
     } else {
       // Update existing ProInvestorProfile record if needed
       profile = await prisma.proInvestorProfile.update({
-        where: { userId: user.id },
+        where: { investorId: user.id },
         data: {
           companyName: data.companyName,
           companyWebsite: data.companyWebsite,
