@@ -6,7 +6,7 @@ interface ProEntrepreneurProfileData {
   entrepreneurId: string;
   companyName: string;
   companyWebsite: string;
-  linkedinUrl: string | null;
+  linkedinUrl: string ;
   location: string | null; // Allow null values
   age: number | null;      // Allow null values
   gender: string | null;   // Allow null values
