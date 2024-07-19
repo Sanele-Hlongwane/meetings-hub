@@ -1,9 +1,10 @@
 <div align="center">
   <br />
-    <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank">
-      <img src="./public/EaglesRingLogo.png" alt="Project Banner">
-    </a>
+     <a href="https://www.youtube.com/@TechInvaders-bv5kv" target="_blank">
+     <img src="./public/EaglesRingLogo.png" alt="Project Banner" style="height: 50px;">
+   </a>
   <br />
+
 
   <div>
     <img src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="typescript" />
@@ -24,9 +25,9 @@
 1. 🤖 [Introduction](#introduction)
 2. ⚙️ [Tech Stack](#tech-stack)
 3. 🔋 [Features](#features)
-4. 🛠️ [Installation](#installation)
-5. ⚙️ [Setup](#setup)
-6. 🤸 [Quick Start](#quick-start)
+4. 🤸 [Quick Start](#quick-start)
+5. 🛠️ [Installation](#installation)
+6. ⚙️ [Setup](#setup)
 7. 🕸️ [Assets & Code](#assets-and-code)
 8. 🚀 [More](#more)
 
@@ -67,9 +68,10 @@ Follow these steps to get started with the project:
    <div><link>https://eaglesring.vercel.app</link></div>
   
 ## <a name="install">🛠️ Installation</a>
-Install the project dependencies using npm:
+1. **Delete package-lock.json file and node_modules folder**
+2. **Install the project dependencies using npm:**
   ```
-  npm install
+  npm install or yarn add
 ```
 ## <a name="setup">⚙️ Setup</a>
 3. **Set Up Environment Variables**
@@ -92,7 +94,7 @@ Create a new file named .env in the root of your project and add the following c
 
 4. **Running the Project**
 ```bash
-npm run
+npm run dev or yarn dev
 ```
  <div align="center">
 **Open http://localhost:3000 in your browser to view the project.**
@@ -130,8 +132,8 @@ export default config;
 </div>
 <a name="more">🚀 More</a>
 
-For more details on how to contribute to this project, report issues, or request features, please visit the GitHub repository or contact Sanele Hlongwane 0603179552/sanelehlongwane@gmail.com .
+For more details on how to contribute to this project, report issues, or request features, please visit the GitHub repository or contact Sanele Hlongwane 0603179552/sanelehlongwane61@gmail.com .
 Happy coding!
 
-NB:Exact copying of this app is prohibited
+NB: Production of this app is prohibited
 
