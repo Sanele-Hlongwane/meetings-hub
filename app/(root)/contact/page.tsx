@@ -61,7 +61,7 @@ const ContactPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white dark:bg-dark-1 p-6 rounded-lg shadow-lg">
+          <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-dark-2 dark:bg-dark-1 p-6 rounded-lg shadow-lg">
             <div className="mb-4">
               <label htmlFor="name" className="block text-sm font-medium">Name</label>
               <input
@@ -71,7 +71,7 @@ const ContactPage = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-white dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black dark:text-white"
+                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-dark-1 dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white dark:text-white"
               />
             </div>
 
@@ -84,7 +84,7 @@ const ContactPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-white dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black dark:text-white"
+                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-dark-1 dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white dark:text-white"
               />
             </div>
 
@@ -97,7 +97,7 @@ const ContactPage = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-white dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black dark:text-white"
+                className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-dark-1 dark:bg-dark-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white dark:text-white"
               />
             </div>
 
