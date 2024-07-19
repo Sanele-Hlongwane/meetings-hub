@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const AboutUs = () => {
   return (
-    <div className="bg-bg-dark-1 dark:bg-dark-1 text-white dark:text-white min-h-screen py-24 px-4" style={{ width: '100vw' }}>
+    <div className="bg-bg-dark-1 dark:bg-dark-1 text-white dark:text-white min-h-screen py-16 px-4" style={{ width: '100vw' }}>
       <div className="max-w-7xl mx-auto pt-20">
         <div className="container mx-auto text-center pt-20 max-w-screen-sm md:max-w-screen-md">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
