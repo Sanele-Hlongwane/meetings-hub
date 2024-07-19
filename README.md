@@ -47,21 +47,42 @@ Eagles Ring is an investment platform that matches aspiring entrepreneurs from a
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
 - **Frontend**: [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/)
+  - Next.js provides the framework for server-side rendering and static site generation.
+  - Tailwind CSS is used for utility-first CSS styling, ensuring a responsive and modern UI.
 - **Backend**: [Node.js](https://nodejs.org/), [Prisma](https://www.prisma.io/)
+  - Node.js serves as the runtime environment for server-side JavaScript.
+  - Prisma is used as the ORM for type-safe database access and migrations.
 - **Database**: [Neon PostgreSQL](https://neon.tech/)
+  - Neon PostgreSQL is a highly scalable, fully managed PostgreSQL database service.
 - **Authentication**: [Clerk](https://clerk.dev/)
+  - Clerk provides user management and authentication services, including OAuth, passwordless login, and social sign-ins.
 - **Messaging & File Sharing**: [Custom Implementation](#custom-implementation)
+  - Custom solutions are implemented for secure and efficient messaging and file sharing between users.
 - **Video Calling**: [GetStream](https://getstream.io/)
+  - GetStream is used for real-time video calling and streaming services.
 
 ## <a name="features">🔋 Features</a>
 
 - **Investor and Entrepreneur Registration**: Secure and seamless sign-up and login processes using Clerk.
 - **Profile Management**: Entrepreneurs and investors can manage their profiles, including bio, contact information, and more.
+  - Edit and update personal information, business details, and investment preferences.
 - **Pitch Submission**: Entrepreneurs can submit their business pitches to be reviewed by investors.
+  - Upload pitch decks, business plans, and other supporting documents.
 - **Investment Opportunities**: Investors can browse and review various business pitches.
+  - Filter and search for pitches based on industry, funding stage, and other criteria.
 - **Messaging**: Secure messaging between users to discuss investment opportunities.
+  - Real-time chat, group discussions, and private messaging.
 - **File Sharing**: Easy sharing of relevant documents and files between users.
+  - Secure upload, download, and management of files.
 - **Notifications**: Real-time notifications for pitch updates and messages.
+  - Stay updated on new messages, pitch status changes, and other important events.
+- **Video Meetings**: Users can create and join video meetings.
+  - Schedule and conduct virtual meetings with video and audio.
+- **Dashboard Analytics**: Comprehensive dashboard for monitoring and analytics.
+  - Visualize investment trends, pitch performance, and user engagement metrics.
+- **Role-Based Access Control**: Different access levels for entrepreneurs, investors, and admins.
+  - Ensure appropriate permissions and access to various features based on user roles.
+
 
 ## <a name="quick-start">🤸 Quick Start</a>
 
