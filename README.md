@@ -169,7 +169,7 @@ const config = {
 
 export default config;
 </div>
-<a name="more">🚀 More</a>
+## <a name="more">🚀 More</a>
 
 For more details on how to contribute to this project, report issues, or request features, please visit the GitHub repository or contact Sanele Hlongwane 0603179552/sanelehlongwane61@gmail.com .
 Happy coding!
