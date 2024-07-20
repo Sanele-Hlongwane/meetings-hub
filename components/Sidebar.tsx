@@ -31,7 +31,7 @@ export const Tab : React.FC<TabProps> = ({ label, route, imgURL, onClick }) => {
       onClick={onClick}
     >
       <Link href={route} passHref>
-        <a className="flex gap-3 lg:gap-4 items-center w-full">
+        <p className="flex gap-3 lg:gap-4 items-center w-full">
           <Image
             src={imgURL}
             width={30}
@@ -42,7 +42,7 @@ export const Tab : React.FC<TabProps> = ({ label, route, imgURL, onClick }) => {
           <p className="text-sm md:text-base lg:text-lg font-medium lg:font-semibold">
             {label}
           </p>
-        </a>
+        </p>
       </Link>
     </div>
   );
