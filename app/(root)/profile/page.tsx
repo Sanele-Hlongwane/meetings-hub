@@ -1,207 +1,58 @@
+// app/profile/page.tsx
+import { checkUser } from '@/lib/checkUser'; // Update the path as necessary
+import { Role } from '@prisma/client';
 
-'use client';
-import { useState, useEffect } from 'react';
-import updateRole from '@/app/actions/updateRole';
-import addEntrepreneur from '@/app/actions/addEntrepreneur';
-import addInvestor from '@/app/actions/addInvestor';
-import { toast } from 'react-toastify';
-import { checkUser } from '@/lib/checkUser';
+interface ProfileProps {
+  user: {
+    id: number;
+    clerkId: string;
+    email: string;
+    name: string;
+    role: string;
+    entrepreneur?: {
+      id: number;
+      business: string;
+      pitch: string;
+    } | null;
+    investor?: {
+      id: number;
+      investmentOpportunities: any[]; // Correctly typed if you fetch it
+    } | null;
+    investments: any[];
+  } | null;
+}
 
-const AddRole = () => {
-  const [role, setRole] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null); // Replace `any` with your user type
+const Profile = async () => {
+  const user = await checkUser(); // Fetch the user data
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await checkUser(); // Fetch user details from the server
-      setUser(userData);
-      if (userData?.role) {
-        setRole(userData.role.name); // Adjust according to your data structure
-      }
-    };
-
-    fetchUser();
-  }, []);
-
-  const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const roleName = formData.get('name') as string;
-
-    if (!roleName) {
-      toast.error('Role name is required');
-      return;
-    }
-
-    const { data, error } = await updateRole({ name: roleName });
-
-    if (error) {
-      toast.error(error);
-    } else {
-      setRole(roleName);
-    }
-  };
-
-  const handleEntrepreneurSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const businessName = formData.get('businessName') as string;
-    const businessPlan = formData.get('businessPlan') as string;
-
-    if (!businessName || !businessPlan) {
-      toast.error('All fields are required');
-      return;
-    }
-
-    const { data, error } = await addEntrepreneur({ businessName, businessPlan });
-
-    if (error) {
-      toast.error(error);
-    } else {
-      toast.success(`Entrepreneur data added for ${data?.businessName}`);
-    }
-  };
-
-  const handleInvestorSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const fundsAvailable = parseFloat(formData.get('fundsAvailable') as string);
-    const investmentPreferences = formData.get('investmentPreferences') as string;
-
-    if (isNaN(fundsAvailable) || !investmentPreferences) {
-      toast.error('All fields are required');
-      return;
-    }
-
-    const { data, error } = await addInvestor({ fundsAvailable, investmentPreferences });
-
-    if (error) {
-      toast.error(error);
-    } else {
-      toast.success(`Investor data added with ${data?.fundsAvailable} funds available`);
-    }
-  };
-
-  const renderRoleForm = () => {
-    if (role === 'entrepreneur') {
-      return (
-        <div>
-          <h4 className="text-xl font-bold text-yellow-500">Entrepreneur Form</h4>
-          <form onSubmit={handleEntrepreneurSubmit} className="bg-dark-1 text-white space-y-4">
-            <div className="relative">
-              <label htmlFor="businessName" className="block text-sm font-medium text-white">
-                Business Name
-              </label>
-              <input
-                type="text"
-                id="businessName"
-                name="businessName"
-                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                required
-              />
-            </div>
-            <div className="relative">
-              <label htmlFor="businessPlan" className="block text-sm font-medium text-white">
-                Business Plan
-              </label>
-              <textarea
-                id="businessPlan"
-                name="businessPlan"
-                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-            >
-              Submit Entrepreneur Data
-            </button>
-          </form>
-        </div>
-      );
-    } else if (role === 'investor') {
-      return (
-        <div>
-          <h4 className="text-xl font-bold text-yellow-500">Investor Form</h4>
-          <form onSubmit={handleInvestorSubmit} className="bg-dark-1 text-white space-y-4">
-            <div className="relative">
-              <label htmlFor="fundsAvailable" className="block text-sm font-medium text-white">
-                Funds Available
-              </label>
-              <input
-                type="number"
-                id="fundsAvailable"
-                name="fundsAvailable"
-                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                required
-              />
-            </div>
-            <div className="relative">
-              <label htmlFor="investmentPreferences" className="block text-sm font-medium text-white">
-                Investment Preferences
-              </label>
-              <textarea
-                id="investmentPreferences"
-                name="investmentPreferences"
-                className="mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-            >
-              Submit Investor Data
-            </button>
-          </form>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const renderRoleAssignmentForm = () => {
-    if (!role) {
-      return (
-        <form onSubmit={clientAction} className="bg-dark-1 text-white">
-          <div className='relative'>
-            <label htmlFor='name' className='block text-sm font-medium text-white'>
-              Role Name
-            </label>
-            <select
-              id='name'
-              name='name'
-              className='mt-1 block w-full bg-gray-800 text-white pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
-              required
-            >
-              <option value=''>Select role</option>
-              <option value='entrepreneur'>Entrepreneur</option>
-              <option value='investor'>Investor</option>
-            </select>
-          </div>
-          <button
-            type='submit'
-            className='mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500'
-          >
-            Assign Role
-          </button>
-        </form>
-      );
-    }
-    return null;
-  };
+  if (!user) {
+    return <div className="text-white">Loading...</div>;
+  }
 
   return (
-    <div className="max-w-md mx-auto my-20 p-6 bg-dark-1 text-white rounded-xl shadow-md space-y-4">
-      <div className="max-w-7xl mx-auto pt-20">
-        <h3 className="text-2xl font-bold text-white">Assign Role</h3>
-        {renderRoleAssignmentForm()}
-        {renderRoleForm()}
+    <div className="max-w-4xl mx-auto p-4">
+      <div className="p-6 bg-bg-dark-1 dark:bg-dark-1 py-24 text-white dark:text-white">
+        <h1 className="text-3xl font-bold mb-6">Profile</h1>
+        <div className="bg-gray-800 shadow-md rounded p-6">
+          <p className="text-white"><strong>Name:</strong> {user.name}</p>
+          <p className="text-white"><strong>Email:</strong> {user.email}</p>
+          <p className="text-white"><strong>Role:</strong> {user.role}</p>
+          {user.entrepreneur && (
+            <>
+              <p className="text-white"><strong>Business:</strong> {user.entrepreneur.business}</p>
+              <p className="text-white"><strong>Pitch:</strong> {user.entrepreneur.pitch}</p>
+            </>
+          )}
+          {user.investor && (
+            <>
+              <p className="text-white"><strong>Investment Opportunities:</strong> {user.investor.investmentOpportunities.length}</p>
+            </>
+          )}
+          <p className="text-white"><strong>Investments:</strong> {user.investments.length}</p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default AddRole;
-
+export default Profile;
