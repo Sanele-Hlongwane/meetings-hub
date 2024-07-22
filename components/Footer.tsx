@@ -21,7 +21,7 @@ const Footer = async () => {
           <Link href="/privacy-policy" passHref>
             <p className="hover:text-yellow-500 transition-colors duration-300">Privacy Policy</p>
           </Link>
-          <Link href="/faqs" passHref>
+          <Link href="/faq" passHref>
             <p className="hover:text-yellow-500 transition-colors duration-300">FAQs</p>
           </Link>
         </div>
