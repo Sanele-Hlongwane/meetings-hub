@@ -1,10 +1,9 @@
-// pages/faq.tsx
 import React from 'react';
 
 const FAQ = () => {
   return (
     <div className="p-6 bg-bg-dark-1 dark:bg-dark-1 py-24 text-white dark:text-white">
-      <h1 className="text-3xl font-bold mb-4">Frequently Asked Questions (FAQ)</h1>
+      <h1 className="text-3xl font-bold mb-4">Frequently Asked Questions (FAQs)</h1>
       
       <div className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">What is Eagles Ring?</h2>
