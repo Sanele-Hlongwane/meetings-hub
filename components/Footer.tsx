@@ -15,7 +15,7 @@ const Footer = async () => {
           <p className="text-sm lg:text-base">Contact us: contact@eaglesring.com</p>
         </div>
         <div className="text-sm lg:text-base mb-6 flex justify-center space-x-8">
-          <Link href="/Terms" passHref>
+          <Link href="/terms" passHref>
             <p className="hover:text-yellow-500 transition-colors duration-300">Terms and Conditions</p>
           </Link>
           <Link href="/privacy-policy" passHref>
