@@ -89,7 +89,7 @@ Follow these steps to get started with the project:
    ```bash
    git clone https://github.com/Sanele-Hlongwane/finale-eagles
    cd finale-eagles
-  ```
+  
 
 2. **See Deployment**
    - [Eagles Ring Live Demo](https://finale-eagles.vercel.app)
