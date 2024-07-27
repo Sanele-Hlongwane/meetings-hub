@@ -14,7 +14,7 @@ const AddRole = () => {
   // Fetch user data on component mount
   const fetchUserData = async () => {
     // Assuming `currentUser` returns the Clerk user object
-    const user = await currentUser();
+    const user = await currentUser(null);
     return user;
   };
 
