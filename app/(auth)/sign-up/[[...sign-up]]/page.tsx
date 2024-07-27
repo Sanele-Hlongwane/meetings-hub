@@ -1,11 +1,10 @@
 // app/sign-up/[[...sign-up]]/page.tsx
 "use client";
-import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSignUp } from "@clerk/nextjs";
-import SignupForm from "@/components/SignupForm";
-import VerifyForm from "@/components/VerifyForm";
+import SignupForm from "@/app/components/SignupForm";
+import VerifyForm from "@/app/components/VerifyForm";
 
 const Signup = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -30,9 +29,6 @@ const Signup = () => {
         emailAddress,
         password,
       });
-      // Example: Call your API to save the role
-      // await fetch('/api/assign-role', { method: 'POST', body: JSON.stringify({ emailAddress, role }) });
-
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setVerifying(true);
     } catch (err: any) {
@@ -45,15 +41,17 @@ const Signup = () => {
     if (!isLoaded) return;
 
     try {
+      console.log("Verification code:", code); // Debugging line
       const completeSignUp = await signUp.attemptEmailAddressVerification({ code });
+      console.log("Complete sign-up response:", completeSignUp); // Debugging line
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
         router.push("/");
       } else {
-        console.log("Verification failed:", completeSignUp);
+        setClerkError("Verification failed. Please check your code.");
       }
     } catch (err: any) {
-      console.log("Error:", err);
+      console.log("Error during verification:", err); // Debugging line
       setClerkError("Verification failed. Please try again.");
     }
   };
