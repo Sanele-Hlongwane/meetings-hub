@@ -1,5 +1,5 @@
 // pages/profile.tsx
-
+'use client';
 import { GetServerSideProps } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { currentUser } from '@clerk/nextjs';
