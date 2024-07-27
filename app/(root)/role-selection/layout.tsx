@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-  title: 'Profile',
+  title: 'Select role',
   description: 'Update profile to keep in touch and be available.',
 };
 
