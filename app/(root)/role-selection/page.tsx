@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { prisma } from '../lib/prisma'; // Adjust the import based on your setup
+import { prisma } from '@/lib/prisma'; // Adjust the import based on your setup
 import { currentUser } from '@clerk/nextjs/server';
 
 export default function RoleSelection() {
