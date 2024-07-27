@@ -1,4 +1,4 @@
-// pages/role-selection.tsx
+'use client';   // pages/role-selection.tsx
 import { GetServerSideProps } from 'next';
 import { prisma } from '@/lib/prisma'; // Adjust the import based on your setup
 import { currentUser } from '@clerk/nextjs/server';
