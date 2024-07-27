@@ -1,62 +1,79 @@
-
 'use client';
-import { useRef } from 'react';
-import updateRole from '@/app/api/updaterole';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { auth } from '@clerk/nextjs';
+import { prisma } from '@/lib/prisma';
 import { toast } from 'react-toastify';
-import { currentUser } from '@clerk/nextjs/server';
+import 'react-toastify/dist/ReactToastify.css';
 
-const AddRole = () => {
-  
-  const formRef = useRef<HTMLFormElement>(null);
+const ProfilePage = () => {
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const { userId } = auth();
+        if (!userId) {
+          router.push('/sign-in');
+          return;
+        }
 
-    const formData = new FormData(event.currentTarget);
-    const roleName = formData.get('name') as string; // Ensure role name is captured correctly
+        const userData = await prisma.user.findUnique({
+          where: { clerkId: userId },
+          include: { role: true },
+        });
 
-    if (!roleName || roleName === '') {
-      toast.error('Role name is required');
-      return;
-    }
+        if (!userData) {
+          toast.error('User not found');
+          router.push('/sign-in');
+          return;
+        }
 
-    const { data, error } = await updateRole({ name: roleName });
+        setUser(userData);
+      } catch (error) {
+        toast.error('Failed to fetch user data');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (error) {
-      toast.error(error);
-    } else {
-      toast.success(`Role ${data?.name} assigned`);
-      formRef.current?.reset();
-    }
-  };
+    fetchUser();
+  }, [router]);
+
+  if (loading) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  const { role, name, email, imageUrl } = user;
 
   return (
-    <div className="max-w-md mx-auto my-20 p-6 bg-white rounded-xl shadow-md space-y-4">
-      <h3 className="text-2xl font-bold text-gray-800">Assign Role</h3>
-      <form ref={formRef} onSubmit={clientAction}>
-        <div className='relative'>
-          <label htmlFor='name' className='block text-sm font-medium text-gray-700'>
-            Role Name
-          </label>
-          <select
-            id='name'
-            name='name'
-            className='mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
-          >
-            <option value=''>Select role</option>
-            <option value='entrepreneur'>Entrepreneur</option>
-            <option value='investor'>Investor</option>
-          </select>
-        </div>
+    <div className="max-w-2xl mx-auto my-12 p-8 bg-gray-900 rounded-xl shadow-lg space-y-6 text-white">
+      <h1 className="text-2xl font-bold">Profile</h1>
+      {imageUrl && <img src={imageUrl} alt={`${name}'s profile`} className="w-32 h-32 rounded-full mx-auto" />}
+      <p><strong>Name:</strong> {name}</p>
+      <p><strong>Email:</strong> {email}</p>
+      {role && (role.name === 'entrepreneur' || role.name === 'investor') ? (
+        <>
+          <p><strong>Role:</strong> {role.name.charAt(0).toUpperCase() + role.name.slice(1)}</p>
+          {/* Display other details related to the role here */}
+        </>
+      ) : (
         <button
-          type='submit'
-          className='mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500'
+          onClick={() => router.push('/role-selection')}
+          className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
         >
-          Assign Role
+          Choose Role
         </button>
-      </form>
+      )}
     </div>
   );
 };
 
-export default AddRole;
+export default ProfilePage;
