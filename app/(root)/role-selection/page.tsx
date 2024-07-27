@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import updateRole from '@/app/api/updaterole';
 import { toast } from 'react-toastify';
 import { PrismaClient } from '@prisma/client';
+import { currentUser } from '@clerk/nextjs/server';
 
 const prisma = new PrismaClient();
 
@@ -14,7 +15,7 @@ const AddRole = () => {
   // Fetch user data on component mount
   const fetchUserData = async () => {
     // Assuming `currentUser` returns the Clerk user object
-    const user = await currentUser(null);
+    const user = await currentUser();
     return user;
   };
 
