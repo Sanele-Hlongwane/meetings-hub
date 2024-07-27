@@ -1,53 +1,30 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
+// Prisma schema file
 
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
 model User {
-  id             Int           @id @default(autoincrement()) // Unique identifier for the user
-  clerkId        String        @unique                       // Unique identifier from Clerk
-  email          String        @unique                       // User's email address
-  name           String?                                      // User's name (optional)
-  role           Role          @default(USER)                // Default role set to USER (guest)
-  entrepreneur   Entrepreneur? // Optional relationship to Entrepreneur model
-  investor       Investor?     // Optional relationship to Investor model
-  investments    Investment[]  // List of investments made by the user
+  id        String  @id @default(uuid())
+  clerkId   String  @unique
+  email     String  @unique
+  name      String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @relation(fields: [roleId], references: [id])
+  roleId    String
 }
 
-model Entrepreneur {
-  id            Int          @id @default(autoincrement()) // Unique identifier for the entrepreneur
-  userId        Int          @unique                      // Foreign key linking to the User model
-  user          User         @relation(fields: [userId], references: [id]) // Relation to User model
-  business      String       // Name of the business
-  pitch         String       // Business pitch description
-  investments   Investment[] // List of investments related to this entrepreneur
-}
-
-model Investor {
-  id                     Int               @id @default(autoincrement()) // Unique identifier for the investor
-  userId                 Int               @unique                       // Foreign key linking to the User model
-  user                   User              @relation(fields: [userId], references: [id]) // Relation to User model
-  investmentOpportunities Investment[]     // List of investment opportunities the investor is interested in
-}
-
-model Investment {
-  id             Int         @id @default(autoincrement()) // Unique identifier for the investment
-  amount         Float                                     // Amount invested
-  entrepreneurId Int                                       // Foreign key linking to Entrepreneur model
-  investorId     Int                                       // Foreign key linking to Investor model
-  entrepreneur   Entrepreneur @relation(fields: [entrepreneurId], references: [id]) // Relation to Entrepreneur model
-  investor       Investor     @relation(fields: [investorId], references: [id]) // Relation to Investor model
-  user           User        @relation(fields: [userId], references: [id]) // Relation to User model
-  userId         Int                                       // Foreign key linking to User model
-  createdAt      DateTime    @default(now()) // Timestamp of when the investment was made
-}
-
-enum Role {
-  USER
-  ENTREPRENEUR
-  INVESTOR
+// Role model
+model Role {
+  id    String @id @default(uuid())
+  name  String @unique
+  users User[]
 }
