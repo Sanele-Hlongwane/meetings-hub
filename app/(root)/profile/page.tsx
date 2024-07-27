@@ -1,16 +1,32 @@
-// app/profile/page.tsx
-
 'use client';
 import { useState } from 'react';
 import { PrismaClient } from '@prisma/client';
 import { currentUser } from '@clerk/nextjs/server';
 import ProfileForm from '@/components/ProfileForm';
 
+// Initialize Prisma Client
 const prisma = new PrismaClient();
 
-const fetchUser = async () => {
+// Define the User type to match your schema
+type User = {
+  role: {
+    id: string;
+    name: string;
+  };
+  id: string;
+  clerkId: string;
+  email: string;
+  name: string | null; // Allow name to be null
+  imageUrl: string | null; // Allow imageUrl to be null
+  createdAt: Date;
+  updatedAt: Date;
+  roleId: string;
+};
+
+// Fetch user data from Clerk and Prisma
+const fetchUser = async (): Promise<User | null> => {
   const user = await currentUser();
-  
+
   if (!user) {
     return null;
   }
@@ -33,7 +49,7 @@ const fetchUser = async () => {
           clerkId: user.id,
           name: `${user.firstName} ${user.lastName}`,
           imageUrl: user.imageUrl,
-          role: { connect: { id: 'defaultRoleId' } },
+          role: { connect: { id: 'defaultRoleId' } }, // Adjust with actual default role ID
         },
         include: { role: true },
       });
@@ -68,6 +84,7 @@ const fetchUser = async () => {
   return loggedInUser;
 };
 
+// Define the ProfilePage component
 const ProfilePage = async () => {
   const user = await fetchUser();
 
@@ -75,8 +92,14 @@ const ProfilePage = async () => {
     return <p>No user data found.</p>;
   }
 
+  // Ensure `name` is a string before passing to ProfileForm
+  const safeUser = {
+    ...user,
+    name: user.name || '', // Default to empty string if null
+  };
+
   return (
-    <ProfileForm user={user} />
+    <ProfileForm user={safeUser} />
   );
 };
 
