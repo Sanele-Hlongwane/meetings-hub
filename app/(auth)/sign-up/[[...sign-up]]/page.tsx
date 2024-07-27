@@ -1,16 +1,17 @@
 'use client';
-import { useState } from 'react';
+// app/(auth)/sign-up/[[...sign-up]]/page.tsx
+import { useState, FormEvent } from 'react';
 import { useSignUp } from '@clerk/nextjs';
 
 export default function SignUpPage() {
   const { signUp, setActive } = useSignUp();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [location, setLocation] = useState('');
-  const [role, setRole] = useState('');
-  const [error, setError] = useState(null);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
+  const [role, setRole] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
       const signUpResponse = await signUp.create({
@@ -27,8 +28,8 @@ export default function SignUpPage() {
 
       setActive({ sessionId: signUpResponse.createdSessionId });
       // Redirect or handle post-sign-up logic
-    } catch (err) {
-      setError(err.errors[0].message);
+    } catch (err: any) {
+      setError(err.errors[0]?.message || 'An error occurred');
     }
   };
 
@@ -86,3 +87,4 @@ export default function SignUpPage() {
     </main>
   );
 }
+
