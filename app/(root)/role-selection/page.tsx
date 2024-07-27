@@ -3,7 +3,9 @@ import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import updateRole from '@/app/api/updaterole';
 import { toast } from 'react-toastify';
-import { currentUser } from '@clerk/nextjs/server';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 const AddRole = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -11,8 +13,17 @@ const AddRole = () => {
 
   // Fetch user data on component mount
   const fetchUserData = async () => {
+    // Assuming `currentUser` returns the Clerk user object
     const user = await currentUser();
     return user;
+  };
+
+  // Fetch user role from the database
+  const fetchUserRole = async (roleId: string) => {
+    const role = await prisma.role.findUnique({
+      where: { id: roleId },
+    });
+    return role?.name;
   };
 
   // Handle form submission
@@ -25,8 +36,7 @@ const AddRole = () => {
       return;
     }
 
-    // Access the role name from the nested role object
-    const roleName = user.role?.name;
+    const roleName = await fetchUserRole(user.roleId);
 
     // Redirect if user is already assigned a role
     if (roleName === 'entrepreneur' || roleName === 'investor') {
