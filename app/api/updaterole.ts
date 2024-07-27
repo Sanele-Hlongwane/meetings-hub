@@ -36,7 +36,7 @@ async function updateRole({ name }: { name: string }): Promise<RoleResult> {
 
     // Check if the user already has a role set and if it's either 'entrepreneur' or 'investor'
     if (user.role && (user.role.name === 'entrepreneur' || user.role.name === 'investor')) {
-      return { error: 'Role cannot be changed once assigned as entrepreneur or investor' };
+      return { error: 'Role already assigned and cannot be re-assigned.' };
     }
 
     // Ensure the role name is in lowercase and check if it exists
