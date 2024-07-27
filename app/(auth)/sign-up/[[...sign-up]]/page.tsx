@@ -1,10 +1,9 @@
 'use client';
-// app/(auth)/sign-up/[[...sign-up]]/page.tsx
 import { useState, FormEvent } from 'react';
 import { useSignUp } from '@clerk/nextjs';
 
 export default function SignUpPage() {
-  const { signUp, setActive } = useSignUp();
+  const { isLoaded, signUp, setActive } = useSignUp();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [location, setLocation] = useState<string>('');
@@ -13,25 +12,40 @@ export default function SignUpPage() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+
+    if (!isLoaded || !signUp) {
+      setError('SignUp functionality is not available.');
+      return;
+    }
+
     try {
       const signUpResponse = await signUp.create({
         emailAddress: email,
         password,
       });
 
-      await signUp.update({
-        firstName: location,
-        lastName: role,
-      });
+      // Handle the response after sign-up
+      if (signUpResponse.status === 'complete') {
+        // Optionally, update additional user details here
+        await signUp.update({ firstName: location, lastName: role });
 
-      await signUp.attemptEmailAddressVerification({ strategy: 'email_code' });
-
-      setActive({ sessionId: signUpResponse.createdSessionId });
-      // Redirect or handle post-sign-up logic
+        // Set the active session
+        if (signUpResponse.createdSessionId) {
+          await setActive({ session: signUpResponse.createdSessionId });
+          // Redirect or handle post-sign-up logic
+        }
+      } else {
+        // Handle incomplete status or other statuses
+        console.log(signUpResponse);
+      }
     } catch (err: any) {
-      setError(err.errors[0]?.message || 'An error occurred');
+      setError(err.errors[0]?.longMessage || 'An error occurred');
     }
   };
+
+  if (!isLoaded) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <main className="flex h-screen w-full items-center justify-center">
@@ -87,4 +101,3 @@ export default function SignUpPage() {
     </main>
   );
 }
-
