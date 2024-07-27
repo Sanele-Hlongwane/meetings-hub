@@ -1,24 +1,37 @@
-'use client';
-
 // pages/role-selection.tsx
-import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 import { prisma } from '@/lib/prisma'; // Adjust the import based on your setup
 import { currentUser } from '@clerk/nextjs/server';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-export default function RoleSelection() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const user = await currentUser(context.req);
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/sign-in', // Redirect to sign-in page if not authenticated
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { user },
+  };
+};
+
+type RoleSelectionProps = {
+  user: { id: string };
+};
+
+export default function RoleSelection({ user }: RoleSelectionProps) {
   const [role, setRole] = useState<string | null>(null);
   const router = useRouter();
 
   const handleRoleSelection = async () => {
-    if (!role) return;
-
-    const user = await currentUser();
-
-    if (!user) {
-      // Handle case where user is not authenticated
-      return;
-    }
+    if (!role || !user) return;
 
     // Build the update data based on the selected role
     const updateData: any = {
