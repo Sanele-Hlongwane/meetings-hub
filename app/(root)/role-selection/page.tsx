@@ -1,4 +1,6 @@
 'use client';
+
+// pages/role-selection.tsx
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { prisma } from '@/lib/prisma'; // Adjust the import based on your setup
@@ -18,14 +20,21 @@ export default function RoleSelection() {
       return;
     }
 
+    // Build the update data based on the selected role
+    const updateData: any = {
+      role: role === 'entrepreneur' ? 'ENTREPRENEUR' : 'INVESTOR',
+    };
+
+    if (role === 'entrepreneur') {
+      updateData.entrepreneur = { create: {} }; // Provide necessary fields for entrepreneur creation if needed
+    } else if (role === 'investor') {
+      updateData.investor = { create: {} }; // Provide necessary fields for investor creation if needed
+    }
+
     // Save the role and user data to Prisma
     await prisma.user.update({
       where: { clerkId: user.id },
-      data: {
-        role: role === 'entrepreneur' ? 'ENTREPRENEUR' : 'INVESTOR',
-        ...(role === 'entrepreneur' && { entrepreneur: { create: {} } }),
-        ...(role === 'investor' && { investor: { create: {} } }),
-      },
+      data: updateData,
     });
 
     // Redirect to the user's profile or dashboard
