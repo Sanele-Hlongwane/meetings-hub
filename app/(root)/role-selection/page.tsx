@@ -3,9 +3,10 @@ import { useRef } from 'react';
 import updateRole from '@/app/api/updaterole';
 import { toast } from 'react-toastify';
 import { currentUser } from '@clerk/nextjs/server';
+import { checkUser } from '@/lib/checkUser';
 
 const AddRole = () => {
-  
+  const user = await checkUser();
   const formRef = useRef<HTMLFormElement>(null);
 
   const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
