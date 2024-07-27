@@ -1,4 +1,5 @@
 'use client';
+
 import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import updateRole from '@/app/api/updaterole';
@@ -13,15 +14,19 @@ const AddRole = () => {
   // Fetch user data and role on component mount
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await checkUser(null);
+      try {
+        const user = await checkUser(null);
 
-      if (user) {
-        const roleName = user.role?.name;
-        if (roleName === 'entrepreneur' || roleName === 'investor') {
-          router.push('/');
-          return;
+        if (user) {
+          const roleName = user.role?.name;
+          if (roleName === 'entrepreneur' || roleName === 'investor') {
+            router.push('/');
+            return;
+          }
+          setUserRole(roleName);
         }
-        setUserRole(roleName);
+      } catch (error) {
+        toast.error('Failed to fetch user data');
       }
     };
 
@@ -29,11 +34,11 @@ const AddRole = () => {
   }, [router]);
 
   // Handle form submission
-  const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const selectedRole = formData.get('name') as string; // Ensure role name is captured correctly
+    const selectedRole = formData.get('name') as string;
 
     if (!selectedRole || selectedRole === '') {
       toast.error('Role name is required');
@@ -46,21 +51,24 @@ const AddRole = () => {
       return;
     }
 
-    const { data, error } = await updateRole({ name: selectedRole });
+    try {
+      const { data, error } = await updateRole({ name: selectedRole });
 
-    if (error) {
-      toast.error(error);
-    } else {
-      toast.success(`Role ${data?.name} assigned`);
-      // Redirect to the homepage after successfully assigning the role
-      router.push('/');
+      if (error) {
+        toast.error('Failed to assign role: ' + error);
+      } else {
+        toast.success(`Role ${data?.name} assigned`);
+        router.push('/');
+      }
+    } catch (error) {
+      toast.error('An unexpected error occurred while assigning the role');
     }
   };
 
   return (
     <div className="max-w-md mx-auto my-20 p-6 bg-white rounded-xl shadow-md space-y-4">
       <h3 className="text-2xl font-bold text-gray-800">Assign Role</h3>
-      <form ref={formRef} onSubmit={clientAction}>
+      <form ref={formRef} onSubmit={handleFormSubmit}>
         <div className='relative'>
           <label htmlFor='name' className='block text-sm font-medium text-gray-700'>
             Role Name
@@ -69,11 +77,16 @@ const AddRole = () => {
             id='name'
             name='name'
             className='mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
+            aria-required="true"
+            aria-describedby="role-name-description"
           >
             <option value=''>Select role</option>
             <option value='entrepreneur'>Entrepreneur</option>
             <option value='investor'>Investor</option>
           </select>
+          <p id="role-name-description" className="text-sm text-gray-500 mt-1">
+            Choose the role you want to assign to the user. This action cannot be undone.
+          </p>
         </div>
         <button
           type='submit'
