@@ -4,7 +4,6 @@ import updateRole from '@/app/api/updaterole';
 import { toast } from 'react-toastify';
 import { currentUser } from '@clerk/nextjs/server';
 import { checkUser } from '@/lib/checkUser';
-import Footer from '@/components/Footer';
 
 const AddRole = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -55,7 +54,6 @@ const AddRole = () => {
           Assign Role
         </button>
       </form>
-      < Footer />
     </div>
   );
 };
