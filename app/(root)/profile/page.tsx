@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { PrismaClient } from '@prisma/client';
 import { currentUser } from '@clerk/nextjs/server';
+import ProfileForm from '@/components/ProfileForm';
 
 const prisma = new PrismaClient();
 
