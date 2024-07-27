@@ -24,22 +24,22 @@ export default function SignUpPage() {
         password,
       });
 
-      // Handle the response after sign-up
       if (signUpResponse.status === 'complete') {
-        // Optionally, update additional user details here
+        // Handle additional details after successful sign-up
         await signUp.update({ firstName: location, lastName: role });
 
-        // Set the active session
         if (signUpResponse.createdSessionId) {
           await setActive({ session: signUpResponse.createdSessionId });
-          // Redirect or handle post-sign-up logic
+          // Optionally, redirect to another page or display success message
         }
       } else {
-        // Handle incomplete status or other statuses
-        console.log(signUpResponse);
+        // Handle different statuses if needed
+        setError(`Sign-up status: ${signUpResponse.status}`);
       }
     } catch (err: any) {
-      setError(err.errors[0]?.longMessage || 'An error occurred');
+      console.error('Sign-up error:', err);
+      // Set a more informative error message
+      setError(err.errors ? err.errors.map((e: any) => e.longMessage).join(', ') : 'An unknown error occurred');
     }
   };
 
