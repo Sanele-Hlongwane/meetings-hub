@@ -1,49 +1,36 @@
 'use client';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import updateRole from '@/app/api/updaterole';
 import { toast } from 'react-toastify';
-import { PrismaClient } from '@prisma/client';
-import { currentUser } from '@clerk/nextjs/server';
-
-const prisma = new PrismaClient();
+import { checkUser } from '@/lib/checkUser';
 
 const AddRole = () => {
   const formRef = useRef<HTMLFormElement>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const router = useRouter();
 
-  // Fetch user data on component mount
-  const fetchUserData = async () => {
-    // Assuming `currentUser` returns the Clerk user object
-    const user = await currentUser();
-    return user;
-  };
+  // Fetch user data and role on component mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await checkUser(null);
 
-  // Fetch user role from the database
-  const fetchUserRole = async (roleId: string) => {
-    const role = await prisma.role.findUnique({
-      where: { id: roleId },
-    });
-    return role?.name;
-  };
+      if (user) {
+        const roleName = user.role?.name;
+        if (roleName === 'entrepreneur' || roleName === 'investor') {
+          router.push('/');
+          return;
+        }
+        setUserRole(roleName);
+      }
+    };
+
+    fetchUser();
+  }, [router]);
 
   // Handle form submission
   const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const user = await fetchUserData();
-    if (!user) {
-      toast.error('User not found');
-      return;
-    }
-
-    const roleName = await fetchUserRole(user.roleId);
-
-    // Redirect if user is already assigned a role
-    if (roleName === 'entrepreneur' || roleName === 'investor') {
-      router.push('/');
-      return;
-    }
 
     const formData = new FormData(event.currentTarget);
     const selectedRole = formData.get('name') as string; // Ensure role name is captured correctly
@@ -99,3 +86,4 @@ const AddRole = () => {
 };
 
 export default AddRole;
+
