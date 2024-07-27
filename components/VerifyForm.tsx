@@ -12,9 +12,7 @@ const VerifyForm = ({ handleVerify, code, setCode }: VerifyFormProps) => {
     <div className="justify-center mt-12 grid justify-items-center md:mt-20">
       <div className="h-auto bg-blue-700 rounded-xl md:rounded-3xl w-80 md:w-96">
         <div className="p-6 md:p-8">
-          <h1 className="mb-6 text-3xl font-light text-white">
-            Verify Email
-          </h1>
+          <h1 className="mb-6 text-3xl font-light text-white">Verify Email</h1>
           <form onSubmit={handleVerify}>
             <input
               className="block w-full pb-4 pl-4 mb-3 text-sm font-light bg-transparent border-0 border-b-2 h-37 border-slate-600 text-white caret-slate-700 focus:border-white"
