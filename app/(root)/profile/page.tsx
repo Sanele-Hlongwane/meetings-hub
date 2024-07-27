@@ -16,8 +16,12 @@ const ProfilePage = () => {
       try {
         const userData = await getUser();
         setUser(userData);
-      } catch (error) {
-        toast.error(error.message || 'Failed to fetch user data');
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message || 'Failed to fetch user data');
+        } else {
+          toast.error('Failed to fetch user data');
+        }
         router.push('/sign-in');
       } finally {
         setLoading(false);
