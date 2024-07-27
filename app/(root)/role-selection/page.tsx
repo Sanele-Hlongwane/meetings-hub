@@ -52,7 +52,8 @@ const AddRole = () => {
       toast.error(error);
     } else {
       toast.success(`Role ${data?.name} assigned`);
-      formRef.current?.reset();
+      // Redirect to the homepage after successfully assigning the role
+      router.push('/');
     }
   };
 
@@ -86,4 +87,3 @@ const AddRole = () => {
 };
 
 export default AddRole;
-
