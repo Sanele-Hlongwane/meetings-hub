@@ -1,42 +1,38 @@
-// pages/api/assign-role.ts
+// app/api/assign-role.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Clerk, ClerkAPIError } from '@clerk/nextjs/server';
+import { getAuth } from '@clerk/nextjs/server';
+import { prisma } from '@/lib/prisma'; // Adjust the import path as necessary
 
-// Initialize Clerk SDK with your API key
-const clerk = new Clerk({ apiKey: process.env.CLERK_API_KEY });
-
+// Define a handler function for the API route
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const { email, role } = req.body;
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
 
-    try {
-      // Fetch user by email
-      const users = await clerk.users.list({ email_address: email });
-      const user = users[0];
+  // Extract user data and role from the request body
+  const { userId, role } = req.body;
 
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
+  // Validate the input
+  if (!userId || !role) {
+    return res.status(400).json({ message: 'User ID and role are required' });
+  }
 
-      // Update user metadata with the role
-      await clerk.users.update(user.id, {
-        metadata: {
-          role,
-        },
-      });
+  try {
+    // Get the current authenticated user
+    const { userId: clerkUserId } = getAuth(req);
 
-      res.status(200).json({ message: 'Role assigned successfully' });
-    } catch (error) {
-      if (error instanceof ClerkAPIError) {
-        console.error('Clerk API Error:', error);
-        res.status(500).json({ error: 'Failed to assign role' });
-      } else {
-        console.error('Unexpected Error:', error);
-        res.status(500).json({ error: 'Failed to assign role' });
-      }
-    }
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    // Optionally, you can perform further checks here to ensure the user has permissions
+
+    // Update the role in the database using Prisma
+    await prisma.user.update({
+      where: { id: userId },
+      data: { role },
+    });
+
+    // Respond with a success message
+    res.status(200).json({ message: 'Role assigned successfully' });
+  } catch (error) {
+    console.error('Error assigning role:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 }
