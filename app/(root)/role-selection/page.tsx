@@ -26,7 +26,7 @@ const AddRole = () => {
           setUserRole(roleName);
         }
       } catch (error) {
-        toast.error('Failed to fetch user data');
+        
       }
     };
 
