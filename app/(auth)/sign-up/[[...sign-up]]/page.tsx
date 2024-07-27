@@ -1,4 +1,4 @@
-'use clint';
+'use client';
 import { useState } from 'react';
 import { useSignUp } from '@clerk/nextjs';
 
