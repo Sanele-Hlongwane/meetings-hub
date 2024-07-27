@@ -6,8 +6,7 @@ import { currentUser } from '@clerk/nextjs/server';
 import { checkUser } from '@/lib/checkUser';
 import Footer from '@/components/Footer';
 
-const AddRole = async () => {
-  const user = await checkUser(null);
+const AddRole = () => {
   const formRef = useRef<HTMLFormElement>(null);
 
   const clientAction = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -56,6 +55,7 @@ const AddRole = async () => {
           Assign Role
         </button>
       </form>
+      < Footer />
     </div>
   );
 };
