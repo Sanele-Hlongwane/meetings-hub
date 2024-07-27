@@ -19,7 +19,7 @@ interface ProfileFormProps {
 }
 
 const ProfileForm = ({ user }: ProfileFormProps) => {
-  const [userData, setUserData] = useState<User>(user);
+  const [userData, setUserData] = useState<User | null>(user); // Allow null
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
     name: user.name || '',
@@ -38,7 +38,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: userData.id, ...formData }),
+      body: JSON.stringify({ id: userData?.id, ...formData }), // Check userData is not null
     });
 
     if (response.ok) {
@@ -46,7 +46,6 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
       setUserData(updatedUser);
       setEditMode(false);
     } else {
-      // Handle error response
       console.error('Failed to update user');
     }
   };
@@ -57,13 +56,12 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: userData.id }),
+      body: JSON.stringify({ id: userData?.id }), // Check userData is not null
     });
 
     if (response.ok) {
       setUserData(null); // Set userData to null after successful deletion
     } else {
-      // Handle error response
       console.error('Failed to delete user');
     }
   };
