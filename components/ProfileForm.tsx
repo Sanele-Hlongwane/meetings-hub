@@ -1,5 +1,3 @@
-// app/components/ProfileForm.tsx
-
 'use client';
 import { useState } from 'react';
 
@@ -10,9 +8,9 @@ interface Role {
 
 interface User {
   id: string;
-  name: string;
-  email: string;
-  imageUrl: string;
+  name: string | null; // Allow null values
+  email: string | null; // Allow null values
+  imageUrl: string | null; // Allow null values
   role: Role;
 }
 
@@ -24,9 +22,9 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
   const [userData, setUserData] = useState<User>(user);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
-    name: user.name,
-    email: user.email,
-    imageUrl: user.imageUrl,
+    name: user.name || '',
+    email: user.email || '',
+    imageUrl: user.imageUrl || '',
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,20 +40,32 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
       },
       body: JSON.stringify({ id: userData.id, ...formData }),
     });
-    const updatedUser = await response.json();
-    setUserData(updatedUser);
-    setEditMode(false);
+
+    if (response.ok) {
+      const updatedUser = await response.json();
+      setUserData(updatedUser);
+      setEditMode(false);
+    } else {
+      // Handle error response
+      console.error('Failed to update user');
+    }
   };
 
   const handleDelete = async () => {
-    await fetch('/api/deleteUser', {
+    const response = await fetch('/api/deleteUser', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ id: userData.id }),
     });
-    setUserData(null);
+
+    if (response.ok) {
+      setUserData(null); // Set userData to null after successful deletion
+    } else {
+      // Handle error response
+      console.error('Failed to delete user');
+    }
   };
 
   if (!userData) {
@@ -89,9 +99,13 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
         </div>
       ) : (
         <div>
-          <img src={userData.imageUrl} alt="Profile Image" />
-          <p>Name: {userData.name}</p>
-          <p>Email: {userData.email}</p>
+          {userData.imageUrl ? (
+            <img src={userData.imageUrl} alt="Profile Image" />
+          ) : (
+            <div>No profile image available</div>
+          )}
+          <p>Name: {userData.name || 'No name provided'}</p>
+          <p>Email: {userData.email || 'No email provided'}</p>
           <p>Role: {userData.role.name}</p>
           <button onClick={() => setEditMode(true)}>Edit</button>
           <button onClick={handleDelete}>Delete</button>
