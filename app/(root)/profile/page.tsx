@@ -1,64 +1,179 @@
 'use client';
+import { useState, useEffect } from 'react';
+import { currentUser } from '@clerk/nextjs';
+import { PrismaClient } from '@prisma/client';
+import { GetServerSideProps } from 'next';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { getUser } from '@/app/api/user';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+const prisma = new PrismaClient();
 
-const ProfilePage = () => {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+export const getServerSideProps: GetServerSideProps = async () => {
+  const user = await checkUser();
+  
+  return {
+    props: {
+      user,
+    },
+  };
+};
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await getUser();
-        setUser(userData);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          toast.error(error.message || 'Failed to fetch user data');
-        } else {
-          toast.error('Failed to fetch user data');
-        }
-        router.push('/sign-in');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, [router]);
-
-  if (loading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
-  }
+const checkUser = async () => {
+  const user = await currentUser();
 
   if (!user) {
     return null;
   }
 
-  const { role, name, email, imageUrl } = user;
+  // Check if the user exists in the database
+  let loggedInUser = await prisma.user.findUnique({
+    where: {
+      clerkId: user.id,
+    },
+    include: {
+      role: true,
+    },
+  });
+
+  // If user exists, return the user
+  if (loggedInUser) {
+    return loggedInUser;
+  }
+
+  // If user doesn't exist, check by email
+  loggedInUser = await prisma.user.findUnique({
+    where: {
+      email: user.emailAddresses[0].emailAddress,
+    },
+    include: {
+      role: true,
+    },
+  });
+
+  if (loggedInUser) {
+    // Update the user with the new Clerk ID and other details
+    loggedInUser = await prisma.user.update({
+      where: {
+        email: user.emailAddresses[0].emailAddress,
+      },
+      data: {
+        clerkId: user.id,
+        name: `${user.firstName} ${user.lastName}`,
+        imageUrl: user.imageUrl,
+        role: {
+          connect: { id: 'defaultRoleId' },
+        },
+      },
+      include: {
+        role: true,
+      },
+    });
+
+    return loggedInUser;
+  }
+
+  // If user doesn't exist by email, create a new role if needed
+  let defaultRole = await prisma.role.findUnique({
+    where: {
+      name: 'default',
+    },
+  });
+
+  if (!defaultRole) {
+    defaultRole = await prisma.role.create({
+      data: {
+        name: 'default',
+      },
+    });
+  }
+
+  // Create a new user with the role
+  const newUser = await prisma.user.create({
+    data: {
+      clerkId: user.id,
+      name: `${user.firstName} ${user.lastName}`,
+      imageUrl: user.imageUrl,
+      email: user.emailAddresses[0].emailAddress,
+      role: {
+        connect: { id: defaultRole.id },
+      },
+    },
+    include: {
+      role: true,
+    },
+  });
+
+  return newUser;
+};
+
+const ProfilePage = ({ user }) => {
+  const [userData, setUserData] = useState(user);
+  const [editMode, setEditMode] = useState(false);
+  const [formData, setFormData] = useState({
+    name: user.name,
+    email: user.email,
+    imageUrl: user.imageUrl,
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleUpdate = async () => {
+    // Update user data in the database
+    const updatedUser = await prisma.user.update({
+      where: { id: userData.id },
+      data: formData,
+    });
+    setUserData(updatedUser);
+    setEditMode(false);
+  };
+
+  const handleDelete = async () => {
+    // Delete user from the database
+    await prisma.user.delete({
+      where: { id: userData.id },
+    });
+    setUserData(null);
+  };
+
+  if (!userData) {
+    return <p>No user data found.</p>;
+  }
 
   return (
-    <div className="max-w-2xl mx-auto my-12 p-8 bg-gray-900 rounded-xl shadow-lg space-y-6 text-white">
-      <h1 className="text-2xl font-bold">Profile</h1>
-      {imageUrl && <img src={imageUrl} alt={`${name}'s profile`} className="w-32 h-32 rounded-full mx-auto" />}
-      <p><strong>Name:</strong> {name}</p>
-      <p><strong>Email:</strong> {email}</p>
-      {role && (role.name === 'entrepreneur' || role.name === 'investor') ? (
-        <>
-          <p><strong>Role:</strong> {role.name.charAt(0).toUpperCase() + role.name.slice(1)}</p>
-          {/* Display other details related to the role here */}
-        </>
+    <div>
+      <h1>Profile Page</h1>
+      {editMode ? (
+        <div>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+          <input
+            type="text"
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleInputChange}
+          />
+          <button onClick={handleUpdate}>Save</button>
+        </div>
       ) : (
-        <button
-          onClick={() => router.push('/role-selection')}
-          className="mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-        >
-          Choose Role
-        </button>
+        <div>
+          <img src={userData.imageUrl} alt="Profile Image" />
+          <p>Name: {userData.name}</p>
+          <p>Email: {userData.email}</p>
+          <p>Role: {userData.role.name}</p>
+          <button onClick={() => setEditMode(true)}>Edit</button>
+          <button onClick={handleDelete}>Delete</button>
+        </div>
       )}
     </div>
   );
