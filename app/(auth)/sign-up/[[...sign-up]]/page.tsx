@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSignUp } from "@clerk/nextjs";
-import SignupForm from "@/app/components/SignupForm";
-import VerifyForm from "@/app/components/VerifyForm";
+import SignupForm from "@/components/SignupForm";
+import VerifyForm from "@/components/VerifyForm";
 
 const Signup = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
