@@ -1,7 +1,7 @@
 // UpdateRole action in backend (server-side)
 'use server';
 import { auth } from '@clerk/nextjs/server';
-import { db } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 interface RoleData {
   name: string;
@@ -28,12 +28,12 @@ async function updateRole({ name }: { name: string }): Promise<RoleResult> {
 
   try {
 
-    let role = await db.role.findFirst({
+    let role = await prisma.role.findFirst({
       where: { name: name.toLowerCase() } // Adjust for case sensitivity
     });
 
     if (!role) {
-      role = await db.role.create({
+      role = await prisma.role.create({
         data: {
           name: name.toLowerCase() // Ensure consistent casing
         }
@@ -41,7 +41,7 @@ async function updateRole({ name }: { name: string }): Promise<RoleResult> {
     }
 
 
-    const updatedUser = await db.user.update({
+    const updatedUser = await prisma.user.update({
       where: { clerkId: userId }, // Use the dynamic identifier for your user
       data: {
         roleId: role.id
