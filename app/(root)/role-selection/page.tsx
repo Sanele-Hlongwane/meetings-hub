@@ -26,7 +26,7 @@ const AddRole = () => {
           setUserRole(roleName);
         }
       } catch (error) {
-        
+        toast.error('Failed to fetch user data');
       }
     };
 
@@ -46,7 +46,7 @@ const AddRole = () => {
     }
 
     // Show confirmation dialog before assigning the role
-    const confirm = window.confirm(`Are you sure you want to save role as ${selectedRole}? This cannot be changed.`);
+    const confirm = window.confirm(`Are you sure you want to save the role as ${selectedRole}? This cannot be changed.`);
     if (!confirm) {
       return;
     }
@@ -57,7 +57,7 @@ const AddRole = () => {
       if (error) {
         toast.error('Failed to assign role: ' + error);
       } else {
-        toast.success(`Role ${data?.name} assigned`);
+        toast.success(`Role ${data?.name} assigned successfully`);
         router.push('/');
       }
     } catch (error) {
@@ -66,31 +66,31 @@ const AddRole = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto my-20 p-6 bg-white rounded-xl shadow-md space-y-4">
-      <h3 className="text-2xl font-bold text-gray-800">Assign Role</h3>
-      <form ref={formRef} onSubmit={handleFormSubmit}>
-        <div className='relative'>
-          <label htmlFor='name' className='block text-sm font-medium text-gray-700'>
+    <div className="max-w-md mx-auto my-12 p-8 bg-gray-900 rounded-xl shadow-lg space-y-6">
+      <h3 className="text-xl font-semibold text-white">Assign Role</h3>
+      <form ref={formRef} onSubmit={handleFormSubmit} className="space-y-4">
+        <div className="relative">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-300">
             Role Name
           </label>
           <select
-            id='name'
-            name='name'
-            className='mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
+            id="name"
+            name="name"
+            className="mt-1 block w-full bg-gray-800 text-gray-300 border-gray-600 rounded-md py-2 px-3 text-base focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm"
             aria-required="true"
             aria-describedby="role-name-description"
           >
-            <option value=''>Select role</option>
-            <option value='entrepreneur'>Entrepreneur</option>
-            <option value='investor'>Investor</option>
+            <option value="">Select role</option>
+            <option value="entrepreneur">Entrepreneur</option>
+            <option value="investor">Investor</option>
           </select>
-          <p id="role-name-description" className="text-sm text-gray-500 mt-1">
+          <p id="role-name-description" className="text-xs text-gray-400 mt-1">
             Choose the role you want to assign to the user. This action cannot be undone.
           </p>
         </div>
         <button
-          type='submit'
-          className='mt-4 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500'
+          type="submit"
+          className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
         >
           Assign Role
         </button>
