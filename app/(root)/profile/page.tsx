@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
-import { prisma } from '@/lib/prisma';
+import { getUser } from '@/app/api/user';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,26 +14,11 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { userId } = auth();
-        if (!userId) {
-          router.push('/sign-in');
-          return;
-        }
-
-        const userData = await prisma.user.findUnique({
-          where: { clerkId: userId },
-          include: { role: true },
-        });
-
-        if (!userData) {
-          toast.error('User not found');
-          router.push('/sign-in');
-          return;
-        }
-
+        const userData = await getUser();
         setUser(userData);
       } catch (error) {
-        toast.error('Failed to fetch user data');
+        toast.error(error.message || 'Failed to fetch user data');
+        router.push('/sign-in');
       } finally {
         setLoading(false);
       }
