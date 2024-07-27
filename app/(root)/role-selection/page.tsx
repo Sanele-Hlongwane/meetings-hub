@@ -1,6 +1,6 @@
 'use client';
 import { useRef } from 'react';
-import updateRole from '@/app/api/updateRole';
+import updateRole from '@/app/api/updaterole';
 import { toast } from 'react-toastify';
 import { currentUser } from '@clerk/nextjs/server';
 
