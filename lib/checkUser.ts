@@ -1,71 +1,34 @@
-// lib/checkUser.ts
 import { currentUser } from "@clerk/nextjs/server";
-import { PrismaClient, Role } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const checkUser = async (selectedRole: Role | null = null) => {
+export const checkUser = async (selectedRole: string | null = null) => {
   const user = await currentUser();
 
   if (!user) {
     return null;
   }
 
-  // Default to 'USER' role if no role is selected
-  const role: Role = selectedRole || Role.USER;
-
-  // Find the user by Clerk ID and include related data
   let loggedInUser = await prisma.user.findUnique({
     where: {
       clerkId: user.id,
     },
     include: {
-      entrepreneur: true,  // Include related Entrepreneur model if it exists
-      investor: {
-        include: {
-          investmentOpportunities: true,  // Include related Investment model
-        },
-      },
-      investments: true,  // Include related Investment model
+      role: true,
     },
   });
 
   if (loggedInUser) {
-    if (loggedInUser.role !== role) {
-      loggedInUser = await prisma.user.update({
-        where: {
-          clerkId: user.id,
-        },
-        data: {
-          role: role, // Update the role
-        },
-        include: {
-          entrepreneur: true,
-          investor: {
-            include: {
-              investmentOpportunities: true,
-            },
-          },
-          investments: true,
-        },
-      });
-    }
     return loggedInUser;
   }
 
-  // If user does not exist, find by email
   loggedInUser = await prisma.user.findUnique({
     where: {
       email: user.emailAddresses[0].emailAddress,
     },
     include: {
-      entrepreneur: true,
-      investor: {
-        include: {
-          investmentOpportunities: true,
-        },
-      },
-      investments: true,
+      role: true,
     },
   });
 
@@ -77,37 +40,45 @@ export const checkUser = async (selectedRole: Role | null = null) => {
       data: {
         clerkId: user.id,
         name: `${user.firstName} ${user.lastName}`,
-        role: role,
+        imageUrl: user.imageUrl,
+        role: {
+          connect: { id: selectedRole || 'defaultRoleId' },
+        },
       },
       include: {
-        entrepreneur: true,
-        investor: {
-          include: {
-            investmentOpportunities: true,
-          },
-        },
-        investments: true,
+        role: true,
       },
     });
+
     return loggedInUser;
   }
 
-  // Create a new user with default role
+  let defaultRole = await prisma.role.findUnique({
+    where: {
+      name: 'default',
+    },
+  });
+
+  if (!defaultRole) {
+    defaultRole = await prisma.role.create({
+      data: {
+        name: 'default',
+      },
+    });
+  }
+
   const newUser = await prisma.user.create({
     data: {
       clerkId: user.id,
       name: `${user.firstName} ${user.lastName}`,
+      imageUrl: user.imageUrl,
       email: user.emailAddresses[0].emailAddress,
-      role: role,
+      role: {
+        connect: { id: selectedRole || defaultRole.id },
+      },
     },
     include: {
-      entrepreneur: true,
-      investor: {
-        include: {
-          investmentOpportunities: true,
-        },
-      },
-      investments: true,
+      role: true,
     },
   });
 
