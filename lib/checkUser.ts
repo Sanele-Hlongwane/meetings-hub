@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { currentUser } from '@clerk/nextjs/server';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -10,6 +10,7 @@ export const checkUser = async (selectedRole: string | null = null) => {
     return null;
   }
 
+  // Check if the user exists in the database
   let loggedInUser = await prisma.user.findUnique({
     where: {
       clerkId: user.id,
@@ -19,10 +20,12 @@ export const checkUser = async (selectedRole: string | null = null) => {
     },
   });
 
+  // If user exists, return the user
   if (loggedInUser) {
     return loggedInUser;
   }
 
+  // If user doesn't exist, check by email
   loggedInUser = await prisma.user.findUnique({
     where: {
       email: user.emailAddresses[0].emailAddress,
@@ -33,6 +36,7 @@ export const checkUser = async (selectedRole: string | null = null) => {
   });
 
   if (loggedInUser) {
+    // Update the user with the new Clerk ID and other details
     loggedInUser = await prisma.user.update({
       where: {
         email: user.emailAddresses[0].emailAddress,
@@ -53,6 +57,7 @@ export const checkUser = async (selectedRole: string | null = null) => {
     return loggedInUser;
   }
 
+  // If user doesn't exist by email, create a new role if needed
   let defaultRole = await prisma.role.findUnique({
     where: {
       name: 'default',
@@ -67,6 +72,7 @@ export const checkUser = async (selectedRole: string | null = null) => {
     });
   }
 
+  // Create a new user with the role
   const newUser = await prisma.user.create({
     data: {
       clerkId: user.id,
