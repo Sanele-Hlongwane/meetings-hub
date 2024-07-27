@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import updateRole from '@/app/api/updaterole';
 import { toast } from 'react-toastify';
 import { currentUser } from '@clerk/nextjs/server';
-import { checkUser } from '@/lib/checkUser';
 
 const AddRole = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -26,27 +25,30 @@ const AddRole = () => {
       return;
     }
 
+    // Access the role name from the nested role object
+    const roleName = user.role?.name;
+
     // Redirect if user is already assigned a role
-    if (user.role === 'entrepreneur' || user.role === 'investor') {
+    if (roleName === 'entrepreneur' || roleName === 'investor') {
       router.push('/');
       return;
     }
 
     const formData = new FormData(event.currentTarget);
-    const roleName = formData.get('name') as string; // Ensure role name is captured correctly
+    const selectedRole = formData.get('name') as string; // Ensure role name is captured correctly
 
-    if (!roleName || roleName === '') {
+    if (!selectedRole || selectedRole === '') {
       toast.error('Role name is required');
       return;
     }
 
     // Show confirmation dialog before assigning the role
-    const confirm = window.confirm(`Are you sure you want to save role as ${roleName}? This cannot be changed.`);
+    const confirm = window.confirm(`Are you sure you want to save role as ${selectedRole}? This cannot be changed.`);
     if (!confirm) {
       return;
     }
 
-    const { data, error } = await updateRole({ name: roleName });
+    const { data, error } = await updateRole({ name: selectedRole });
 
     if (error) {
       toast.error(error);
