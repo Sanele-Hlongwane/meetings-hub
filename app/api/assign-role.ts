@@ -1,6 +1,6 @@
 // pages/api/assign-role.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Clerk } from '@clerk/clerk-sdk-node';
+import { Clerk, ClerkAPIError } from '@clerk/nextjs/server';
 
 // Initialize Clerk SDK with your API key
 const clerk = new Clerk({ apiKey: process.env.CLERK_API_KEY });
@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       // Update user metadata with the role
-      await clerk.users.updateUser(user.id, {
+      await clerk.users.update(user.id, {
         metadata: {
           role,
         },
@@ -27,8 +27,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       res.status(200).json({ message: 'Role assigned successfully' });
     } catch (error) {
-      console.error('Error assigning role:', error);
-      res.status(500).json({ error: 'Failed to assign role' });
+      if (error instanceof ClerkAPIError) {
+        console.error('Clerk API Error:', error);
+        res.status(500).json({ error: 'Failed to assign role' });
+      } else {
+        console.error('Unexpected Error:', error);
+        res.status(500).json({ error: 'Failed to assign role' });
+      }
     }
   } else {
     res.setHeader('Allow', ['POST']);
