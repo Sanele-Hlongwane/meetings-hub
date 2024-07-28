@@ -71,8 +71,7 @@ const Profile = () => {
 
       if (!response.ok) throw new Error('Failed to update profile');
 
-      toast.success('Profile updated successfully!'); 
-      router.reload(); 
+      toast.success('Profile updated successfully!');
     } catch (error) {
       setError('Error updating profile');
       console.error(error);
