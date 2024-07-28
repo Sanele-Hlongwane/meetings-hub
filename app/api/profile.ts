@@ -1,3 +1,6 @@
+
+import { UserWithRole } from '@/types/types';
+
 const fetchUser = async (): Promise<UserWithRole> => {
   try {
     const response = await fetch('/api/profile');
