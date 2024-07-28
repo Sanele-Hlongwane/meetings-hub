@@ -1,4 +1,4 @@
-// pages/api/profile.ts
+// pages/api/profile/route.ts
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import { checkUser } from '@/lib/checkUser'; // Adjust the import path
