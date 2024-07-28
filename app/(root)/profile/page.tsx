@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 // Fetch user data from the server
 const fetchUser = async () => {
   try {
-    const response = await fetch('/app/api/profile');
+    const response = await fetch('/api/profile');
     if (!response.ok) throw new Error('Failed to fetch user');
     return response.json();
   } catch (error) {
@@ -20,7 +20,7 @@ const fetchUser = async () => {
 // Fetch roles for the dropdown
 const fetchRoles = async () => {
   try {
-    const response = await fetch('/app/api/roles');
+    const response = await fetch('/api/roles');
     if (!response.ok) throw new Error('Failed to fetch roles');
     return response.json();
   } catch (error) {
@@ -63,7 +63,7 @@ const Profile = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/app/api/updateProfile', {
+      const response = await fetch('/api/updateProfile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, imageUrl, role }),
@@ -81,7 +81,7 @@ const Profile = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch('/app/api/deleteProfile', {
+      const response = await fetch('/api/deleteProfile', {
         method: 'DELETE',
       });
 
