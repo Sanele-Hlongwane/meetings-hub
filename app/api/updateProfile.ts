@@ -2,7 +2,7 @@
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
-import { checkUser } from '../../path-to-your-checkUser-function'; // Adjust the import path
+import { checkUser } from '@/lib/checkUser'; // Adjust the import path
 
 const prisma = new PrismaClient();
 
