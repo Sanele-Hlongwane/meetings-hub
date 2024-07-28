@@ -1,7 +1,7 @@
 // pages/api/profile.ts
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { checkUser } from '../../path-to-your-checkUser-function'; // Adjust the import path
+import { checkUser } from '@/lib/checkUser'; // Adjust the import path
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
