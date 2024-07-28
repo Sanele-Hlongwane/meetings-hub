@@ -84,7 +84,7 @@ const Profile = () => {
   }
 
   return (
-    <div>
+    <div className='py-16'>
       <h1>Profile</h1>
       <form onSubmit={handleUpdate}>
         <div>
