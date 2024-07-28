@@ -1,25 +1,32 @@
-// pages/profile.tsx
 'use client';
+
 import { useState, useEffect, FormEvent } from 'react';
-import { UserWithRole } from '@/types/types'; // Adjust the import path
-import { useRouter } from 'next/router';
+import { UserWithRole } from '@/types/types';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 // Fetch user data from the server
 const fetchUser = async () => {
-  const response = await fetch('/api/profile');
-  if (!response.ok) {
-    throw new Error('Failed to fetch user');
+  try {
+    const response = await fetch('/api/profile');
+    if (!response.ok) throw new Error('Failed to fetch user');
+    return response.json();
+  } catch (error) {
+    console.error(error);
+    throw error; 
   }
-  return response.json();
 };
 
 // Fetch roles for the dropdown
 const fetchRoles = async () => {
-  const response = await fetch('/api/roles');
-  if (!response.ok) {
-    throw new Error('Failed to fetch roles');
+  try {
+    const response = await fetch('/api/roles');
+    if (!response.ok) throw new Error('Failed to fetch roles');
+    return response.json();
+  } catch (error) {
+    console.error(error);
+    throw error; // Rethrow to handle in component
   }
-  return response.json();
 };
 
 const Profile = () => {
@@ -28,6 +35,7 @@ const Profile = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [role, setRole] = useState('');
   const [roles, setRoles] = useState<{ id: string; name: string }[]>([]);
+  const [error, setError] = useState<string | null>(null); // To handle errors
   const router = useRouter();
 
   useEffect(() => {
@@ -42,7 +50,9 @@ const Profile = () => {
         const rolesData = await fetchRoles();
         setRoles(rolesData);
       } catch (error) {
+        setError('Error loading user data');
         console.error(error);
+        toast.error('Failed to load user data'); 
       }
     };
 
@@ -52,39 +62,51 @@ const Profile = () => {
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch('/api/updateProfile', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, imageUrl, role }),
-    });
+    try {
+      const response = await fetch('/api/updateProfile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, imageUrl, role }),
+      });
 
-    if (!response.ok) {
-      console.error('Failed to update profile');
-      return;
+      if (!response.ok) throw new Error('Failed to update profile');
+
+      toast.success('Profile updated successfully!'); 
+      router.reload(); 
+    } catch (error) {
+      setError('Error updating profile');
+      console.error(error);
+      toast.error('Failed to update profile'); 
     }
-
-    router.reload(); // Reload the page to get updated user data
   };
 
   const handleDelete = async () => {
-    const response = await fetch('/api/deleteProfile', {
-      method: 'DELETE',
-    });
+    try {
+      const response = await fetch('/api/deleteProfile', {
+        method: 'DELETE',
+      });
 
-    if (!response.ok) {
-      console.error('Failed to delete profile');
-      return;
+      if (!response.ok) throw new Error('Failed to delete profile');
+
+      toast.success('Profile deleted successfully!'); 
+      router.push('/sign-up'); 
+    } catch (error) {
+      setError('Error deleting profile');
+      console.error(error);
+      toast.error('Failed to delete profile'); // Show toast on error
     }
-
-    router.push('/profile'); 
   };
 
+  if (error) {
+    return <p>{error}</p>; // Show error message if there's any
+  }
+
   if (!user) {
-    return <p>Loading...</p>;
+    return <p>Loading...</p>; // Loading state while fetching data
   }
 
   return (
-    <div className='py-16'>
+    <div>
       <h1>Profile</h1>
       <form onSubmit={handleUpdate}>
         <div>
@@ -93,6 +115,7 @@ const Profile = () => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name"
           />
         </div>
         <div>
@@ -101,6 +124,7 @@ const Profile = () => {
             type="text"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
+            placeholder="Enter image URL"
           />
         </div>
         <div>
