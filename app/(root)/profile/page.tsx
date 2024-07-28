@@ -1,5 +1,5 @@
 // pages/profile.tsx
-
+'use client';
 import { useState, useEffect, FormEvent } from 'react';
 import { UserWithRole } from '@/types/types'; // Adjust the import path
 import { useRouter } from 'next/router';
