@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, FormEvent } from 'react';
-import { UserWithRole } from '@/types/types';
+import { UserWithRole } from '@/types/types'; 
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
@@ -13,7 +13,7 @@ const fetchUser = async () => {
     return response.json();
   } catch (error) {
     console.error(error);
-    throw error; 
+    throw error;
   }
 };
 
@@ -93,16 +93,16 @@ const Profile = () => {
     } catch (error) {
       setError('Error deleting profile');
       console.error(error);
-      toast.error('Failed to delete profile'); // Show toast on error
+      toast.error('Failed to delete profile'); 
     }
   };
 
   if (error) {
-    return <p>{error}</p>; // Show error message if there's any
+    return <p>{error}</p>; 
   }
 
   if (!user) {
-    return <p>Loading...</p>; // Loading state while fetching data
+    return <p>Loading...</p>; 
   }
 
   return (
