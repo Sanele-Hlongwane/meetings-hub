@@ -1,9 +1,6 @@
-// pages/api/profile/route.ts
+const { checkUser } = require('@/lib/checkUser'); 
 
-import { NextApiRequest, NextApiResponse } from 'next';
-import { checkUser } from '@/lib/checkUser'; // Adjust the import path
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).end(); // Method Not Allowed
   }
