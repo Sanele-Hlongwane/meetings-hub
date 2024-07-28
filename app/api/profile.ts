@@ -1,8 +1,18 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { PrismaClient, Role } from '@prisma/client';
+// pages/api/profile.ts
 
-const prisma = new PrismaClient();
+import { NextApiRequest, NextApiResponse } from 'next';
+import { checkUser } from '../../path-to-your-checkUser-function'; // Adjust the import path
 
-export const checkUser = async () => {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'GET') {
+    return res.status(405).end(); // Method Not Allowed
+  }
 
-};
+  const user = await checkUser();
+
+  if (!user) {
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
+
+  res.json(user);
+}
