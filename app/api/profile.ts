@@ -2,7 +2,7 @@
 
 import { useState, useEffect, FormEvent } from 'react';
 import { UserWithRole } from '@/types/types'; // Adjust the import path
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // Fetch user data from the server
 const fetchUser = async () => {
