@@ -82,7 +82,7 @@ const SideNav = () => {
       <div
         id="sideNav"
         className={cn(
-          "fixed left-0 h-full bg-gray-900 dark:bg-gray-400 text-white dark:text-gray-900 pt-8 select-none transition-transform duration-300 z-40",
+          "fixed left-0 h-full dark:bg-gray-900 bg-gray-400 dark:text-white text-gray-900 pt-8 select-none transition-transform duration-300 z-40",
           {
             "w-[185px] md:w-[210px] lg:w-[250px] xl:w-[260px] translate-x-0": isOpen,
             "w-0 md:w-0 lg:w-0 xl:w-0 -translate-x-full": !isOpen,
