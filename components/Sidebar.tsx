@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { FaHome, FaCalendarAlt, FaHistory, FaVideo, FaUserPlus } from "react-icons/fa"; // Importing React icons
+import { FaHome, FaCalendarAlt, FaHistory, FaVideo, FaUserPlus } from "react-icons/fa";
 
-// Sidebar links with icons
 export const sidebarLinks = [
   {
-    icon: <FaHome size={24} />, // Replacing imgURL with icon
+    icon: <FaHome size={24} />,
     route: '/',
     label: 'Home',
   },
@@ -37,7 +36,7 @@ export const sidebarLinks = [
 interface TabProps {
   label: string;
   route: string;
-  icon: React.ReactNode; // Changed to accept icon prop
+  icon: React.ReactNode;
   onClick: () => void;
 }
 
@@ -59,7 +58,7 @@ export const Tab: React.FC<TabProps> = ({ label, route, icon, onClick }) => {
     >
       <Link href={route} passHref>
         <p className="flex gap-3 lg:gap-4 items-center w-full">
-          {icon} {/* Displaying the icon directly */}
+          {icon}
           <p className="text-sm md:text-base lg:text-lg font-medium lg:font-semibold">
             {label}
           </p>
@@ -73,10 +72,6 @@ const SideNav = () => {
   const pathname = usePathname();
   const isMeetingPage = pathname.startsWith("/meeting");
   const [isOpen, setIsOpen] = useState(false);
-
-  if (isMeetingPage) {
-    return null; // Ensure no rendering on meeting pages
-  }
 
   const toggleSideNav = () => {
     setIsOpen(!isOpen);
@@ -125,7 +120,7 @@ const SideNav = () => {
               key={index}
               label={label}
               route={route}
-              icon={icon} // Pass the icon directly
+              icon={icon}
               onClick={toggleSideNav}
             />
           ))}
