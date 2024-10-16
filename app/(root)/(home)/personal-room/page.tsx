@@ -16,7 +16,7 @@ const Table = ({
   description: string;
 }) => {
   return (
-    <div className="flex flex-col items-start gap-2 xl:flex-row">
+    <div className="flex flex-col items-start gap-2 xl:flex-row text-white dark:text-black">
       <h1 className="text-base font-medium text-sky-1 lg:text-xl xl:min-w-32">
         {title}:
       </h1>

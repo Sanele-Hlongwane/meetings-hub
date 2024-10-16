@@ -2,7 +2,7 @@ import React from 'react';
 
 const FAQ = () => {
   return (
-    <div className="p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-black py-24 text-white">
+    <div className="p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-black py-24 dark:text-black text-white">
       <h1 className="text-5xl font-extrabold mb-10 text-blue-500 dark:text-orange-500">Frequently Asked Questions (FAQs)</h1>
       
       <div className="mb-8">

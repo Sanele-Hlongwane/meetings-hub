@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Meetings Hub",
-  description: "Connecting investors with entrepreneurs",
+  description: "Best meeting hosting site.",
   icons: {
     icon: "/images/logo.png",
   },
