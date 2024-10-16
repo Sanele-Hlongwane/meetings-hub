@@ -48,11 +48,11 @@ export const Tab: React.FC<TabProps> = ({ label, route, icon, onClick }) => {
   return (
     <div
       className={cn(
-        "px-4 pl-6 py-3 my-3 mx-2 flex justify-start items-center rounded-xl transition-all duration-300",
+        "px-4 pl-6 py-3 my-3 mx-2 flex justify-start mt-8 items-center rounded-xl transition-all duration-300",
         {
-          "bg-gray-300 dark:bg-gray-700 text-gray-900": isActive, // Adjusting background and text color for active tab
+          "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300": isActive,
           "hover:bg-gray-700": !isActive,
-          "text-white": !isActive // Text color when not active
+          "text-white": !isActive
         }
       )}
       onClick={onClick}
@@ -160,7 +160,7 @@ const SideNav = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                d="M12 4v16m8-8H4"
               />
             </svg>
           ) : (
@@ -175,7 +175,7 @@ const SideNav = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M9 5l7 7-7 7"
+                d="M4 12h16"
               />
             </svg>
           )}
