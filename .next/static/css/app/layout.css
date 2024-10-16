@@ -904,6 +904,15 @@ video {
 .animate-bounce {
   animation: bounce 1s infinite;
 }
+@keyframes spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
 .cursor-default {
   cursor: default;
 }
@@ -1094,6 +1103,9 @@ video {
 .border-\[5px\] {
   border-width: 5px;
 }
+.border-4 {
+  border-width: 4px;
+}
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1108,6 +1120,9 @@ video {
 }
 .border-t {
   border-top-width: 1px;
+}
+.border-solid {
+  border-style: solid;
 }
 .border-none {
   border-style: none;
@@ -1154,6 +1169,9 @@ video {
 }
 .border-transparent {
   border-color: transparent;
+}
+.border-t-transparent {
+  border-top-color: transparent;
 }
 .border-opacity-50 {
   --tw-border-opacity: 0.5;

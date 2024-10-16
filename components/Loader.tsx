@@ -3,14 +3,10 @@ import Image from 'next/image';
 const Loader = () => {
   return (
     <div className="flex-center h-screen w-full">
-      <Image
-        src="/icons/loading-circle.svg"
-        alt="Loading..."
-        width={50}
-        height={50}
-      />
+      <div className="loader border-t-transparent border-blue-500 border-solid border-4 rounded-full w-12 h-12 animate-spin"></div>
     </div>
   );
 };
 
 export default Loader;
+
