@@ -1,44 +1,65 @@
-
 'use client';
-import Image from "next/image";
-import Link from "next/link";
 import React, { useState } from "react";
-
-import { sidebarLinks } from '@/constants';
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { FaHome, FaCalendarAlt, FaHistory, FaVideo, FaUserPlus } from "react-icons/fa"; // Importing React icons
+
+// Sidebar links with icons
+export const sidebarLinks = [
+  {
+    icon: <FaHome size={24} />, // Replacing imgURL with icon
+    route: '/',
+    label: 'Home',
+  },
+  {
+    icon: <FaCalendarAlt size={24} />,
+    route: '/upcoming',
+    label: 'Upcoming',
+  },
+  {
+    icon: <FaHistory size={24} />,
+    route: '/previous',
+    label: 'Previous',
+  },
+  {
+    icon: <FaVideo size={24} />,
+    route: '/recordings',
+    label: 'Recordings',
+  },
+  {
+    icon: <FaUserPlus size={24} />,
+    route: '/personal-room',
+    label: 'Personal Room',
+  },
+];
+
 interface TabProps {
   label: string;
   route: string;
-  imgURL: string;
+  icon: React.ReactNode; // Changed to accept icon prop
   onClick: () => void;
 }
 
-
-export const Tab : React.FC<TabProps> = ({ label, route, imgURL, onClick }) => {
+export const Tab: React.FC<TabProps> = ({ label, route, icon, onClick }) => {
   const pathname = usePathname();
   const isActive = pathname === route;
 
   return (
     <div
       className={cn(
-        "px-4 pl-6 py-3 my-3 mx-2 text-white flex justify-start items-center rounded-xl transition-all duration-300",
+        "px-4 pl-6 py-3 my-3 mx-2 flex justify-start items-center rounded-xl transition-all duration-300",
         {
-          "bg-primary": isActive,
+          "bg-gray-300 dark:bg-gray-700 text-gray-900": isActive, // Adjusting background and text color for active tab
           "hover:bg-gray-700": !isActive,
+          "text-white": !isActive // Text color when not active
         }
       )}
       onClick={onClick}
     >
       <Link href={route} passHref>
         <p className="flex gap-3 lg:gap-4 items-center w-full">
-          <Image
-            src={imgURL}
-            width={30}
-            height={30}
-            alt={label}
-            className="w-5 md:w-6 lg:w-8 h-auto"
-          />
+          {icon} {/* Displaying the icon directly */}
           <p className="text-sm md:text-base lg:text-lg font-medium lg:font-semibold">
             {label}
           </p>
@@ -47,7 +68,6 @@ export const Tab : React.FC<TabProps> = ({ label, route, imgURL, onClick }) => {
     </div>
   );
 };
-
 
 const SideNav = () => {
   const pathname = usePathname();
@@ -67,7 +87,7 @@ const SideNav = () => {
       <div
         id="sideNav"
         className={cn(
-          "fixed top-0 left-0 h-full bg-gray-900 text-white pt-5 select-none transition-transform duration-300 z-40",
+          "fixed left-0 h-full bg-gray-900 dark:bg-gray-400 text-white dark:text-gray-900 pt-8 select-none transition-transform duration-300 z-40",
           {
             "w-[185px] md:w-[210px] lg:w-[250px] xl:w-[260px] translate-x-0": isOpen,
             "w-0 md:w-0 lg:w-0 xl:w-0 -translate-x-full": !isOpen,
@@ -79,7 +99,7 @@ const SideNav = () => {
             <h2 className="text-lg font-semibold">Options</h2>
           ) : (
             <button
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-400 dark:text-gray-900 hover:text-white dark:hover:text-gray-800 transition-colors"
               onClick={toggleSideNav}
             >
               <svg
@@ -100,12 +120,12 @@ const SideNav = () => {
           )}
         </div>
         <div className={cn("mt-4", { "hidden": !isOpen })}>
-          {sidebarLinks.map(({ label, imgURL, route }, index) => (
+          {sidebarLinks.map(({ label, icon, route }, index) => (
             <Tab
               key={index}
               label={label}
               route={route}
-              imgURL={imgURL}
+              icon={icon} // Pass the icon directly
               onClick={toggleSideNav}
             />
           ))}

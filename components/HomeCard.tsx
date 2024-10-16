@@ -20,17 +20,18 @@ const HomeCard = ({ className, img, title, description, handleClick }: HomeCardP
         className
       )}
       onClick={handleClick}
+
     >
-      <div className="flex-center glassmorphism size-12 rounded-[10px]">
+      <div className="flex-center glassmorphism size-12 rounded-[10px] bg-blue-1 dark:bg-blue-2">
         <Image src={img} alt="meeting" width={27} height={27} />
       </div>
       
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="text-lg font-normal">{description}</p>
+        <h1 className="text-2xl font-bold dark:text-black">{title}</h1>
+        <p className="text-lg font-normal dark:text-black">{description}</p>
       </div>
     </section>
-  );
+  );  
 };
 
 export default HomeCard;

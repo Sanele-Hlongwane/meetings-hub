@@ -7,15 +7,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "./globals.css";
+import { ThemeProvider } from 'next-themes';
 import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Eagles Ring",
+  title: "Meetings Hub",
   description: "Connecting investors with entrepreneurs",
   icons: {
-    icon: "/Eagle.png",
+    icon: "/images/logo.png",
   },
 };
 
@@ -24,11 +25,12 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
+      <ThemeProvider attribute="class">
       <ClerkProvider
         appearance={{
           layout: {
             socialButtonsVariant: "iconButton",
-            logoImageUrl: "/EaglesRingLogoDark.png",
+            logoImageUrl: "/images/icon.png",
           },
           variables: {
             colorText: "#fff",
@@ -39,7 +41,7 @@ export default function RootLayout({
           },
         }}
       >
-        <body className={`${inter.className} bg-dark-2`}>
+        <body className={`${inter.className} bg-dark-2 dark:bg-gray-300 dark:text-black`}>
           <Toaster />
           <ToastContainer position="top-right"
             autoClose={5000}
@@ -51,6 +53,7 @@ export default function RootLayout({
           {children}
         </body>
       </ClerkProvider>
+      </ThemeProvider>
     </html>
   );
 }

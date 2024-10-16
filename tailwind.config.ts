@@ -59,6 +59,7 @@ const config = {
       },
       backgroundImage: {
         hero: "url('/images/hero-background.png')",
+        hero2: "url('/images/hero2.jpeg')",
       },
     },
   },
