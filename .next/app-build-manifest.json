@@ -56,20 +56,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(root)/(home)/recordings/page.js"
     ],
-    "/(root)/profile/page": [
+    "/(root)/user-profile/[[...user-profile]]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(root)/profile/page.js"
+      "static/chunks/app/(root)/user-profile/[[...user-profile]]/page.js"
     ],
-    "/(root)/profile/layout": [
+    "/(root)/user-profile/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(root)/profile/layout.js"
-    ],
-    "/not-found": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/not-found.js"
+      "static/chunks/app/(root)/user-profile/layout.js"
     ]
   }
 }

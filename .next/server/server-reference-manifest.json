@@ -8,7 +8,8 @@
         "app/(root)/(home)/upcoming/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!",
         "app/(root)/(home)/previous/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!",
         "app/(root)/(home)/recordings/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!",
-        "app/(root)/profile/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!"
+        "app/(root)/profile/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!",
+        "app/(root)/user-profile/[[...user-profile]]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
         "app/(root)/(home)/page": "action-browser",
@@ -17,7 +18,8 @@
         "app/(root)/(home)/upcoming/page": "action-browser",
         "app/(root)/(home)/previous/page": "action-browser",
         "app/(root)/(home)/recordings/page": "action-browser",
-        "app/(root)/profile/page": "action-browser"
+        "app/(root)/profile/page": "action-browser",
+        "app/(root)/user-profile/[[...user-profile]]/page": "action-browser"
       }
     },
     "d67fb5e7a5668a908e0ccc2f80a6bf619472b7be": {
@@ -28,7 +30,8 @@
         "app/(root)/(home)/upcoming/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!",
         "app/(root)/(home)/previous/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!",
         "app/(root)/(home)/recordings/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!",
-        "app/(root)/profile/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!"
+        "app/(root)/profile/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!",
+        "app/(root)/user-profile/[[...user-profile]]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fworkspaces%2Ffinale-eagles%2Factions%2Fstream.actions.ts%22%2C%5B%22tokenProvider%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
         "app/(root)/(home)/page": "action-browser",
@@ -37,7 +40,8 @@
         "app/(root)/(home)/upcoming/page": "action-browser",
         "app/(root)/(home)/previous/page": "action-browser",
         "app/(root)/(home)/recordings/page": "action-browser",
-        "app/(root)/profile/page": "action-browser"
+        "app/(root)/profile/page": "action-browser",
+        "app/(root)/user-profile/[[...user-profile]]/page": "action-browser"
       }
     }
   },
