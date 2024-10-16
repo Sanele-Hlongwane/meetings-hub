@@ -57,9 +57,9 @@ export const Tab: React.FC<TabProps> = ({ label, route, icon, onClick }) => {
       onClick={onClick}
     >
       <Link href={route} passHref>
-        <p className="flex gap-3 lg:gap-4 items-center w-full">
+        <p className="flex gap-3 lg:gap-4 items-center w-full text-gray-900 dark:text-gray-300">
           {icon}
-          <p className="text-sm md:text-base lg:text-lg font-medium lg:font-semibold">
+          <p className="text-sm md:text-base lg:text-lg font-medium lg:font-semibold text-gray-900 dark:text-gray-300">
             {label}
           </p>
         </p>
@@ -82,7 +82,7 @@ const SideNav = () => {
       <div
         id="sideNav"
         className={cn(
-          "fixed left-0 h-full dark:bg-gray-900 bg-gray-400 dark:text-white text-gray-900 pt-8 select-none transition-transform duration-300 z-40",
+          "fixed left-0 h-full dark:bg-gray-900 bg-gray-200 dark:text-white text-gray-900 pt-8 select-none transition-transform duration-300 z-40",
           {
             "w-[185px] md:w-[210px] lg:w-[250px] xl:w-[260px] translate-x-0": isOpen,
             "w-0 md:w-0 lg:w-0 xl:w-0 -translate-x-full": !isOpen,

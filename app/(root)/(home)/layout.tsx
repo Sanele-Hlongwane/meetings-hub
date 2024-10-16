@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 
 export const metadata: Metadata = {
-  title: 'Meetings',
+  title: 'Meetings Hub',
   description: 'A workspace for your meetings.',
 };
 

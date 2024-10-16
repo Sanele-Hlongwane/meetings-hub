@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-  title: 'Contacts',
+  title: 'Contact Us',
   description: 'Wanna get in touch with us? Send us an email and we will get back to you as soon as possible.'
 };
 

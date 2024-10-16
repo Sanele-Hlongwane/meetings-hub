@@ -20,7 +20,7 @@ const Footer = () => {
   if (!mounted) return null; // Prevents rendering until after hydration
 
   return (
-    <footer className="py-12 shadow-xl transition-all duration-500 bg-black text-white dark:bg-white dark:text-black" style={{ width: '100vw' }}>
+    <footer className="py-12 shadow-xl transition-all duration-500 bg-gray-800 text-white dark:bg-gray-200 dark:text-black" style={{ width: '100vw' }}>
       <div className="container mx-auto text-center">
         {/* Theme Switcher */}
         <div className="flex justify-end mb-6">
