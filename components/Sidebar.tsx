@@ -147,7 +147,7 @@ const SideNav = () => {
         )}
         onClick={toggleSideNav}
       >
-        <div className="w-12 h-12 flex items-center justify-center bg-gold text-white rounded-lg shadow-lg">
+        <div className="w-12 h-12 flex items-center justify-center bg-gray-800 dark:bg-gray-300 text-white rounded-lg shadow-lg">
           {isOpen ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
