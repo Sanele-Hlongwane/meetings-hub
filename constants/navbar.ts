@@ -17,7 +17,7 @@ export const navbarLinks = [
   },
   {
     imgURL: '/icons/profile.svg',
-    route: '/profile',
+    route: '/user-profile',
     label: 'Profile',
   },
   {

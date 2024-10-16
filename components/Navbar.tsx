@@ -26,7 +26,7 @@ const Navbar = () => {
       <div className="hidden sm:flex gap-5">
         {navbarLinks.map((link) => (
           <Link href={link.route} key={link.label} className="text-white dark:text-black relative">
-            <span className={`transition-colors duration-300 hover:text-yellow-500 ${pathname === link.route ? 'text-blue-500 dark:text-yellow-500' : ''}`}>
+            <span className={`transition-colors duration-300 hover:text-blue-500 dark:hover:text-yellow-500 ${pathname === link.route ? 'text-blue-500 dark:text-yellow-500' : ''}`}>
               {link.label}
             </span>
             {/* Highlighter */}
