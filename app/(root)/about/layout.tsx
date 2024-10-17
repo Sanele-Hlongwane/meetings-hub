@@ -5,12 +5,12 @@ import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Discover the services offered by Eagles Ring to help entrepreneurs and investors succeed.',
+  description: 'Discover the services offered by Meeting Hub to help everyone succeed.',
 };
 
 const RootLayout = ({ children }: Readonly<{children: ReactNode}>) => {
   return (
-    <main className="w-full">
+    <main >
       <Navbar />
         <section className="">
           <div className="w-full">{children}</div>
