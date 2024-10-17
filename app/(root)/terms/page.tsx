@@ -30,7 +30,7 @@ const TermsAndConditions = () => {
                                                             </>) },];
 
   return (
-    <div className="p-6 py-24 bg-bg-dark-1 dark:bg-dark-1 text-white dark:text-white">
+    <div className="p-6 py-24 text-white dark:text-black">
       <h1 className="text-3xl font-bold mb-4">Terms and Conditions</h1>
 
       <h2 className="text-2xl font-semibold mb-2">Table of Contents</h2>

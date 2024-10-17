@@ -3,7 +3,7 @@ import React from 'react';
 
 const PrivacyPolicy = () => {
   return (
-    <div className="p-6 py-24 text-white  text-white dark:text-black">
+    <div className="p-6 py-24 text-white dark:text-black">
       <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
       <p className="mb-4">
         Your privacy is important to us. This privacy policy explains how we collect, use, disclose, and safeguard your information when you use our application. Please read this privacy policy carefully.
