@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { sidebarLinks } from '@/constants';
 import { navbarLinks } from '@/constants/navbar';
 import { cn } from '@/lib/utils';
+import { FaBars, FaHamburger, FaLine } from 'react-icons/fa';
 
 const MobileNav = () => {
   const pathname = usePathname();
@@ -16,27 +16,23 @@ const MobileNav = () => {
     <section className="w-full max-w-[264px]">
       <Sheet>
         <SheetTrigger asChild>
-          <Image
-            src="/icons/hamburger.svg"
-            width={36}
-            height={36}
-            alt="hamburger icon"
-            className="cursor-pointer sm:hidden"
-          />
+          <div className='text-white dark:text-black cursor-pointer text-white dark:text-black sm:hidden'>
+          <FaBars/>
+          </div>
         </SheetTrigger>
-        <SheetContent side="left" className="border-none bg-dark-1">
+        <SheetContent side="left" className="border-none bg-dark-1 dark:bg-gray-300 ">
           <Link href="/" className="flex items-center gap-1">
             <Image
-              src="/EaglesRingLogoDark.png"
+              src="/images/logo.png"
               width={42}
               height={42}
-              alt="Eagles-Ring Logo"
+              alt="Meetings-Hub Logo"
             />
-            <p className="text-[18px] font-extrabold text-white">Eagles Ring</p>
+            <p className="text-[18px] font-extrabold text-white dark:text-gray-900">Meetings Hub</p>
           </Link>
           <div className="flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto">
             <SheetClose asChild>
-              <section className=" flex h-full flex-col gap-6 pt-16 text-white">
+              <section className=" flex h-full flex-col gap-6 pt-16 text-white dark:text-gray-900">
                 {navbarLinks.map((item) => {
                   const isActive = pathname === item.route;
 
@@ -48,17 +44,11 @@ const MobileNav = () => {
                         className={cn(
                           'flex gap-4 items-center p-4 rounded-lg w-full max-w-60',
                           {
-                            'bg-blue-1': isActive,
+                            'bg-blue-1 dark:bg-yellow-500': isActive,
                           }
                         )}
                       >
-                        <Image
-                          src={item.imgURL}
-                          alt={item.label}
-                          width={20}
-                          height={20}
-                        />
-                        <p className="font-semibold">{item.label}</p>
+                        <p className="font-semibold hover:text-gray-300 dark:hover:text-gray-600">{item.label}</p>
                       </Link>
                     </SheetClose>
                   );

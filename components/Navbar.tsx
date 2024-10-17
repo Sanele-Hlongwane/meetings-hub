@@ -29,7 +29,6 @@ const Navbar = () => {
             <span className={`transition-colors duration-300 hover:text-blue-500 dark:hover:text-yellow-500 ${pathname === link.route ? 'text-blue-500 dark:text-yellow-500' : ''}`}>
               {link.label}
             </span>
-            {/* Highlighter */}
             {pathname === link.route && (
               <span className="absolute left-0 bottom-0 w-full h-0.5 bg-blue-500 dark:bg-yellow-500 transition-transform duration-300 scale-x-100"></span>
             )}
